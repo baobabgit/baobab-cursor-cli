@@ -1,6 +1,6 @@
 # Journal de développement - Baobab Cursor CLI
 
-## 2025-01-13 10:20:00 - Création du plan de développement en phases
+## 2025-10-13 10:20:00 - Création du plan de développement en phases
 
 **Action:** Création de la branche `phasing` et organisation du développement en 8 phases structurées
 
@@ -19,7 +19,7 @@
   7. **Documentation** (3 jours) - Documentation technique et utilisateur
   8. **Optimization & Release** (4 jours) - Optimisation et préparation release
 - Création du diagramme de Gantt au format JSON et Mermaid
-- Durée totale estimée : 34 jours (du 13 janvier au 15 février 2025)
+- Durée totale estimée : 34 jours (du 13 octobre au 15 novembre 2025)
 
 **Fichiers créés:**
 - `docs/phases/001_foundation_setup.md`
