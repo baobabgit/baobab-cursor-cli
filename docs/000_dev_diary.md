@@ -1,5 +1,34 @@
 # Journal de développement - Baobab Cursor CLI
 
+## 2025-10-13 11:45:00 - Merge de la branche dev_001_project_structure vers main
+
+**Action:** Merge de la branche `dev_001_project_structure` vers `main` et suppression de la branche de développement
+
+**Pourquoi:** Intégrer l'implémentation de la structure du projet dans la branche principale et nettoyer les branches de développement temporaires.
+
+**Comment:**
+- Push de la branche `dev_001_project_structure` vers le repository distant
+- Création de la Pull Request #3 : "feat: Implémentation de la spécification 001 - Structure du Projet"
+- Merge automatique de la PR avec suppression de la branche `dev_001_project_structure`
+- Basculement vers la branche `main` locale
+- Pull des dernières modifications depuis `origin/main`
+- La branche `dev_001_project_structure` a été automatiquement supprimée lors du merge
+
+**Pull Request créée:**
+- **URL:** https://github.com/baobabgit/baobab-cursor-cli/pull/3
+- **Titre:** feat: Implémentation de la spécification 001 - Structure du Projet
+- **Type:** Merge commit
+- **Statut:** Merged et fermée
+
+**Résultats:**
+- ✅ **Branche dev_001_project_structure mergée** dans main avec succès
+- ✅ **Pull Request #3** créée et mergée automatiquement
+- ✅ **Branche dev_001_project_structure supprimée** automatiquement
+- ✅ **Branche main locale** mise à jour avec les dernières modifications
+- ✅ **17 fichiers modifiés** dans la branche main
+- ✅ **388 lignes ajoutées** au total
+- ✅ **Structure du projet** complètement implémentée
+
 ## 2025-10-13 11:30:00 - Implémentation de la spécification 001 - Structure du Projet
 
 **Action:** Implémentation complète de la spécification 001 - Structure du Projet
