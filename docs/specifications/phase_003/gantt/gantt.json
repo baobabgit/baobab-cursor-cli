@@ -1,0 +1,137 @@
+{
+  "title": "Phase 3 - Infrastructure - Spécifications Détaillées",
+  "description": "Diagramme de Gantt pour le développement des spécifications de la Phase 3",
+  "phase": "003",
+  "phase_name": "Infrastructure",
+  "specifications": [
+    {
+      "id": "spec-001",
+      "name": "Gestionnaire Docker",
+      "start": "2025-10-20",
+      "duration": 1,
+      "dependencies": [],
+      "tasks": [
+        {
+          "name": "Classe DockerManager",
+          "duration": 0.6,
+          "start": "2025-10-20"
+        },
+        {
+          "name": "Cycle de vie des conteneurs",
+          "duration": 0.4,
+          "start": "2025-10-20"
+        }
+      ]
+    },
+    {
+      "id": "spec-002",
+      "name": "Pool de Conteneurs",
+      "start": "2025-10-21",
+      "duration": 1,
+      "dependencies": ["spec-001"],
+      "tasks": [
+        {
+          "name": "Pool de conteneurs",
+          "duration": 0.5,
+          "start": "2025-10-21"
+        },
+        {
+          "name": "Exécution parallèle",
+          "duration": 0.5,
+          "start": "2025-10-21"
+        }
+      ]
+    },
+    {
+      "id": "spec-003",
+      "name": "Gestion des Montages de Fichiers",
+      "start": "2025-10-22",
+      "duration": 1,
+      "dependencies": ["spec-001"],
+      "tasks": [
+        {
+          "name": "Gestionnaire de montages",
+          "duration": 0.6,
+          "start": "2025-10-22"
+        },
+        {
+          "name": "Gestion des permissions",
+          "duration": 0.4,
+          "start": "2025-10-22"
+        }
+      ]
+    },
+    {
+      "id": "spec-004",
+      "name": "Système de Logging",
+      "start": "2025-10-23",
+      "duration": 1,
+      "dependencies": [],
+      "tasks": [
+        {
+          "name": "Configuration du logging",
+          "duration": 0.5,
+          "start": "2025-10-23"
+        },
+        {
+          "name": "Formateurs de logs",
+          "duration": 0.5,
+          "start": "2025-10-23"
+        }
+      ]
+    },
+    {
+      "id": "spec-005",
+      "name": "Monitoring et Observabilité",
+      "start": "2025-10-24",
+      "duration": 1,
+      "dependencies": ["spec-001", "spec-002", "spec-004"],
+      "tasks": [
+        {
+          "name": "Monitoring des conteneurs",
+          "duration": 0.5,
+          "start": "2025-10-24"
+        },
+        {
+          "name": "Métriques et observabilité",
+          "duration": 0.5,
+          "start": "2025-10-24"
+        }
+      ]
+    }
+  ],
+  "milestones": [
+    {
+      "name": "Docker Manager Complete",
+      "date": "2025-10-20",
+      "specification": "spec-001"
+    },
+    {
+      "name": "Container Pool Complete",
+      "date": "2025-10-21",
+      "specification": "spec-002"
+    },
+    {
+      "name": "File Mounting Complete",
+      "date": "2025-10-22",
+      "specification": "spec-003"
+    },
+    {
+      "name": "Logging System Complete",
+      "date": "2025-10-23",
+      "specification": "spec-004"
+    },
+    {
+      "name": "Monitoring Complete",
+      "date": "2025-10-24",
+      "specification": "spec-005"
+    }
+  ],
+  "summary": {
+    "total_duration": 5,
+    "start_date": "2025-10-20",
+    "end_date": "2025-10-24",
+    "specifications_count": 5,
+    "parallel_specifications": 1
+  }
+}

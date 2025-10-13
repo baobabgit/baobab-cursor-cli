@@ -1,0 +1,119 @@
+{
+  "title": "Phase 1 - Foundation Setup - Spécifications Détaillées",
+  "description": "Diagramme de Gantt pour le développement des spécifications de la Phase 1",
+  "phase": "001",
+  "phase_name": "Foundation Setup",
+  "specifications": [
+    {
+      "id": "spec-001",
+      "name": "Structure du Projet",
+      "start": "2025-10-13",
+      "duration": 1,
+      "dependencies": [],
+      "tasks": [
+        {
+          "name": "Création de l'arborescence principale",
+          "duration": 0.5,
+          "start": "2025-10-13"
+        },
+        {
+          "name": "Création des modules principaux",
+          "duration": 0.3,
+          "start": "2025-10-13"
+        },
+        {
+          "name": "Création des sous-modules",
+          "duration": 0.1,
+          "start": "2025-10-13"
+        },
+        {
+          "name": "Création des fichiers de configuration",
+          "duration": 0.1,
+          "start": "2025-10-13"
+        }
+      ]
+    },
+    {
+      "id": "spec-002",
+      "name": "Configuration du Projet",
+      "start": "2025-10-14",
+      "duration": 1,
+      "dependencies": ["spec-001"],
+      "tasks": [
+        {
+          "name": "Configuration pyproject.toml",
+          "duration": 0.4,
+          "start": "2025-10-14"
+        },
+        {
+          "name": "Configuration des outils de test",
+          "duration": 0.3,
+          "start": "2025-10-14"
+        },
+        {
+          "name": "Configuration des outils de qualité",
+          "duration": 0.2,
+          "start": "2025-10-14"
+        },
+        {
+          "name": "Configuration des environnements",
+          "duration": 0.1,
+          "start": "2025-10-14"
+        }
+      ]
+    },
+    {
+      "id": "spec-003",
+      "name": "Configuration Docker",
+      "start": "2025-10-15",
+      "duration": 1,
+      "dependencies": ["spec-001", "spec-002"],
+      "tasks": [
+        {
+          "name": "Création du Dockerfile",
+          "duration": 0.5,
+          "start": "2025-10-15"
+        },
+        {
+          "name": "Configuration Docker Compose",
+          "duration": 0.2,
+          "start": "2025-10-15"
+        },
+        {
+          "name": "Scripts de build et test",
+          "duration": 0.2,
+          "start": "2025-10-15"
+        },
+        {
+          "name": "Configuration des volumes",
+          "duration": 0.1,
+          "start": "2025-10-15"
+        }
+      ]
+    }
+  ],
+  "milestones": [
+    {
+      "name": "Structure Complete",
+      "date": "2025-10-13",
+      "specification": "spec-001"
+    },
+    {
+      "name": "Configuration Complete",
+      "date": "2025-10-14",
+      "specification": "spec-002"
+    },
+    {
+      "name": "Docker Setup Complete",
+      "date": "2025-10-15",
+      "specification": "spec-003"
+    }
+  ],
+  "summary": {
+    "total_duration": 3,
+    "start_date": "2025-10-13",
+    "end_date": "2025-10-15",
+    "specifications_count": 3,
+    "parallel_specifications": 0
+  }
+}

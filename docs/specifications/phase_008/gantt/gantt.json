@@ -1,0 +1,113 @@
+{
+  "title": "Phase 8 - Optimization & Release - Spécifications Détaillées",
+  "description": "Diagramme de Gantt pour le développement des spécifications de la Phase 8",
+  "phase": "008",
+  "phase_name": "Optimization & Release",
+  "specifications": [
+    {
+      "id": "spec-001",
+      "name": "Optimisation",
+      "start": "2025-11-12",
+      "duration": 1,
+      "dependencies": [],
+      "tasks": [
+        {
+          "name": "Optimisation des performances",
+          "duration": 0.6,
+          "start": "2025-11-12"
+        },
+        {
+          "name": "Optimisation des ressources",
+          "duration": 0.4,
+          "start": "2025-11-12"
+        }
+      ]
+    },
+    {
+      "id": "spec-002",
+      "name": "Préparation de la Release",
+      "start": "2025-11-13",
+      "duration": 1,
+      "dependencies": ["spec-001"],
+      "tasks": [
+        {
+          "name": "Préparation de la release",
+          "duration": 0.6,
+          "start": "2025-11-13"
+        },
+        {
+          "name": "Artefacts de distribution",
+          "duration": 0.4,
+          "start": "2025-11-13"
+        }
+      ]
+    },
+    {
+      "id": "spec-003",
+      "name": "Configuration du Monitoring",
+      "start": "2025-11-14",
+      "duration": 1,
+      "dependencies": ["spec-001"],
+      "tasks": [
+        {
+          "name": "Monitoring de production",
+          "duration": 0.6,
+          "start": "2025-11-14"
+        },
+        {
+          "name": "Observabilité",
+          "duration": 0.4,
+          "start": "2025-11-14"
+        }
+      ]
+    },
+    {
+      "id": "spec-004",
+      "name": "Procédures de Maintenance",
+      "start": "2025-11-15",
+      "duration": 1,
+      "dependencies": ["spec-001", "spec-002", "spec-003"],
+      "tasks": [
+        {
+          "name": "Procédures de maintenance",
+          "duration": 0.6,
+          "start": "2025-11-15"
+        },
+        {
+          "name": "Support et maintenance",
+          "duration": 0.4,
+          "start": "2025-11-15"
+        }
+      ]
+    }
+  ],
+  "milestones": [
+    {
+      "name": "Optimization Complete",
+      "date": "2025-11-12",
+      "specification": "spec-001"
+    },
+    {
+      "name": "Release Preparation Complete",
+      "date": "2025-11-13",
+      "specification": "spec-002"
+    },
+    {
+      "name": "Monitoring Setup Complete",
+      "date": "2025-11-14",
+      "specification": "spec-003"
+    },
+    {
+      "name": "Maintenance Procedures Complete",
+      "date": "2025-11-15",
+      "specification": "spec-004"
+    }
+  ],
+  "summary": {
+    "total_duration": 4,
+    "start_date": "2025-11-12",
+    "end_date": "2025-11-15",
+    "specifications_count": 4,
+    "parallel_specifications": 1
+  }
+}

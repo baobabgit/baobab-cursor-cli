@@ -1,5 +1,41 @@
 # Journal de développement - Baobab Cursor CLI
 
+## 2025-10-13 10:45:00 - Création de la branche specifications et découpage des phases
+
+**Action:** Création de la branche `specifications` et découpage de chaque phase en spécifications détaillées
+
+**Pourquoi:** Décomposer chaque phase en spécifications techniques détaillées pour faciliter l'implémentation et assurer une traçabilité complète du développement.
+
+**Comment:**
+- Création de la branche `specifications` à partir de `main`
+- Création du dossier `docs/specifications/` pour organiser les spécifications
+- Pour chaque phase (001 à 008), création d'un dossier `phase_YYY/` avec :
+  - Découpage en X fichiers de spécifications détaillées (numérotés 001_ à XXX_)
+  - Dossier `gantt/` avec diagramme de Gantt JSON et image
+- Chaque spécification détaillée contient :
+  - Objectifs techniques précis
+  - Tâches de développement détaillées
+  - Critères d'acceptation spécifiques
+  - Dépendances entre spécifications
+  - Estimations de temps par tâche
+
+**Fichiers créés:**
+- `docs/specifications/phase_001/` - Foundation Setup (3 spécifications)
+- `docs/specifications/phase_002/` - Core Models (4 spécifications)
+- `docs/specifications/phase_003/` - Infrastructure (5 spécifications)
+- `docs/specifications/phase_004/` - Core Engine (6 spécifications)
+- `docs/specifications/phase_005/` - CLI Interface (4 spécifications)
+- `docs/specifications/phase_006/` - Integration Testing (5 spécifications)
+- `docs/specifications/phase_007/` - Documentation (3 spécifications)
+- `docs/specifications/phase_008/` - Optimization & Release (4 spécifications)
+
+**Résultats:**
+- ✅ **Branche specifications créée** à partir de main
+- ✅ **34 spécifications détaillées** créées au total
+- ✅ **8 dossiers de phases** avec organisation claire
+- ✅ **Diagrammes de Gantt** pour chaque phase
+- ✅ **Traçabilité complète** du développement
+
 ## 2025-10-13 10:35:00 - Merge de la branche phasing vers main
 
 **Action:** Merge de la branche `phasing` vers `main` et suppression de la branche de développement

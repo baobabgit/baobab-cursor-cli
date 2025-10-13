@@ -1,0 +1,161 @@
+{
+  "title": "Phase 4 - Core Engine - Spécifications Détaillées",
+  "description": "Diagramme de Gantt pour le développement des spécifications de la Phase 4",
+  "phase": "004",
+  "phase_name": "Core Engine",
+  "specifications": [
+    {
+      "id": "spec-001",
+      "name": "Exécuteur de Commandes",
+      "start": "2025-10-25",
+      "duration": 1,
+      "dependencies": [],
+      "tasks": [
+        {
+          "name": "Exécuteur de commandes",
+          "duration": 0.6,
+          "start": "2025-10-25"
+        },
+        {
+          "name": "Gestionnaire de réponses",
+          "duration": 0.4,
+          "start": "2025-10-25"
+        }
+      ]
+    },
+    {
+      "id": "spec-002",
+      "name": "Gestionnaire de Sessions",
+      "start": "2025-10-26",
+      "duration": 1,
+      "dependencies": [],
+      "tasks": [
+        {
+          "name": "Gestionnaire de sessions",
+          "duration": 0.6,
+          "start": "2025-10-26"
+        },
+        {
+          "name": "Persistance des sessions",
+          "duration": 0.4,
+          "start": "2025-10-26"
+        }
+      ]
+    },
+    {
+      "id": "spec-003",
+      "name": "Client Cursor Principal",
+      "start": "2025-10-27",
+      "duration": 1,
+      "dependencies": ["spec-001", "spec-002"],
+      "tasks": [
+        {
+          "name": "Client principal",
+          "duration": 0.6,
+          "start": "2025-10-27"
+        },
+        {
+          "name": "Interface utilisateur",
+          "duration": 0.4,
+          "start": "2025-10-27"
+        }
+      ]
+    },
+    {
+      "id": "spec-004",
+      "name": "Client Asynchrone",
+      "start": "2025-10-28",
+      "duration": 1,
+      "dependencies": ["spec-003"],
+      "tasks": [
+        {
+          "name": "Client asynchrone",
+          "duration": 0.5,
+          "start": "2025-10-28"
+        },
+        {
+          "name": "Gestionnaire de callbacks",
+          "duration": 0.5,
+          "start": "2025-10-28"
+        }
+      ]
+    },
+    {
+      "id": "spec-005",
+      "name": "Système de Retry et Timeout",
+      "start": "2025-10-29",
+      "duration": 1,
+      "dependencies": ["spec-001"],
+      "tasks": [
+        {
+          "name": "Gestionnaire de retry",
+          "duration": 0.5,
+          "start": "2025-10-29"
+        },
+        {
+          "name": "Gestionnaire de timeout",
+          "duration": 0.5,
+          "start": "2025-10-29"
+        }
+      ]
+    },
+    {
+      "id": "spec-006",
+      "name": "Initialiseur de Projets",
+      "start": "2025-10-30",
+      "duration": 1,
+      "dependencies": [],
+      "tasks": [
+        {
+          "name": "Initialiseur de projets",
+          "duration": 0.6,
+          "start": "2025-10-30"
+        },
+        {
+          "name": "Gestion des templates",
+          "duration": 0.4,
+          "start": "2025-10-30"
+        }
+      ]
+    }
+  ],
+  "milestones": [
+    {
+      "name": "Command Executor Complete",
+      "date": "2025-10-25",
+      "specification": "spec-001"
+    },
+    {
+      "name": "Session Manager Complete",
+      "date": "2025-10-26",
+      "specification": "spec-002"
+    },
+    {
+      "name": "Cursor Client Complete",
+      "date": "2025-10-27",
+      "specification": "spec-003"
+    },
+    {
+      "name": "Async Client Complete",
+      "date": "2025-10-28",
+      "specification": "spec-004"
+    },
+    {
+      "name": "Retry System Complete",
+      "date": "2025-10-29",
+      "specification": "spec-005"
+    },
+    {
+      "name": "Project Initializer Complete",
+      "date": "2025-10-30",
+      "specification": "spec-006"
+    }
+  ],
+  "summary": {
+    "total_duration": 6,
+    "start_date": "2025-10-25",
+    "end_date": "2025-10-30",
+    "specifications_count": 6,
+    "parallel_specifications": 2
+  }
+}
