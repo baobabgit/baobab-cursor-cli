@@ -1,5 +1,40 @@
 # Journal de développement - Baobab Cursor CLI
 
+## 2025-10-13 12:30:00 - Implémentation de la spécification 003 - Configuration Docker
+
+**Action:** Implémentation complète de la spécification 003 - Configuration Docker
+
+**Pourquoi:** Créer l'infrastructure Docker pour exécuter Cursor CLI dans un environnement Linux conteneurisé, permettant l'exécution sécurisée et isolée des commandes Cursor.
+
+**Comment:**
+- Création de la branche `dev-003-docker-setup` à partir de `main`
+- Implémentation de toutes les tâches de la spécification 003 :
+  - Création du Dockerfile basé sur Ubuntu avec installation de Cursor CLI
+  - Configuration Docker Compose avec volumes et limites de ressources
+  - Scripts de build, test et exécution pour l'image Docker
+  - Configuration des volumes avec permissions et montages appropriés
+- Création de fichiers supplémentaires (.dockerignore, docker-compose.dev.yml)
+- Mise à jour des spécifications avec les éléments cochés
+- Mise à jour du journal de développement
+
+**Fichiers créés:**
+- `docker/Dockerfile` - Image Docker basée sur Ubuntu avec Cursor CLI
+- `docker/entrypoint.sh` - Script d'entrée pour le conteneur
+- `docker/docker-compose.yml` - Configuration Docker Compose principale
+- `docker/docker-compose.dev.yml` - Configuration pour le développement
+- `scripts/build-docker.sh` - Script de construction de l'image
+- `scripts/test-docker.sh` - Script de test de l'image
+- `scripts/run-docker.sh` - Script d'exécution de commandes
+- `.dockerignore` - Fichiers à ignorer lors de la construction
+
+**Résultats:**
+- ✅ **Image Docker** fonctionnelle avec Cursor CLI installé
+- ✅ **Configuration Docker Compose** avec volumes et limites de ressources
+- ✅ **Scripts automatisés** pour build, test et exécution
+- ✅ **Volumes configurés** avec permissions appropriées
+- ✅ **Utilisateur non-privilégié** pour la sécurité
+- ✅ **Infrastructure conteneurisée** opérationnelle
+
 ## 2025-10-13 12:15:00 - Merge de la branche dev_002_project_configuration vers main
 
 **Action:** Merge de la branche `dev_002_project_configuration` vers `main` et suppression de la branche de développement

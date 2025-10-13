@@ -19,9 +19,9 @@ Mise en place des fondations du projet : structure, configuration, et outils de 
 - [x] Configuration des outils de linting (black, flake8, mypy)
 
 ### 1.3 Configuration Docker
-- [ ] Création du `Dockerfile` pour l'image Cursor CLI
-- [ ] Configuration `docker-compose.yml`
-- [ ] Scripts de build et de test Docker
+- [x] Création du `Dockerfile` pour l'image Cursor CLI
+- [x] Configuration `docker-compose.yml`
+- [x] Scripts de build et de test Docker
 
 ### 1.4 Configuration des ressources
 - [ ] Création du dossier `.resources/`
