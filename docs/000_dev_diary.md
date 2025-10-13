@@ -1,5 +1,35 @@
 # Journal de développement - Baobab Cursor CLI
 
+## 2025-10-13 10:55:00 - Merge de la branche specifications vers main
+
+**Action:** Merge de la branche `specifications` vers `main` et suppression de la branche de développement
+
+**Pourquoi:** Intégrer les spécifications techniques détaillées dans la branche principale et nettoyer les branches de développement temporaires.
+
+**Comment:**
+- Renommage du dossier `spécifications` en `specifications` pour la compatibilité
+- Push de la branche `specifications` vers le repository distant
+- Création de la Pull Request #2 : "feat: Spécifications détaillées pour le développement en 8 phases"
+- Merge automatique de la PR avec suppression de la branche `specifications`
+- Basculement vers la branche `main` locale
+- Pull des dernières modifications depuis `origin/main`
+- La branche `specifications` a été automatiquement supprimée lors du merge
+
+**Pull Request créée:**
+- **URL:** https://github.com/baobabgit/baobab-cursor-cli/pull/2
+- **Titre:** feat: Spécifications détaillées pour le développement en 8 phases
+- **Type:** Merge commit
+- **Statut:** Merged et fermée
+
+**Résultats:**
+- ✅ **Branche specifications mergée** dans main avec succès
+- ✅ **Pull Request #2** créée et mergée automatiquement
+- ✅ **Branche specifications supprimée** automatiquement
+- ✅ **Branche main locale** mise à jour avec les dernières modifications
+- ✅ **43 fichiers ajoutés** dans la branche main
+- ✅ **2381 lignes ajoutées** au total
+- ✅ **Dossier renommé** pour la compatibilité des systèmes de fichiers
+
 ## 2025-10-13 10:45:00 - Création de la branche specifications et découpage des phases
 
 **Action:** Création de la branche `specifications` et découpage de chaque phase en spécifications détaillées
