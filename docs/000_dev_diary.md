@@ -1,5 +1,33 @@
 # Journal de développement - Baobab Cursor CLI
 
+## 2025-10-13 10:35:00 - Merge de la branche phasing vers main
+
+**Action:** Merge de la branche `phasing` vers `main` et suppression de la branche de développement
+
+**Pourquoi:** Intégrer le plan de développement en phases dans la branche principale et nettoyer les branches de développement temporaires.
+
+**Comment:**
+- Push de la branche `phasing` vers le repository distant
+- Création de la Pull Request #1 : "feat: Plan de développement en 8 phases structurées"
+- Merge automatique de la PR avec suppression de la branche `phasing`
+- Basculement vers la branche `main` locale
+- Pull des dernières modifications depuis `origin/main`
+- La branche `phasing` a été automatiquement supprimée lors du merge
+
+**Pull Request créée:**
+- **URL:** https://github.com/baobabgit/baobab-cursor-cli/pull/1
+- **Titre:** feat: Plan de développement en 8 phases structurées
+- **Type:** Merge commit
+- **Statut:** Merged et fermée
+
+**Résultats:**
+- ✅ **Branche phasing mergée** dans main avec succès
+- ✅ **Pull Request #1** créée et mergée automatiquement
+- ✅ **Branche phasing supprimée** automatiquement
+- ✅ **Branche main locale** mise à jour avec les dernières modifications
+- ✅ **11 fichiers ajoutés** dans la branche main
+- ✅ **696 lignes ajoutées** au total
+
 ## 2025-10-13 10:20:00 - Création du plan de développement en phases
 
 **Action:** Création de la branche `phasing` et organisation du développement en 8 phases structurées
