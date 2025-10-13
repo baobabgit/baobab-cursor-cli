@@ -1,0 +1,89 @@
+{
+  "title": "Phase 7 - Documentation - Spécifications Détaillées",
+  "description": "Diagramme de Gantt pour le développement des spécifications de la Phase 7",
+  "phase": "007",
+  "phase_name": "Documentation",
+  "specifications": [
+    {
+      "id": "spec-001",
+      "name": "Documentation Technique",
+      "start": "2025-11-09",
+      "duration": 1,
+      "dependencies": [],
+      "tasks": [
+        {
+          "name": "Documentation API",
+          "duration": 0.6,
+          "start": "2025-11-09"
+        },
+        {
+          "name": "Guide d'architecture",
+          "duration": 0.4,
+          "start": "2025-11-09"
+        }
+      ]
+    },
+    {
+      "id": "spec-002",
+      "name": "Documentation Utilisateur",
+      "start": "2025-11-10",
+      "duration": 1,
+      "dependencies": [],
+      "tasks": [
+        {
+          "name": "Guide d'utilisation",
+          "duration": 0.6,
+          "start": "2025-11-10"
+        },
+        {
+          "name": "Documentation de configuration",
+          "duration": 0.4,
+          "start": "2025-11-10"
+        }
+      ]
+    },
+    {
+      "id": "spec-003",
+      "name": "Documentation de Déploiement",
+      "start": "2025-11-11",
+      "duration": 1,
+      "dependencies": [],
+      "tasks": [
+        {
+          "name": "Guide de déploiement",
+          "duration": 0.6,
+          "start": "2025-11-11"
+        },
+        {
+          "name": "Documentation de maintenance",
+          "duration": 0.4,
+          "start": "2025-11-11"
+        }
+      ]
+    }
+  ],
+  "milestones": [
+    {
+      "name": "Technical Docs Complete",
+      "date": "2025-11-09",
+      "specification": "spec-001"
+    },
+    {
+      "name": "User Docs Complete",
+      "date": "2025-11-10",
+      "specification": "spec-002"
+    },
+    {
+      "name": "Deployment Docs Complete",
+      "date": "2025-11-11",
+      "specification": "spec-003"
+    }
+  ],
+  "summary": {
+    "total_duration": 3,
+    "start_date": "2025-11-09",
+    "end_date": "2025-11-11",
+    "specifications_count": 3,
+    "parallel_specifications": 3
+  }
+}
