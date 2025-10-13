@@ -1,5 +1,40 @@
 # Journal de développement - Baobab Cursor CLI
 
+## 2025-10-13 14:00:00 - Implémentation des modèles de données - Spécification 001
+
+**Action:** Implémentation complète des modèles de données Pydantic pour le système Cursor CLI
+
+**Pourquoi:** Créer les modèles de données robustes et validés pour représenter les commandes, réponses, configurations et sessions du système Cursor CLI.
+
+**Comment:**
+- Création de la branche `dev-data-models` à partir de `main`
+- Implémentation des 4 modèles principaux :
+  - `CursorCommand` : Modèle pour les commandes Cursor avec validation complète
+  - `CursorResponse` : Modèle pour les réponses avec gestion des statuts
+  - `CursorConfig` : Modèle pour la configuration avec chargement/sauvegarde
+  - `Session` : Modèle pour les sessions avec gestion du cycle de vie
+- Ajout de validations Pydantic robustes pour tous les modèles
+- Implémentation des méthodes de sérialisation/désérialisation (JSON, YAML)
+- Ajout de méthodes utilitaires et de formatage
+- Mise à jour des spécifications avec les éléments cochés
+
+**Fichiers créés:**
+- `src/baobab_cursor_cli/models/cursor_command.py` - Modèle CursorCommand
+- `src/baobab_cursor_cli/models/cursor_response.py` - Modèle CursorResponse
+- `src/baobab_cursor_cli/models/cursor_config.py` - Modèle CursorConfig
+- `src/baobab_cursor_cli/models/session.py` - Modèle Session
+- `src/baobab_cursor_cli/models/__init__.py` - Module models
+- `docs/specifications/git_hub_issue_template.txt` - Template d'issue GitHub
+
+**Résultats:**
+- ✅ **4 modèles Pydantic** complètement implémentés
+- ✅ **Validations robustes** pour tous les champs et cas d'usage
+- ✅ **Sérialisation/désérialisation** JSON et YAML fonctionnelles
+- ✅ **Méthodes utilitaires** pour la manipulation des données
+- ✅ **Gestion des erreurs** avec validation des entrées
+- ✅ **Documentation complète** avec docstrings détaillées
+- ✅ **Spécifications mises à jour** avec éléments cochés
+
 ## 2025-10-13 13:30:00 - Optimisation des requirements et création du Makefile PowerShell
 
 **Action:** Optimisation de la gestion des requirements et création d'un équivalent PowerShell du Makefile
