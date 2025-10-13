@@ -330,7 +330,12 @@ class ContainerRunner:
     def cleanup_containers(self) -> None:
         """Nettoie tous les conteneurs en cours d'exécution."""
         for container_name in list(self._running_containers.keys()):
-            self.stop_container(container_name)
+            try:
+                self.stop_container(container_name)
+            except Exception:
+                # Supprimer de la liste même en cas d'erreur
+                if container_name in self._running_containers:
+                    del self._running_containers[container_name]
     
     def __enter__(self):
         """Context manager entry."""

@@ -84,8 +84,11 @@ class TestDockerExceptions:
         error2 = DockerError("Test error")
         error3 = DockerError("Different error")
         
-        assert error1 == error2
-        assert error1 != error3
+        # Les exceptions Python ne sont pas égales par défaut
+        # même avec le même message, car elles sont des objets différents
+        assert error1 != error2  # Différents objets
+        assert error1 != error3  # Messages différents
+        assert str(error1) == str(error2)  # Mais les messages sont égaux
     
     def test_exception_representation(self):
         """Test de la représentation des exceptions."""

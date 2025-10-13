@@ -262,6 +262,10 @@ class ImageBuilder:
                 self.remove_image(image)
             except DockerError:
                 self.logger.warning(f"Impossible de nettoyer l'image {tag}")
+            finally:
+                # Supprimer de la liste même en cas d'erreur
+                if tag in self._built_images:
+                    del self._built_images[tag]
     
     def __enter__(self):
         """Context manager entry."""
