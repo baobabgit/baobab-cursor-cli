@@ -14,9 +14,9 @@ Mise en place des fondations du projet : structure, configuration, et outils de 
 - [x] Mise en place du `.gitignore` adapté
 
 ### 1.2 Configuration du projet
-- [ ] Configuration `pyproject.toml` avec toutes les dépendances
-- [ ] Configuration des outils de test (pytest, coverage)
-- [ ] Configuration des outils de linting (black, flake8, mypy)
+- [x] Configuration `pyproject.toml` avec toutes les dépendances
+- [x] Configuration des outils de test (pytest, coverage)
+- [x] Configuration des outils de linting (black, flake8, mypy)
 
 ### 1.3 Configuration Docker
 - [ ] Création du `Dockerfile` pour l'image Cursor CLI

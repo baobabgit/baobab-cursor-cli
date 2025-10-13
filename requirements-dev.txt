@@ -1,0 +1,36 @@
+# Baobab Cursor CLI - Dépendances de développement
+# Installation: pip install -r requirements-dev.txt
+
+# Inclure les dépendances de production
+-r requirements.txt
+
+# Outils de test
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+pytest-cov>=4.1.0
+pytest-mock>=3.12.0
+pytest-xdist>=3.3.0
+
+# Outils de qualité de code
+black>=23.0.0
+flake8>=6.0.0
+mypy>=1.7.0
+isort>=5.12.0
+bandit>=1.7.0
+safety>=2.3.0
+
+# Outils de développement
+pre-commit>=3.5.0
+ipython>=8.17.0
+jupyter>=1.0.0
+
+# Outils de documentation
+sphinx>=7.1.0
+sphinx-rtd-theme>=1.3.0
+myst-parser>=2.0.0
+sphinx-autodoc-typehints>=1.24.0
+
+# Outils de build et distribution
+build>=0.10.0
+twine>=4.0.0
+wheel>=0.41.0
