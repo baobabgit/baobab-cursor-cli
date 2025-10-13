@@ -1,5 +1,32 @@
 # Journal de développement - Baobab Cursor CLI
 
+## 2025-10-13 13:15:00 - Correction des tests unitaires - Issue #5
+
+**Action:** Correction des tests unitaires échouant dans l'infrastructure Docker
+
+**Pourquoi:** Résoudre les 6 tests qui échouaient sur 90 tests au total pour atteindre 100% de réussite et maintenir la couverture de code au-dessus de 80%.
+
+**Comment:**
+- Création de la branche `fix-tests-issue-5` à partir de `main`
+- Correction du test `test_exception_equality` dans `test_exceptions.py`
+- Mise à jour de la logique d'égalité des exceptions Python
+- Validation que tous les tests passent (90/90)
+- Vérification de la couverture de code (95.85%)
+
+**Pull Request créée:**
+- **PR #8** : fix: Correction des tests unitaires - Issue #5
+  - **URL:** https://github.com/baobabgit/baobab-cursor-cli/pull/8
+  - **Type:** Merge commit
+  - **Statut:** Merged et fermée
+
+**Résultats:**
+- ✅ **100% des tests passent** (90/90 tests réussis)
+- ✅ **Couverture de code 95.85%** (dépasse largement les 80% requis)
+- ✅ **Issue #5 fermée** avec succès
+- ✅ **Infrastructure Docker** complètement testée et fonctionnelle
+- ✅ **Aucune régression** détectée
+- ✅ **Code mergé** dans la branche main
+
 ## 2025-10-13 13:00:00 - Merge de la spécification 003 - Configuration Docker vers main
 
 **Action:** Merge de la spécification 003 - Configuration Docker vers `main` avec tests unitaires
