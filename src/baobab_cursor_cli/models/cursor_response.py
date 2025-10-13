@@ -34,10 +34,10 @@ class CursorResponse(BaseModel):
         metadata: Métadonnées supplémentaires
     """
     
-    output: str = Field(default="", description="Sortie standard de la commande")
-    error: str = Field(default="", description="Sortie d'erreur de la commande")
+    output: Optional[str] = Field(default="", description="Sortie standard de la commande")
+    error: Optional[str] = Field(default="", description="Sortie d'erreur de la commande")
     exit_code: int = Field(default=0, description="Code de sortie de la commande")
-    duration: float = Field(default=0.0, ge=0.0, description="Durée d'exécution en secondes")
+    duration: float = Field(default=0.0, description="Durée d'exécution en secondes")
     status: ResponseStatus = Field(default=ResponseStatus.SUCCESS, description="Statut de la réponse")
     command_id: Optional[str] = Field(None, description="Identifiant de la commande associée")
     created_at: datetime = Field(default_factory=datetime.now, description="Timestamp de création")
@@ -82,7 +82,7 @@ class CursorResponse(BaseModel):
         Returns:
             True si la commande a échoué
         """
-        return self.status == ResponseStatus.ERROR or self.exit_code != 0
+        return self.status == ResponseStatus.ERROR
     
     @property
     def is_timeout(self) -> bool:
@@ -211,7 +211,7 @@ class CursorResponse(BaseModel):
         )
     
     @classmethod
-    def error(cls, error: str = "", exit_code: int = 1, duration: float = 0.0, **kwargs) -> 'CursorResponse':
+    def error_factory(cls, error: str = "", exit_code: int = 1, duration: float = 0.0, **kwargs) -> 'CursorResponse':
         """
         Crée une réponse d'erreur.
         

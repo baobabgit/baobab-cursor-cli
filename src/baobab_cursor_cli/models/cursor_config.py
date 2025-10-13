@@ -8,7 +8,7 @@ pour l'API Cursor CLI.
 from typing import Dict, Any, Optional, List, Union
 from datetime import datetime
 from pathlib import Path
-from pydantic import BaseModel, Field, validator, root_validator
+from pydantic import BaseModel, Field, validator, model_validator
 import json
 import yaml
 
@@ -32,7 +32,7 @@ class CursorConfig(BaseModel):
     
     model: str = Field(default="gpt-4", description="Modèle d'IA à utiliser")
     max_tokens: int = Field(default=4000, ge=1, le=32000, description="Nombre maximum de tokens")
-    temperature: float = Field(default=0.7, ge=0.0, le=2.0, description="Température pour la génération")
+    temperature: float = Field(default=0.7, description="Température pour la génération")
     timeout: int = Field(default=300, ge=1, le=3600, description="Timeout en secondes")
     api_key: Optional[str] = Field(None, description="Clé API Cursor")
     base_url: str = Field(default="https://api.cursor.sh", description="URL de base de l'API")
@@ -64,7 +64,14 @@ class CursorConfig(BaseModel):
         """Valide la température."""
         if not isinstance(v, (int, float)):
             raise ValueError("La température doit être un nombre")
-        return float(v)
+        
+        temp = float(v)
+        if temp < 0.0:
+            raise ValueError("La température doit être supérieure ou égale à 0.0")
+        if temp > 2.0:
+            raise ValueError("La température doit être inférieure ou égale à 2.0")
+        
+        return temp
     
     @validator('max_tokens')
     def validate_max_tokens(cls, v):
@@ -110,17 +117,14 @@ class CursorConfig(BaseModel):
             raise ValueError("La clé API ne peut pas être vide")
         return v.strip() if v else None
     
-    @root_validator
-    def validate_config_consistency(cls, values):
+    @model_validator(mode='after')
+    def validate_config_consistency(self):
         """Valide la cohérence globale de la configuration."""
-        model = values.get('model', '')
-        max_tokens = values.get('max_tokens', 4000)
-        
         # Vérifier que max_tokens est approprié pour le modèle
-        if 'gpt-3.5' in model and max_tokens > 4000:
+        if 'gpt-3.5' in self.model and self.max_tokens > 4000:
             raise ValueError("GPT-3.5-turbo ne supporte que jusqu'à 4000 tokens")
         
-        return values
+        return self
     
     def to_dict(self) -> Dict[str, Any]:
         """

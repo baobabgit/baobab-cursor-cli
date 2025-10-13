@@ -8,7 +8,7 @@ Ce module définit la classe CursorCommand qui représente une commande
 from typing import Dict, Any, Optional, List
 from datetime import datetime
 from pathlib import Path
-from pydantic import BaseModel, Field, validator, root_validator
+from pydantic import BaseModel, Field, validator, model_validator
 
 
 class CursorCommand(BaseModel):
@@ -24,7 +24,7 @@ class CursorCommand(BaseModel):
         metadata: Métadonnées supplémentaires
     """
     
-    command: str = Field(..., min_length=1, description="Commande à exécuter")
+    command: str = Field(..., description="Commande à exécuter")
     parameters: Dict[str, Any] = Field(default_factory=dict, description="Paramètres de la commande")
     working_directory: Optional[Path] = Field(None, description="Répertoire de travail")
     timeout: int = Field(default=300, ge=1, le=3600, description="Timeout en secondes")
@@ -71,18 +71,15 @@ class CursorCommand(BaseModel):
         
         return v
     
-    @root_validator
-    def validate_command_consistency(cls, values):
+    @model_validator(mode='after')
+    def validate_command_consistency(self):
         """Valide la cohérence globale de la commande."""
-        command = values.get('command', '')
-        parameters = values.get('parameters', {})
-        
         # Vérifier que la commande ne contient pas de paramètres déjà définis dans parameters
-        for param_key in parameters.keys():
-            if f"--{param_key}" in command or f"-{param_key}" in command:
+        for param_key in self.parameters.keys():
+            if f"--{param_key}" in self.command or f"-{param_key}" in self.command:
                 raise ValueError(f"Le paramètre '{param_key}' est déjà présent dans la commande")
         
-        return values
+        return self
     
     def to_dict(self) -> Dict[str, Any]:
         """

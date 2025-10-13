@@ -9,7 +9,7 @@ from typing import Dict, Any, Optional, List
 from datetime import datetime
 from pathlib import Path
 from enum import Enum
-from pydantic import BaseModel, Field, validator, root_validator
+from pydantic import BaseModel, Field, validator, model_validator
 import uuid
 
 
@@ -47,7 +47,7 @@ class Session(BaseModel):
     created_at: datetime = Field(default_factory=datetime.now, description="Timestamp de création")
     started_at: Optional[datetime] = Field(None, description="Timestamp de début d'exécution")
     completed_at: Optional[datetime] = Field(None, description="Timestamp de fin d'exécution")
-    duration: float = Field(default=0.0, ge=0.0, description="Durée totale de la session en secondes")
+    duration: float = Field(default=0.0, description="Durée totale de la session en secondes")
     commands: List[str] = Field(default_factory=list, description="Liste des commandes exécutées")
     metadata: Dict[str, Any] = Field(default_factory=dict, description="Métadonnées supplémentaires")
     
@@ -114,34 +114,29 @@ class Session(BaseModel):
         
         return v
     
-    @root_validator
-    def validate_session_consistency(cls, values):
+    @model_validator(mode='after')
+    def validate_session_consistency(self):
         """Valide la cohérence globale de la session."""
-        status = values.get('status', SessionStatus.CREATED)
-        started_at = values.get('started_at')
-        completed_at = values.get('completed_at')
-        duration = values.get('duration', 0.0)
-        
         # Vérifier la cohérence des timestamps
-        if started_at and completed_at:
-            if started_at > completed_at:
+        if self.started_at and self.completed_at:
+            if self.started_at > self.completed_at:
                 raise ValueError("La date de début ne peut pas être postérieure à la date de fin")
             
             # Calculer la durée si elle n'est pas définie
-            if duration == 0.0:
-                calculated_duration = (completed_at - started_at).total_seconds()
-                values['duration'] = calculated_duration
+            if self.duration == 0.0:
+                calculated_duration = (self.completed_at - self.started_at).total_seconds()
+                self.duration = calculated_duration
         
         # Vérifier la cohérence du statut avec les timestamps
-        if status in [SessionStatus.RUNNING, SessionStatus.COMPLETED, SessionStatus.FAILED, SessionStatus.CANCELLED, SessionStatus.TIMEOUT]:
-            if not started_at:
-                raise ValueError(f"Le statut '{status}' nécessite une date de début")
+        if self.status in [SessionStatus.RUNNING, SessionStatus.COMPLETED, SessionStatus.FAILED, SessionStatus.CANCELLED, SessionStatus.TIMEOUT]:
+            if not self.started_at:
+                raise ValueError(f"Le statut '{self.status}' nécessite une date de début")
         
-        if status in [SessionStatus.COMPLETED, SessionStatus.FAILED, SessionStatus.CANCELLED, SessionStatus.TIMEOUT]:
-            if not completed_at:
-                raise ValueError(f"Le statut '{status}' nécessite une date de fin")
+        if self.status in [SessionStatus.COMPLETED, SessionStatus.FAILED, SessionStatus.CANCELLED, SessionStatus.TIMEOUT]:
+            if not self.completed_at:
+                raise ValueError(f"Le statut '{self.status}' nécessite une date de fin")
         
-        return values
+        return self
     
     @property
     def is_active(self) -> bool:
