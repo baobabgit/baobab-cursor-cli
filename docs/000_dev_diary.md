@@ -1,5 +1,36 @@
 # Journal de développement - Baobab Cursor CLI
 
+## 2025-10-13 15:00:00 - Correction des issues GitHub des modèles de données
+
+**Action:** Correction des 4 issues GitHub identifiées dans les tests des modèles de données
+
+**Pourquoi:** Résoudre tous les échecs de tests pour atteindre 100% de réussite et améliorer la couverture de code des modèles de données.
+
+**Comment:**
+- Correction de l'issue CursorCommand : validation personnalisée avec messages d'erreur français
+- Correction de l'issue CursorConfig : validation température avec messages français
+- Correction de l'issue CursorResponse : résolution conflit de noms error/error_factory et validation None
+- Correction de l'issue Session : tests avec statut RUNNING sans started_at
+- Mise à jour des tests pour utiliser les messages d'erreur français
+- Exécution de tous les tests pour vérifier les corrections
+
+**Fichiers modifiés:**
+- `src/baobab_cursor_cli/models/cursor_command.py` - Validation personnalisée
+- `src/baobab_cursor_cli/models/cursor_config.py` - Validation température
+- `src/baobab_cursor_cli/models/cursor_response.py` - Résolution conflit de noms
+- `src/baobab_cursor_cli/models/session.py` - Validation durée
+- `tests/baobab_cursor_cli/models/test_cursor_config.py` - Messages français
+- `tests/baobab_cursor_cli/models/test_cursor_response.py` - error_factory
+- `tests/baobab_cursor_cli/models/test_session.py` - Tests RUNNING avec started_at
+
+**Résultats:**
+- ✅ **131 tests passés** (100% de réussite)
+- ✅ **0 tests échoués** - toutes les issues corrigées
+- ✅ **Couverture de code 58%** pour les modèles (amélioration de 2%)
+- ✅ **Messages d'erreur français** dans tous les validateurs
+- ✅ **Validation robuste** pour tous les modèles
+- ✅ **Tests complets** pour tous les cas d'usage
+
 ## 2025-10-13 14:30:00 - Tests unitaires des modèles de données - Spécification 001
 
 **Action:** Implémentation des tests unitaires pour les modèles de données Pydantic
