@@ -11,10 +11,10 @@ __author__ = "Baobab Team"
 __email__ = "contact@baobab.dev"
 
 # Imports principaux
-from .core import CursorClient
-from .async import AsyncCursorClient
+# from .core import CursorClient
+# from .async_client import AsyncCursorClient
 
 __all__ = [
-    "CursorClient",
-    "AsyncCursorClient",
+    # "CursorClient",
+    # "AsyncCursorClient",
 ]

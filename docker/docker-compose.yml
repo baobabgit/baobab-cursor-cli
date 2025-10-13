@@ -1,0 +1,143 @@
+# Docker Compose pour Baobab Cursor CLI
+# Configuration pour l'exécution de Cursor CLI dans un environnement conteneurisé
+
+version: '3.8'
+
+services:
+  baobab-cursor-cli:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    image: baobab-cursor-cli:latest
+    container_name: baobab-cursor-cli
+    restart: unless-stopped
+    
+    # Variables d'environnement
+    environment:
+      - CURSOR_TOKEN=${CURSOR_TOKEN:-}
+      - CURSOR_CONFIG=/config/cursor-config.json
+      - WORKSPACE_PATH=/workspace
+      - OUTPUT_PATH=/output
+      - PYTHONUNBUFFERED=1
+      - PYTHONDONTWRITEBYTECODE=1
+    
+    # Volumes montés
+    volumes:
+      # Volume pour les fichiers sources (lecture seule)
+      - type: bind
+        source: ${WORKSPACE_PATH:-./workspace}
+        target: /workspace
+        read_only: true
+      
+      # Volume pour les fichiers de sortie (écriture)
+      - type: bind
+        source: ${OUTPUT_PATH:-./output}
+        target: /output
+      
+      # Volume pour la configuration (lecture/écriture)
+      - type: bind
+        source: ${CONFIG_PATH:-./config}
+        target: /config
+      
+      # Volume pour les logs (écriture)
+      - type: bind
+        source: ${LOGS_PATH:-./logs}
+        target: /home/cursor-user/logs
+    
+    # Limites de ressources
+    deploy:
+      resources:
+        limits:
+          memory: ${MEMORY_LIMIT:-2g}
+          cpus: ${CPU_LIMIT:-1.0}
+        reservations:
+          memory: ${MEMORY_RESERVATION:-512m}
+          cpus: ${CPU_RESERVATION:-0.5}
+    
+    # Configuration réseau
+    network_mode: bridge
+    
+    # Ports exposés (si nécessaire)
+    ports:
+      - "${HOST_PORT:-8080}:8080"
+    
+    # Configuration de sécurité
+    security_opt:
+      - no-new-privileges:true
+    
+    # Utilisateur non-privilégié
+    user: "1000:1000"
+    
+    # Répertoire de travail
+    working_dir: /workspace
+    
+    # Commande par défaut
+    command: ["cursor", "--help"]
+    
+    # Configuration de santé
+    healthcheck:
+      test: ["CMD", "cursor", "--version"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Service pour les tests
+  baobab-cursor-cli-test:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    image: baobab-cursor-cli:test
+    container_name: baobab-cursor-cli-test
+    profiles:
+      - test
+    
+    environment:
+      - CURSOR_TOKEN=${CURSOR_TOKEN:-test-token}
+      - CURSOR_CONFIG=/config/cursor-config.json
+      - WORKSPACE_PATH=/workspace
+      - OUTPUT_PATH=/output
+      - PYTHONUNBUFFERED=1
+      - PYTHONDONTWRITEBYTECODE=1
+    
+    volumes:
+      - type: bind
+        source: ${TEST_WORKSPACE_PATH:-./test-workspace}
+        target: /workspace
+        read_only: true
+      - type: bind
+        source: ${TEST_OUTPUT_PATH:-./test-output}
+        target: /output
+      - type: bind
+        source: ${CONFIG_PATH:-./config}
+        target: /config
+    
+    deploy:
+      resources:
+        limits:
+          memory: 1g
+          cpus: 0.5
+        reservations:
+          memory: 256m
+          cpus: 0.25
+    
+    command: ["cursor", "--help"]
+
+# Configuration des volumes nommés
+volumes:
+  workspace_data:
+    driver: local
+  output_data:
+    driver: local
+  config_data:
+    driver: local
+  logs_data:
+    driver: local
+
+# Configuration du réseau
+networks:
+  default:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
