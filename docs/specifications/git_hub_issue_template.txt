@@ -1,0 +1,28 @@
+# Issue: [nom_specification_en_kebab_case] - [NOM_DU_TEST_ECHOUE]
+
+## Description
+Test unitaire échoué lors de l'implémentation de la spécification [nom_specification_en_kebab_case].
+
+## Test échoué
+- **Nom du test:** [NOM_DU_TEST_ECHOUE]
+- **Fichier de test:** `tests/baobab_cursor_cli/models/test_[nom_specification_en_kebab_case].py`
+- **Classe testée:** [NOM_DE_LA_CLASSE]
+
+## Erreur
+```
+[ERREUR_DETAILLEE]
+```
+
+## Actions requises
+- [ ] Analyser l'erreur du test
+- [ ] Corriger l'implémentation de la classe
+- [ ] Vérifier que le test passe
+- [ ] Mettre à jour la couverture de code
+
+## Priorité
+Medium
+
+## Labels
+- bug
+- test
+- [nom_specification_en_kebab_case]

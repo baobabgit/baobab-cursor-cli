@@ -9,10 +9,10 @@ Développement des modèles de données et des classes de base du système.
 ## Tâches principales
 
 ### 2.1 Modèles de données
-- [ ] `CursorCommand` - Modèles de commandes Cursor
-- [ ] `CursorResponse` - Modèles de réponses
-- [ ] `CursorConfig` - Configuration Cursor
-- [ ] `Session` - Modèles de sessions
+- [x] `CursorCommand` - Modèles de commandes Cursor
+- [x] `CursorResponse` - Modèles de réponses
+- [x] `CursorConfig` - Configuration Cursor
+- [x] `Session` - Modèles de sessions
 
 ### 2.2 Exceptions personnalisées
 - [ ] `CursorExceptions` - Exceptions métier
