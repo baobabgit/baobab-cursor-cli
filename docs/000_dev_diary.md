@@ -1,5 +1,40 @@
 # Journal de développement - Baobab Cursor CLI
 
+## 2025-10-13 11:30:00 - Implémentation de la spécification 001 - Structure du Projet
+
+**Action:** Implémentation complète de la spécification 001 - Structure du Projet
+
+**Pourquoi:** Créer l'arborescence complète du projet baobab-cursor-cli selon l'architecture définie pour permettre le développement des fonctionnalités.
+
+**Comment:**
+- Création de la branche `dev_001_project_structure` à partir de `main`
+- Implémentation de toutes les tâches de la spécification 001 :
+  - Création de l'arborescence principale (src/, tests/, docs/coverage/, docker/)
+  - Création des 10 modules principaux avec fichiers __init__.py
+  - Création de tous les sous-modules (models, interfaces, executors, etc.)
+  - Création des fichiers de configuration (.gitignore, README.md, LICENSE)
+- Mise à jour des spécifications avec les éléments cochés
+- Mise à jour du journal de développement
+
+**Fichiers créés:**
+- `src/baobab_cursor_cli/` - Module principal avec 10 sous-modules
+- `tests/baobab_cursor_cli/` - Structure de tests correspondante
+- `docs/coverage/` - Dossier pour les rapports de couverture
+- `docker/` - Dossier pour les fichiers Docker
+- `.gitignore` - Configuration Git adaptée Python/Docker
+- `README.md` - Documentation du projet
+- `LICENSE` - Licence MIT
+- 10 fichiers `__init__.py` pour les modules principaux
+- 20+ sous-dossiers pour l'organisation modulaire
+
+**Résultats:**
+- ✅ **Arborescence complète** créée selon l'architecture définie
+- ✅ **Structure modulaire** avec séparation claire des responsabilités
+- ✅ **Fichiers de configuration** adaptés au projet Python/Docker
+- ✅ **Documentation de base** avec README et licence
+- ✅ **Spécifications mises à jour** avec éléments cochés
+- ✅ **Prêt pour le développement** des fonctionnalités
+
 ## 2025-10-13 11:05:00 - Création des images des diagrammes de Gantt
 
 **Action:** Création des images des diagrammes de Gantt pour toutes les phases de spécifications
