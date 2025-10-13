@@ -8,7 +8,7 @@
 
 **Comment:**
 - Création de la branche `specifications` à partir de `main`
-- Création du dossier `docs/spécifications/` pour organiser les spécifications
+- Création du dossier `docs/specifications/` pour organiser les spécifications
 - Pour chaque phase (001 à 008), création d'un dossier `phase_YYY/` avec :
   - Découpage en X fichiers de spécifications détaillées (numérotés 001_ à XXX_)
   - Dossier `gantt/` avec diagramme de Gantt JSON et image
@@ -20,14 +20,14 @@
   - Estimations de temps par tâche
 
 **Fichiers créés:**
-- `docs/spécifications/phase_001/` - Foundation Setup (3 spécifications)
-- `docs/spécifications/phase_002/` - Core Models (4 spécifications)
-- `docs/spécifications/phase_003/` - Infrastructure (5 spécifications)
-- `docs/spécifications/phase_004/` - Core Engine (6 spécifications)
-- `docs/spécifications/phase_005/` - CLI Interface (4 spécifications)
-- `docs/spécifications/phase_006/` - Integration Testing (5 spécifications)
-- `docs/spécifications/phase_007/` - Documentation (3 spécifications)
-- `docs/spécifications/phase_008/` - Optimization & Release (4 spécifications)
+- `docs/specifications/phase_001/` - Foundation Setup (3 spécifications)
+- `docs/specifications/phase_002/` - Core Models (4 spécifications)
+- `docs/specifications/phase_003/` - Infrastructure (5 spécifications)
+- `docs/specifications/phase_004/` - Core Engine (6 spécifications)
+- `docs/specifications/phase_005/` - CLI Interface (4 spécifications)
+- `docs/specifications/phase_006/` - Integration Testing (5 spécifications)
+- `docs/specifications/phase_007/` - Documentation (3 spécifications)
+- `docs/specifications/phase_008/` - Optimization & Release (4 spécifications)
 
 **Résultats:**
 - ✅ **Branche specifications créée** à partir de main
