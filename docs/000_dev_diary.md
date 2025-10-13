@@ -1,5 +1,31 @@
 # Journal de développement - Baobab Cursor CLI
 
+## 2025-10-13 13:30:00 - Optimisation des requirements et création du Makefile PowerShell
+
+**Action:** Optimisation de la gestion des requirements et création d'un équivalent PowerShell du Makefile
+
+**Pourquoi:** Améliorer la gestion des dépendances en utilisant `pyproject.toml` comme source principale tout en maintenant la compatibilité avec les fichiers `requirements.txt`, et créer un équivalent PowerShell pour les utilisateurs Windows.
+
+**Comment:**
+- Vérification de l'état actuel des requirements dans `pyproject.toml`
+- Mise à jour du Makefile pour utiliser `pyproject.toml` comme source principale
+- Ajout de commandes legacy pour maintenir la compatibilité
+- Création de `Makefile.ps1` comme équivalent PowerShell complet
+- Documentation des rôles respectifs des fichiers de requirements
+
+**Fichiers modifiés:**
+- `Makefile` - Mise à jour pour utiliser pyproject.toml en priorité
+- `Makefile.ps1` - Nouveau fichier PowerShell équivalent au Makefile
+
+**Résultats:**
+- ✅ **pyproject.toml** confirmé comme source principale des dépendances
+- ✅ **requirements.txt** maintenu pour la compatibilité et déploiement simple
+- ✅ **requirements-dev.txt** maintenu pour l'installation rapide des outils de dev
+- ✅ **Makefile** optimisé avec commandes modernes et legacy
+- ✅ **Makefile.ps1** créé avec toutes les fonctionnalités du Makefile
+- ✅ **Compatibilité Windows** améliorée avec PowerShell natif
+- ✅ **Documentation** des rôles de chaque fichier de requirements
+
 ## 2025-10-13 13:15:00 - Correction des tests unitaires - Issue #5
 
 **Action:** Correction des tests unitaires échouant dans l'infrastructure Docker

@@ -25,8 +25,10 @@ help:
 	@echo "Baobab Cursor CLI - Commandes disponibles:"
 	@echo ""
 	@echo "Installation:"
-	@echo "  install      Installer le package en mode production"
-	@echo "  install-dev  Installer le package en mode développement"
+	@echo "  install         Installer le package en mode production (pyproject.toml)"
+	@echo "  install-dev     Installer le package en mode développement (pyproject.toml)"
+	@echo "  install-prod    Installer avec requirements.txt (legacy)"
+	@echo "  install-dev-legacy Installer avec requirements-dev.txt (legacy)"
 	@echo ""
 	@echo "Tests:"
 	@echo "  test         Exécuter tous les tests"
@@ -50,9 +52,15 @@ help:
 
 # Installation
 install:
-	$(PIP) install -r requirements.txt
+	$(PIP) install .
 
 install-dev:
+	$(PIP) install -e ".[dev,test,docs]"
+
+install-prod:
+	$(PIP) install -r requirements.txt
+
+install-dev-legacy:
 	$(PIP) install -r requirements-dev.txt
 	$(PIP) install -e .
 
