@@ -1,0 +1,257 @@
+{
+  "title": "Baobab Cursor CLI - Plan de Développement",
+  "description": "Diagramme de Gantt pour le développement du projet baobab-cursor-cli",
+  "phases": [
+    {
+      "id": "phase-1",
+      "name": "Foundation Setup",
+      "start": "2025-01-13",
+      "duration": 3,
+      "dependencies": [],
+      "tasks": [
+        {
+          "name": "Structure du projet",
+          "duration": 1,
+          "start": "2025-01-13"
+        },
+        {
+          "name": "Configuration du projet",
+          "duration": 1,
+          "start": "2025-01-14"
+        },
+        {
+          "name": "Configuration Docker",
+          "duration": 1,
+          "start": "2025-01-15"
+        }
+      ]
+    },
+    {
+      "id": "phase-2",
+      "name": "Core Models",
+      "start": "2025-01-16",
+      "duration": 4,
+      "dependencies": ["phase-1"],
+      "tasks": [
+        {
+          "name": "Modèles de données",
+          "duration": 2,
+          "start": "2025-01-16"
+        },
+        {
+          "name": "Exceptions personnalisées",
+          "duration": 1,
+          "start": "2025-01-18"
+        },
+        {
+          "name": "Utilitaires de base",
+          "duration": 1,
+          "start": "2025-01-19"
+        }
+      ]
+    },
+    {
+      "id": "phase-3",
+      "name": "Infrastructure",
+      "start": "2025-01-20",
+      "duration": 5,
+      "dependencies": ["phase-2"],
+      "tasks": [
+        {
+          "name": "Gestionnaire Docker",
+          "duration": 2,
+          "start": "2025-01-20"
+        },
+        {
+          "name": "Pool de conteneurs",
+          "duration": 2,
+          "start": "2025-01-22"
+        },
+        {
+          "name": "Gestion des permissions",
+          "duration": 1,
+          "start": "2025-01-24"
+        }
+      ]
+    },
+    {
+      "id": "phase-4",
+      "name": "Core Engine",
+      "start": "2025-01-25",
+      "duration": 6,
+      "dependencies": ["phase-3"],
+      "tasks": [
+        {
+          "name": "Exécuteur de commandes",
+          "duration": 2,
+          "start": "2025-01-25"
+        },
+        {
+          "name": "Client principal",
+          "duration": 2,
+          "start": "2025-01-27"
+        },
+        {
+          "name": "Gestion des retry et timeouts",
+          "duration": 1,
+          "start": "2025-01-29"
+        },
+        {
+          "name": "Initialisation de projets",
+          "duration": 1,
+          "start": "2025-01-30"
+        }
+      ]
+    },
+    {
+      "id": "phase-5",
+      "name": "CLI Interface",
+      "start": "2025-01-31",
+      "duration": 4,
+      "dependencies": ["phase-4"],
+      "tasks": [
+        {
+          "name": "Interface CLI",
+          "duration": 2,
+          "start": "2025-01-31"
+        },
+        {
+          "name": "Commandes principales",
+          "duration": 1,
+          "start": "2025-02-02"
+        },
+        {
+          "name": "Mode verbose",
+          "duration": 1,
+          "start": "2025-02-03"
+        }
+      ]
+    },
+    {
+      "id": "phase-6",
+      "name": "Integration Testing",
+      "start": "2025-02-04",
+      "duration": 5,
+      "dependencies": ["phase-5"],
+      "tasks": [
+        {
+          "name": "Tests d'intégration",
+          "duration": 2,
+          "start": "2025-02-04"
+        },
+        {
+          "name": "Tests de performance",
+          "duration": 1,
+          "start": "2025-02-06"
+        },
+        {
+          "name": "Tests de sécurité",
+          "duration": 1,
+          "start": "2025-02-07"
+        },
+        {
+          "name": "Tests de compatibilité",
+          "duration": 1,
+          "start": "2025-02-08"
+        }
+      ]
+    },
+    {
+      "id": "phase-7",
+      "name": "Documentation",
+      "start": "2025-02-09",
+      "duration": 3,
+      "dependencies": ["phase-6"],
+      "tasks": [
+        {
+          "name": "Documentation technique",
+          "duration": 1,
+          "start": "2025-02-09"
+        },
+        {
+          "name": "Documentation utilisateur",
+          "duration": 1,
+          "start": "2025-02-10"
+        },
+        {
+          "name": "Documentation de configuration",
+          "duration": 1,
+          "start": "2025-02-11"
+        }
+      ]
+    },
+    {
+      "id": "phase-8",
+      "name": "Optimization & Release",
+      "start": "2025-02-12",
+      "duration": 4,
+      "dependencies": ["phase-7"],
+      "tasks": [
+        {
+          "name": "Optimisation",
+          "duration": 2,
+          "start": "2025-02-12"
+        },
+        {
+          "name": "Préparation de la release",
+          "duration": 1,
+          "start": "2025-02-14"
+        },
+        {
+          "name": "Monitoring et observabilité",
+          "duration": 1,
+          "start": "2025-02-15"
+        }
+      ]
+    }
+  ],
+  "milestones": [
+    {
+      "name": "Foundation Complete",
+      "date": "2025-01-15",
+      "phase": "phase-1"
+    },
+    {
+      "name": "Core Models Complete",
+      "date": "2025-01-19",
+      "phase": "phase-2"
+    },
+    {
+      "name": "Infrastructure Complete",
+      "date": "2025-01-24",
+      "phase": "phase-3"
+    },
+    {
+      "name": "Core Engine Complete",
+      "date": "2025-01-30",
+      "phase": "phase-4"
+    },
+    {
+      "name": "CLI Interface Complete",
+      "date": "2025-02-03",
+      "phase": "phase-5"
+    },
+    {
+      "name": "Testing Complete",
+      "date": "2025-02-08",
+      "phase": "phase-6"
+    },
+    {
+      "name": "Documentation Complete",
+      "date": "2025-02-11",
+      "phase": "phase-7"
+    },
+    {
+      "name": "Release Ready",
+      "date": "2025-02-15",
+      "phase": "phase-8"
+    }
+  ],
+  "summary": {
+    "total_duration": 34,
+    "start_date": "2025-01-13",
+    "end_date": "2025-02-15",
+    "phases_count": 8,
+    "parallel_phases": 0
+  }
+}
