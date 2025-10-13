@@ -1,5 +1,34 @@
 # Journal de développement - Baobab Cursor CLI
 
+## 2025-10-13 12:15:00 - Merge de la branche dev_002_project_configuration vers main
+
+**Action:** Merge de la branche `dev_002_project_configuration` vers `main` et suppression de la branche de développement
+
+**Pourquoi:** Intégrer l'implémentation de la configuration du projet dans la branche principale et nettoyer les branches de développement temporaires.
+
+**Comment:**
+- Push de la branche `dev_002_project_configuration` vers le repository distant
+- Création de la Pull Request #4 : "feat: Implémentation de la spécification 002 - Configuration du Projet"
+- Merge automatique de la PR avec suppression de la branche `dev_002_project_configuration`
+- Basculement vers la branche `main` locale
+- Pull des dernières modifications depuis `origin/main`
+- La branche `dev_002_project_configuration` a été automatiquement supprimée lors du merge
+
+**Pull Request créée:**
+- **URL:** https://github.com/baobabgit/baobab-cursor-cli/pull/4
+- **Titre:** feat: Implémentation de la spécification 002 - Configuration du Projet
+- **Type:** Merge commit
+- **Statut:** Merged et fermée
+
+**Résultats:**
+- ✅ **Branche dev_002_project_configuration mergée** dans main avec succès
+- ✅ **Pull Request #4** créée et mergée automatiquement
+- ✅ **Branche dev_002_project_configuration supprimée** automatiquement
+- ✅ **Branche main locale** mise à jour avec les dernières modifications
+- ✅ **12 fichiers modifiés** dans la branche main
+- ✅ **1227 lignes ajoutées** au total
+- ✅ **Configuration du projet** complètement implémentée
+
 ## 2025-10-13 12:00:00 - Implémentation de la spécification 002 - Configuration du Projet
 
 **Action:** Implémentation complète de la spécification 002 - Configuration du Projet
