@@ -1,0 +1,246 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "baobab-cursor-cli"
+version = "0.1.0"
+description = "Bibliothèque Python pour l'intégration avec Cursor CLI via Docker"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "Baobab Team", email = "contact@baobab.dev"}
+]
+maintainers = [
+    {name = "Baobab Team", email = "contact@baobab.dev"}
+]
+keywords = ["cursor", "cli", "docker", "python", "async"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Systems Administration",
+    "Topic :: Utilities",
+]
+requires-python = ">=3.10"
+dependencies = [
+    "docker>=6.1.0",
+    "aiofiles>=23.2.0",
+    "pydantic>=2.5.0",
+    "click>=8.1.0",
+    "rich>=13.7.0",
+    "sqlalchemy>=2.0.0",
+    "aiosqlite>=0.19.0",
+    "asyncio-mqtt>=0.16.0",
+    "httpx>=0.25.0",
+    "python-dotenv>=1.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.1.0",
+    "pytest-mock>=3.12.0",
+    "black>=23.0.0",
+    "flake8>=6.0.0",
+    "mypy>=1.7.0",
+    "pre-commit>=3.5.0",
+    "isort>=5.12.0",
+    "bandit>=1.7.0",
+    "safety>=2.3.0",
+]
+test = [
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.1.0",
+    "pytest-mock>=3.12.0",
+    "pytest-xdist>=3.3.0",
+]
+docs = [
+    "sphinx>=7.1.0",
+    "sphinx-rtd-theme>=1.3.0",
+    "myst-parser>=2.0.0",
+    "sphinx-autodoc-typehints>=1.24.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/baobabgit/baobab-cursor-cli"
+Documentation = "https://baobab-cursor-cli.readthedocs.io/"
+Repository = "https://github.com/baobabgit/baobab-cursor-cli.git"
+Issues = "https://github.com/baobabgit/baobab-cursor-cli/issues"
+Changelog = "https://github.com/baobabgit/baobab-cursor-cli/blob/main/CHANGELOG.md"
+
+[project.scripts]
+baobab-cursor-cli = "baobab_cursor_cli.cli.main:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"baobab_cursor_cli" = ["py.typed", "*.pyi"]
+
+# Configuration pytest
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = [
+    "--strict-markers",
+    "--strict-config",
+    "--verbose",
+    "--tb=short",
+    "--cov=baobab_cursor_cli",
+    "--cov-report=term-missing",
+    "--cov-report=html:docs/coverage/html",
+    "--cov-report=xml:docs/coverage/coverage.xml",
+    "--cov-report=json:docs/coverage/coverage.json",
+    "--cov-fail-under=80",
+]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "unit: marks tests as unit tests",
+    "docker: marks tests that require Docker",
+]
+asyncio_mode = "auto"
+filterwarnings = [
+    "error",
+    "ignore::UserWarning",
+    "ignore::DeprecationWarning",
+]
+
+# Configuration coverage
+[tool.coverage.run]
+source = ["src/baobab_cursor_cli"]
+omit = [
+    "*/tests/*",
+    "*/test_*",
+    "*/__pycache__/*",
+    "*/migrations/*",
+    "*/venv/*",
+    "*/env/*",
+    "*/build/*",
+    "*/dist/*",
+    "*/site-packages/*",
+    "*/.*",
+    "*/conftest.py",
+    "*/setup.py",
+    "*/pyproject.toml",
+]
+branch = true
+parallel = true
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]
+
+[tool.coverage.html]
+directory = "docs/coverage/html"
+
+# Configuration black
+[tool.black]
+line-length = 88
+target-version = ['py310']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+# Configuration isort
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+ensure_newline_before_comments = true
+src_paths = ["src", "tests"]
+
+# Configuration flake8
+[tool.flake8]
+max-line-length = 88
+extend-ignore = ["E203", "W503", "E501"]
+exclude = [
+    ".git",
+    "__pycache__",
+    "build",
+    "dist",
+    ".venv",
+    ".env",
+    "docs/coverage",
+    "*.egg-info",
+]
+per-file-ignores = [
+    "__init__.py:F401",
+    "tests/*:S101",
+]
+
+# Configuration mypy
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+show_error_codes = true
+
+[[tool.mypy.overrides]]
+module = [
+    "docker.*",
+    "aiofiles.*",
+    "click.*",
+    "rich.*",
+    "sqlalchemy.*",
+    "aiosqlite.*",
+    "asyncio_mqtt.*",
+    "httpx.*",
+    "dotenv.*",
+]
+ignore_missing_imports = true
+
+# Configuration bandit
+[tool.bandit]
+exclude_dirs = ["tests", "docs"]
+skips = ["B101", "B601"]
+
+# Configuration safety
+[tool.safety]
+output = "json"

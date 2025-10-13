@@ -1,5 +1,43 @@
 # Journal de développement - Baobab Cursor CLI
 
+## 2025-10-13 12:00:00 - Implémentation de la spécification 002 - Configuration du Projet
+
+**Action:** Implémentation complète de la spécification 002 - Configuration du Projet
+
+**Pourquoi:** Configurer tous les outils de développement, de test et de qualité du code pour permettre un développement efficace et maintenir la qualité du code.
+
+**Comment:**
+- Création de la branche `dev_002_project_configuration` à partir de `main`
+- Implémentation de toutes les tâches de la spécification 002 :
+  - Configuration complète de `pyproject.toml` avec métadonnées et dépendances
+  - Configuration des outils de test (pytest, coverage) avec seuil de 80%
+  - Configuration des outils de qualité (black, flake8, mypy, pre-commit)
+  - Configuration des environnements (env.example, requirements.txt, requirements-dev.txt)
+- Création de fichiers de configuration supplémentaires (setup.cfg, conftest.py, Makefile)
+- Script de test de configuration pour vérifier l'installation
+- Mise à jour des spécifications avec les éléments cochés
+- Mise à jour du journal de développement
+
+**Fichiers créés:**
+- `pyproject.toml` - Configuration complète du projet avec métadonnées et dépendances
+- `setup.cfg` - Configuration alternative pour les outils de développement
+- `conftest.py` - Configuration globale des tests avec fixtures
+- `env.example` - Variables d'environnement d'exemple
+- `requirements.txt` - Dépendances de production
+- `requirements-dev.txt` - Dépendances de développement
+- `.pre-commit-config.yaml` - Configuration des hooks pre-commit
+- `Makefile` - Scripts de développement automatisés
+- `scripts/test_setup.py` - Script de test de configuration
+
+**Résultats:**
+- ✅ **Configuration complète** du projet avec tous les outils
+- ✅ **Outils de test** configurés avec couverture 80%
+- ✅ **Outils de qualité** configurés (black, flake8, mypy, pre-commit)
+- ✅ **Environnements** configurés pour production et développement
+- ✅ **Scripts d'automatisation** pour faciliter le développement
+- ✅ **Tests de configuration** pour vérifier l'installation
+- ✅ **Prêt pour le développement** des fonctionnalités
+
 ## 2025-10-13 11:45:00 - Merge de la branche dev_001_project_structure vers main
 
 **Action:** Merge de la branche `dev_001_project_structure` vers `main` et suppression de la branche de développement
