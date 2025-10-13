@@ -1,5 +1,35 @@
 # Journal de développement - Baobab Cursor CLI
 
+## 2025-10-13 15:30:00 - Implémentation des exceptions personnalisées - Spécification 002
+
+**Action:** Implémentation complète du système d'exceptions personnalisées pour le projet Cursor CLI
+
+**Pourquoi:** Créer un système d'exceptions robuste et structuré pour gérer les erreurs spécifiques du projet avec des codes de sortie standardisés et une gestion centralisée des erreurs.
+
+**Comment:**
+- Création de la branche `dev-exceptions` à partir de `main`
+- Implémentation des exceptions métier (CursorException, CursorCommandException, CursorTimeoutException, CursorConfigException, CursorValidationException, CursorSessionException, CursorPermissionException)
+- Implémentation des exceptions Docker (DockerException, DockerContainerException, DockerImageException, DockerVolumeException, DockerNetworkException, DockerComposeException)
+- Création du système de codes de sortie (ExitCodes avec 25+ codes standardisés)
+- Implémentation du gestionnaire d'erreurs centralisé (ErrorHandler avec journalisation structurée)
+- Mise à jour des spécifications avec les éléments cochés
+
+**Fichiers créés:**
+- `src/baobab_cursor_cli/exceptions/cursor_exceptions.py` - Exceptions métier Cursor
+- `src/baobab_cursor_cli/exceptions/docker_exceptions.py` - Exceptions Docker
+- `src/baobab_cursor_cli/exceptions/exit_codes.py` - Codes de sortie standardisés
+- `src/baobab_cursor_cli/exceptions/error_handler.py` - Gestionnaire d'erreurs centralisé
+- `src/baobab_cursor_cli/exceptions/__init__.py` - Module exceptions
+
+**Résultats:**
+- ✅ **7 exceptions métier** complètement implémentées avec documentation
+- ✅ **6 exceptions Docker** pour la gestion des conteneurs
+- ✅ **25+ codes de sortie** standardisés et catégorisés
+- ✅ **Gestionnaire d'erreurs centralisé** avec journalisation structurée
+- ✅ **Système de contexte d'erreur** pour le debugging
+- ✅ **Documentation complète** avec docstrings détaillées
+- ✅ **Spécifications mises à jour** avec éléments cochés
+
 ## 2025-10-13 15:00:00 - Correction des issues GitHub des modèles de données
 
 **Action:** Correction des 4 issues GitHub identifiées dans les tests des modèles de données

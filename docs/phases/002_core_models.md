@@ -15,9 +15,9 @@ Développement des modèles de données et des classes de base du système.
 - [x] `Session` - Modèles de sessions
 
 ### 2.2 Exceptions personnalisées
-- [ ] `CursorExceptions` - Exceptions métier
-- [ ] `DockerExceptions` - Exceptions Docker
-- [ ] `ExitCodes` - Codes de sortie spécifiques
+- [x] `CursorExceptions` - Exceptions métier
+- [x] `DockerExceptions` - Exceptions Docker
+- [x] `ExitCodes` - Codes de sortie spécifiques
 
 ### 2.3 Utilitaires de base
 - [ ] `Validators` - Validation des entrées
