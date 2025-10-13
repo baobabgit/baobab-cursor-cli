@@ -1,5 +1,34 @@
 # Journal de développement - Baobab Cursor CLI
 
+## 2025-10-13 11:05:00 - Création des images des diagrammes de Gantt
+
+**Action:** Création des images des diagrammes de Gantt pour toutes les phases de spécifications
+
+**Pourquoi:** Compléter la documentation avec les représentations visuelles des diagrammes de Gantt pour faciliter la compréhension et le suivi des spécifications.
+
+**Comment:**
+- Création d'images Mermaid pour chaque phase (001 à 008)
+- Génération des diagrammes de Gantt visuels au format PNG
+- Ajout des images dans chaque dossier `gantt/` des phases
+- Création d'un diagramme de Gantt global pour l'ensemble du projet
+
+**Fichiers créés:**
+- `docs/specifications/phase_001/gantt/gantt.png`
+- `docs/specifications/phase_002/gantt/gantt.png`
+- `docs/specifications/phase_003/gantt/gantt.png`
+- `docs/specifications/phase_004/gantt/gantt.png`
+- `docs/specifications/phase_005/gantt/gantt.png`
+- `docs/specifications/phase_006/gantt/gantt.png`
+- `docs/specifications/phase_007/gantt/gantt.png`
+- `docs/specifications/phase_008/gantt/gantt.png`
+- `docs/specifications/global_gantt.png`
+
+**Résultats:**
+- ✅ **8 images de diagrammes de Gantt** créées pour chaque phase
+- ✅ **1 diagramme global** pour l'ensemble du projet
+- ✅ **Documentation visuelle complète** des spécifications
+- ✅ **Facilitation du suivi** des phases de développement
+
 ## 2025-10-13 10:55:00 - Merge de la branche specifications vers main
 
 **Action:** Merge de la branche `specifications` vers `main` et suppression de la branche de développement
