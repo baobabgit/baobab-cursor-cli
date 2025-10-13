@@ -9,9 +9,9 @@ Mise en place des fondations du projet : structure, configuration, et outils de 
 ## Tâches principales
 
 ### 1.1 Structure du projet
-- [ ] Création de l'arborescence complète des dossiers
-- [ ] Configuration des fichiers `__init__.py`
-- [ ] Mise en place du `.gitignore` adapté
+- [x] Création de l'arborescence complète des dossiers
+- [x] Configuration des fichiers `__init__.py`
+- [x] Mise en place du `.gitignore` adapté
 
 ### 1.2 Configuration du projet
 - [ ] Configuration `pyproject.toml` avec toutes les dépendances
