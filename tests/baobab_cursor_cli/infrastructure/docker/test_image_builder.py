@@ -131,7 +131,7 @@ class TestImageBuilder:
     def test_build_cursor_image_with_build_error_exception(self):
         """Test de la construction d'image avec BuildError."""
         mock_client = Mock()
-        mock_client.images.build.side_effect = BuildError("Build failed")
+        mock_client.images.build.side_effect = BuildError("Build failed", build_log=[])
         
         builder = ImageBuilder(client=mock_client)
         
@@ -346,6 +346,7 @@ class TestImageBuilder:
         builder.cleanup_images()
         
         assert mock_client.images.remove.call_count == 2
+        # Les images sont supprimées de la liste même en cas d'erreur
         assert len(builder._built_images) == 0
     
     def test_context_manager(self):
