@@ -1,5 +1,40 @@
 # Journal de développement - Baobab Cursor CLI
 
+## 2025-10-13 16:30:00 - Merge des spécifications 001 et 002 vers main
+
+**Action:** Merge des spécifications 001 (Modèles de données) et 002 (Système d'exceptions) vers la branche principale
+
+**Pourquoi:** Intégrer les spécifications complètes avec tests unitaires dans la branche principale et nettoyer les branches de développement temporaires.
+
+**Comment:**
+- Création de la PR #10 : "test: Tests unitaires pour le système d'exceptions - Spécification 002"
+  - Merge de `test-exceptions` vers `dev-exceptions` avec suppression automatique de la branche
+- Vérification que `dev-data-models` était déjà mergé dans main (PR #9)
+- Création de la PR #11 : "feat: Spécification 002 - Système d'exceptions personnalisées avec tests"
+  - Merge de `dev-exceptions` vers `main` avec suppression automatique de la branche
+- Pull de la branche main locale pour récupérer toutes les modifications
+- Nettoyage automatique des branches temporaires
+
+**Pull Requests créées:**
+- **PR #10** : test: Tests unitaires pour le système d'exceptions - Spécification 002
+  - **URL:** https://github.com/baobabgit/baobab-cursor-cli/pull/10
+  - **Type:** Merge commit
+  - **Statut:** Merged et fermée
+- **PR #11** : feat: Spécification 002 - Système d'exceptions personnalisées avec tests
+  - **URL:** https://github.com/baobabgit/baobab-cursor-cli/pull/11
+  - **Type:** Merge commit
+  - **Statut:** Merged et fermée
+
+**Résultats:**
+- ✅ **Spécification 001** déjà mergée dans main (PR #9)
+- ✅ **Spécification 002** mergée dans main avec tests unitaires
+- ✅ **Branches temporaires supprimées** automatiquement (test-exceptions, dev-exceptions)
+- ✅ **Branche main locale** mise à jour avec toutes les modifications
+- ✅ **13 fichiers modifiés** dans la branche main
+- ✅ **3095 lignes ajoutées** au total
+- ✅ **Système d'exceptions complet** avec 111 tests (99.51% couverture)
+- ✅ **Modèles de données complets** avec 131 tests (100% réussite)
+
 ## 2025-10-13 16:00:00 - Tests unitaires des exceptions personnalisées - Spécification 002
 
 **Action:** Implémentation des tests unitaires pour le système d'exceptions personnalisées
@@ -62,6 +97,45 @@
 - ✅ **Système de contexte d'erreur** pour le debugging
 - ✅ **Documentation complète** avec docstrings détaillées
 - ✅ **Spécifications mises à jour** avec éléments cochés
+
+## 2025-10-13 16:30:00 - Implémentation des utilitaires de base - Spécification 003
+
+**Action:** Implémentation complète des utilitaires de base pour le système Cursor CLI
+
+**Pourquoi:** Créer les utilitaires de validation, formatage, gestion des chemins et opérations générales nécessaires au bon fonctionnement du système.
+
+**Comment:**
+- Création de la branche `dev-utilities` à partir de `main`
+- Implémentation de 4 modules d'utilitaires :
+  - `validators.py` : 9 fonctions de validation pour tous les types d'entrées
+  - `formatters.py` : 10 fonctions de formatage pour les réponses, erreurs et logs
+  - `path_utils.py` : 13 fonctions de gestion des chemins et fichiers
+  - `general.py` : 20 fonctions utilitaires générales
+- Création de tests unitaires complets pour tous les modules
+- Mise à jour des spécifications avec les éléments cochés
+
+**Fichiers créés:**
+- `src/baobab_cursor_cli/utils/validators.py` - Fonctions de validation
+- `src/baobab_cursor_cli/utils/formatters.py` - Fonctions de formatage
+- `src/baobab_cursor_cli/utils/path_utils.py` - Utilitaires de chemins
+- `src/baobab_cursor_cli/utils/general.py` - Utilitaires généraux
+- `src/baobab_cursor_cli/utils/__init__.py` - Module utils
+- `tests/baobab_cursor_cli/utils/test_validators.py` - Tests validators
+- `tests/baobab_cursor_cli/utils/test_formatters.py` - Tests formatters
+- `tests/baobab_cursor_cli/utils/test_path_utils.py` - Tests path_utils
+- `tests/baobab_cursor_cli/utils/test_general.py` - Tests general
+- `tests/baobab_cursor_cli/utils/__init__.py` - Module tests utils
+
+**Résultats:**
+- ✅ **4 modules d'utilitaires** complètement implémentés
+- ✅ **52 fonctions utilitaires** au total
+- ✅ **Tests unitaires complets** pour tous les modules
+- ✅ **Validation robuste** pour tous les types d'entrées
+- ✅ **Formatage cohérent** pour toutes les sorties
+- ✅ **Gestion des chemins** complète et sécurisée
+- ✅ **Utilitaires généraux** pour toutes les opérations communes
+- ✅ **Spécifications mises à jour** avec éléments cochés
+- ✅ **Documentation complète** avec docstrings détaillées
 
 ## 2025-10-13 15:00:00 - Correction des issues GitHub des modèles de données
 
