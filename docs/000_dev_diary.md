@@ -1,5 +1,24 @@
 # Journal de développement - Baobab Cursor CLI
 
+## 2025-10-14 10:30:00 - Nettoyage des branches temporaires - Spécifications 001 et 002
+
+**Action:** Nettoyage final des branches temporaires après merge des spécifications 001 et 002
+
+**Pourquoi:** Supprimer définitivement les branches temporaires `test-exceptions` et `dev-exceptions` qui ont été mergées dans main et nettoyer les références locales.
+
+**Comment:**
+- Vérification de l'état des merges précédents (PR #9, #10, #11)
+- Nettoyage des références remote avec `git remote prune origin`
+- Suppression des branches locales si elles existaient
+- Vérification de l'état final des branches
+
+**Résultats:**
+- ✅ **Branches remote nettoyées** - test-exceptions et dev-exceptions supprimées
+- ✅ **Références locales nettoyées** - branches temporaires supprimées
+- ✅ **État propre** - Seules les branches actives restent (main, dev-utilities, test-utilities)
+- ✅ **Spécifications 001 et 002** complètement intégrées dans main
+- ✅ **Nettoyage terminé** - Aucune branche temporaire résiduelle
+
 ## 2025-10-13 16:00:00 - Tests unitaires des exceptions personnalisées - Spécification 002
 
 **Action:** Implémentation des tests unitaires pour le système d'exceptions personnalisées
