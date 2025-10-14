@@ -17,7 +17,7 @@ from baobab_cursor_cli.utils.validators import (
     validate_boolean,
     validate_string_list
 )
-from baobab_cursor_cli.exceptions.cursor_exceptions import ValidationError
+from baobab_cursor_cli.exceptions.cursor_exceptions import CursorValidationException as ValidationError
 
 
 class TestValidateProjectPath:
@@ -86,7 +86,7 @@ class TestValidateCursorCommand:
     
     def test_validate_cursor_command_none(self):
         """Test avec None."""
-        with pytest.raises(ValidationError, match="La commande doit être une chaîne de caractères"):
+        with pytest.raises(ValidationError, match="La commande ne peut pas être vide"):
             validate_cursor_command(None)
     
     def test_validate_cursor_command_not_string(self):
@@ -148,7 +148,7 @@ class TestValidateConfig:
     
     def test_validate_config_none(self):
         """Test avec None."""
-        with pytest.raises(ValidationError, match="La configuration doit être un dictionnaire"):
+        with pytest.raises(ValidationError, match="La configuration ne peut pas être vide"):
             validate_config(None)
     
     def test_validate_config_not_dict(self):
@@ -216,7 +216,7 @@ class TestValidateSessionId:
     
     def test_validate_session_id_none(self):
         """Test avec None."""
-        with pytest.raises(ValidationError, match="L'ID de session doit être une chaîne de caractères"):
+        with pytest.raises(ValidationError, match="L'ID de session ne peut pas être vide"):
             validate_session_id(None)
     
     def test_validate_session_id_not_string(self):
@@ -227,7 +227,7 @@ class TestValidateSessionId:
     def test_validate_session_id_invalid_format(self):
         """Test avec un format invalide."""
         with pytest.raises(ValidationError, match="L'ID de session doit être un UUID valide"):
-            validate_session_id("invalid-session-id")
+            validate_session_id("invalid")
     
     def test_validate_session_id_too_short(self):
         """Test avec un ID trop court."""

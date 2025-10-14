@@ -27,12 +27,12 @@ def format_cursor_response(response: CursorResponse) -> str:
         return f"Erreur: Type de réponse invalide - {type(response)}"
     
     # En-tête avec statut et timestamp
-    header = f"[{response.status.value.upper()}] {response.timestamp.isoformat()}"
+    header = f"[{response.status.value.upper()}] {response.created_at.isoformat()}"
     
     # Contenu principal
     content = ""
-    if response.content:
-        content = f"\n{response.content}"
+    if response.output:
+        content = f"\n{response.output}"
     
     # Métadonnées si présentes
     metadata = ""
@@ -41,13 +41,13 @@ def format_cursor_response(response: CursorResponse) -> str:
     
     # Erreurs si présentes
     errors = ""
-    if response.errors:
-        errors = f"\n\nErreurs:\n" + "\n".join(f"- {error}" for error in response.errors)
+    if response.error:
+        errors = f"\n\nErreurs:\n{response.error}"
     
-    # Warnings si présents
+    # Warnings si présents dans les métadonnées
     warnings = ""
-    if response.warnings:
-        warnings = f"\n\nAvertissements:\n" + "\n".join(f"- {warning}" for warning in response.warnings)
+    if response.metadata and "warnings" in response.metadata:
+        warnings = f"\n\nAvertissements:\n" + "\n".join(f"- {warning}" for warning in response.metadata["warnings"])
     
     return f"{header}{content}{metadata}{errors}{warnings}"
 

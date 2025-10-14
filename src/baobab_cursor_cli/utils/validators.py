@@ -10,7 +10,7 @@ import re
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
 
-from ..exceptions.cursor_exceptions import ValidationError
+from ..exceptions.cursor_exceptions import CursorValidationException as ValidationError
 
 
 def validate_project_path(path: Union[str, Path]) -> Path:
