@@ -20,9 +20,9 @@ Développement des modèles de données et des classes de base du système.
 - [x] `ExitCodes` - Codes de sortie spécifiques
 
 ### 2.3 Utilitaires de base
-- [ ] `Validators` - Validation des entrées
-- [ ] `Formatters` - Formatage des sorties
-- [ ] `PathUtils` - Utilitaires de chemins
+- [x] `Validators` - Validation des entrées
+- [x] `Formatters` - Formatage des sorties
+- [x] `PathUtils` - Utilitaires de chemins
 
 ### 2.4 Configuration et persistance
 - [ ] `ConfigManager` - Gestion centralisée des configurations
