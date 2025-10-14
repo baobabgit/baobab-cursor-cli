@@ -1,5 +1,68 @@
 # Journal de développement - Baobab Cursor CLI
 
+## 2025-10-13 16:00:00 - Tests unitaires des exceptions personnalisées - Spécification 002
+
+**Action:** Implémentation des tests unitaires pour le système d'exceptions personnalisées
+
+**Pourquoi:** Créer des tests unitaires complets pour valider l'implémentation du système d'exceptions avec une couverture de code de 80%+ selon les contraintes du projet.
+
+**Comment:**
+- Création de la branche `test-exceptions` à partir de `dev-exceptions`
+- Implémentation des tests unitaires pour toutes les classes d'exceptions :
+  - `CursorException` et ses sous-classes : 25 tests couvrant toutes les fonctionnalités
+  - `DockerException` et ses sous-classes : 25 tests pour la gestion des erreurs Docker
+  - `ExitCodes` : 30 tests pour les codes de sortie et leurs mappings
+  - `ErrorHandler` : 31 tests pour le gestionnaire d'erreurs centralisé
+- Tests avec validation complète et cas d'usage réels
+- Configuration de la couverture de code avec seuil de 80%
+- Génération des rapports de couverture dans `docs/coverage/`
+
+**Fichiers créés:**
+- `tests/baobab_cursor_cli/exceptions/test_cursor_exceptions.py` - Tests exceptions Cursor
+- `tests/baobab_cursor_cli/exceptions/test_docker_exceptions.py` - Tests exceptions Docker
+- `tests/baobab_cursor_cli/exceptions/test_exit_codes.py` - Tests codes de sortie
+- `tests/baobab_cursor_cli/exceptions/test_error_handler.py` - Tests gestionnaire d'erreurs
+- `tests/baobab_cursor_cli/exceptions/__init__.py` - Module tests exceptions
+
+**Résultats:**
+- ✅ **111 tests créés** au total pour le système d'exceptions
+- ✅ **111 tests passés** (100% de réussite)
+- ✅ **0 tests échoués** - toutes les fonctionnalités validées
+- ✅ **Couverture de code 99.51%** (dépasse largement les 80% requis)
+- ✅ **Rapports de couverture** générés dans `docs/coverage/`
+- ✅ **Tests complets** pour tous les cas d'usage et cas limites
+- ✅ **Validation robuste** du système d'exceptions
+
+## 2025-10-13 15:30:00 - Implémentation des exceptions personnalisées - Spécification 002
+
+**Action:** Implémentation complète du système d'exceptions personnalisées pour le projet Cursor CLI
+
+**Pourquoi:** Créer un système d'exceptions robuste et structuré pour gérer les erreurs spécifiques du projet avec des codes de sortie standardisés et une gestion centralisée des erreurs.
+
+**Comment:**
+- Création de la branche `dev-exceptions` à partir de `main`
+- Implémentation des exceptions métier (CursorException, CursorCommandException, CursorTimeoutException, CursorConfigException, CursorValidationException, CursorSessionException, CursorPermissionException)
+- Implémentation des exceptions Docker (DockerException, DockerContainerException, DockerImageException, DockerVolumeException, DockerNetworkException, DockerComposeException)
+- Création du système de codes de sortie (ExitCodes avec 25+ codes standardisés)
+- Implémentation du gestionnaire d'erreurs centralisé (ErrorHandler avec journalisation structurée)
+- Mise à jour des spécifications avec les éléments cochés
+
+**Fichiers créés:**
+- `src/baobab_cursor_cli/exceptions/cursor_exceptions.py` - Exceptions métier Cursor
+- `src/baobab_cursor_cli/exceptions/docker_exceptions.py` - Exceptions Docker
+- `src/baobab_cursor_cli/exceptions/exit_codes.py` - Codes de sortie standardisés
+- `src/baobab_cursor_cli/exceptions/error_handler.py` - Gestionnaire d'erreurs centralisé
+- `src/baobab_cursor_cli/exceptions/__init__.py` - Module exceptions
+
+**Résultats:**
+- ✅ **7 exceptions métier** complètement implémentées avec documentation
+- ✅ **6 exceptions Docker** pour la gestion des conteneurs
+- ✅ **25+ codes de sortie** standardisés et catégorisés
+- ✅ **Gestionnaire d'erreurs centralisé** avec journalisation structurée
+- ✅ **Système de contexte d'erreur** pour le debugging
+- ✅ **Documentation complète** avec docstrings détaillées
+- ✅ **Spécifications mises à jour** avec éléments cochés
+
 ## 2025-10-13 15:00:00 - Correction des issues GitHub des modèles de données
 
 **Action:** Correction des 4 issues GitHub identifiées dans les tests des modèles de données
