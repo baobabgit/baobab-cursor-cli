@@ -108,6 +108,7 @@
   - **Pourquoi** : Justification de la modification
   - **Comment** : Méthode utilisée pour implémenter
 - **Sauvegarde** : Base SQLite + notification email à l'utilisateur
+- **Ordre chronologique** : Les logs sont rangés par ordre décroissant de date et heure (plus récent en premier)
 
 ## 3. Contraintes architecturales
 
@@ -289,16 +290,93 @@ baobab-cursor-cli/
 - **Limites de ressources** : CPU < 50%, Mémoire < 100MB, Disque < 1GB
 - **Interface dual** : Performance identique entre CLI et import Python
 
-## 8. Contraintes de maintenance
+## 8. Contraintes de développement et intégration
 
-### 8.1 Documentation
+### 8.1 Gestion des développements externes
 
-#### 8.1.1 Code
+#### 8.1.1 Intégration des modules externes
+- **Validation obligatoire** : Tous les modules externes doivent être validés avant intégration
+- **Tests de conformité** : Vérification automatique de la conformité aux interfaces définies
+- **Couverture de tests** : Minimum 90% de couverture pour les modules externes
+- **Documentation technique** : Documentation complète requise pour chaque module
+- **Code review** : Review obligatoire par le Tech-Lead principal
+
+#### 8.1.2 Gestion des conflits d'interfaces
+- **Notification email** : Envoi automatique d'email en cas de non-conformité
+- **Validation utilisateur** : Attendre validation explicite avant modification
+- **Versioning des interfaces** : Création de nouvelles versions si adaptation nécessaire
+- **Traçabilité** : Documentation complète des décisions et modifications
+- **Délai de réponse** : Maximum 3 jours ouvrables pour validation
+
+#### 8.1.3 Communication inter-équipes
+- **Plateforme** : Utilisation exclusive de GitHub (Issues, Pull Requests, Discussions)
+- **Templates** : Utilisation des templates standardisés pour les communications
+- **Traçabilité** : Toutes les communications doivent être tracées dans GitHub
+- **Notifications** : Notifications automatiques pour les changements critiques
+
+### 8.2 Phasage des éléments non modulés
+
+#### 8.2.1 Critères de priorisation
+- **Criticité métier** (1-5) : Impact sur les utilisateurs finaux
+- **Complexité technique** (1-5) : Effort de développement estimé
+- **Dépendances** (1-5) : Nombre de modules impactés
+- **Score global** : Moyenne pondérée des trois critères
+
+#### 8.2.2 Création des phases
+- **Diagramme de Gantt** : Obligatoire pour toutes les phases
+- **Jalons définis** : Points de contrôle et livrables clairement identifiés
+- **Durées estimées** : Avec marges d'erreur de ±20%
+- **Parallélisation** : Identification des phases parallélisables
+
+#### 8.2.3 Critères de validation des phases
+- **Fonctionnels** : Fonctionnalités et scénarios d'usage définis
+- **Techniques** : Standards de code et couverture de tests (>90%)
+- **Intégration** : Compatibilité et tests d'intégration
+- **Livraison** : Code review, documentation et formation
+
+### 8.3 Templates et standards
+
+#### 8.3.1 Cahier des charges technique
+- **Structure obligatoire** : Contexte, fonctionnalités, interfaces, critères de validation
+- **Format** : Markdown standardisé
+- **Validation** : Review par le Tech-Lead avant délégation
+- **Versioning** : Gestion des versions des cahiers des charges
+
+#### 8.3.2 Templates de communication
+- **Email de notification** : Template standardisé pour les modifications d'interface
+- **Rapports de statut** : Format uniforme pour les mises à jour
+- **Documentation technique** : Structure commune pour tous les documents
+
+### 8.4 Gestion des risques et qualité
+
+#### 8.4.1 Stratégie de rollback
+- **Points de rollback** : Identification des points de retour en arrière
+- **Procédures** : Documentation des procédures de restauration
+- **Sauvegardes** : Sauvegarde automatique des états stables
+- **Tests** : Tests réguliers des procédures de rollback
+
+#### 8.4.2 Architecture Decision Records (ADR)
+- **Documentation obligatoire** : Toute décision technique majeure doit être documentée
+- **Format standardisé** : Template uniforme pour tous les ADR
+- **Historique** : Maintien de l'historique des décisions
+- **Review** : Validation par l'équipe technique
+
+#### 8.4.3 Monitoring et métriques
+- **Indicateurs de qualité** : Taux de conformité, temps d'intégration
+- **Métriques de performance** : Temps de réponse, utilisation des ressources
+- **Satisfaction** : Feedback des équipes externes
+- **Rapports** : Génération automatique de rapports de qualité
+
+## 9. Contraintes de maintenance
+
+### 9.1 Documentation
+
+#### 9.1.1 Code
 - **Docstrings** : Obligatoires pour toutes les classes et méthodes publiques
 - **Format** : reStructuredText (reST)
 - **Exemples** : Inclure des exemples d'utilisation dans les docstrings
 
-#### 8.1.2 API
+#### 9.1.2 API
 - **Génération** : Utiliser Sphinx
 - **Mise à jour** : Synchroniser avec les changements de code
 - **Exemples** : Inclure des exemples pratiques et tutoriels (CLI et Python)
