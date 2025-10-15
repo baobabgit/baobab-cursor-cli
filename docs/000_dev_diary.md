@@ -6,6 +6,139 @@
 
 ---
 
+### 2025-10-15 14:30 - Amélioration majeure du prompt Agent Testeur QA
+
+**Quoi :** Transformation complète du prompt `docs/.prompts/004_tester.md` d'un simple créateur de tests unitaires en un véritable **Agent Testeur QA (Quality Assurance)** complet, inspiré des meilleures pratiques QA professionnelles.
+
+**Pourquoi :** Aller au-delà des tests unitaires automatisés pour inclure les tests exploratoires, la détection proactive de bugs, et une approche QA holistique garantissant la qualité globale du projet avant la production.
+
+**Comment :**
+
+**1. Extension du rôle QA (Mission élargie) :**
+- ✅ Tests unitaires automatisés (≥90% couverture) - **Conservé**
+- ✨ **Nouveau** : Tests QA manuels et exploratoires
+- ✨ **Nouveau** : Tests edge cases créatifs
+- ✨ **Nouveau** : Tests de performance
+- ✨ **Nouveau** : Documentation complète des bugs
+- ✨ **Nouveau** : Validation GO/NO-GO pour production
+
+**2. Mindset du QA ajouté :**
+- 🔍 **Détective** : Cherche les problèmes cachés
+- 🧪 **Scientifique** : Teste des hypothèses systématiquement
+- 😈 **Utilisateur malveillant** : Essaie de casser l'application
+- 🤦 **Utilisateur maladroit** : Fait des erreurs inattendues
+- 📊 **Analyste** : Documente et priorise les problèmes
+
+**3. Processus étendu (6 → 8 étapes) :**
+- Étape 1 : Analyse spec + code + **plan de test**
+- Étape 2 : Création branche (dev- → tst-)
+- Étape 3 : Vérification contraintes
+- Étape 4 : Tests unitaires automatisés (≥90%)
+- **Étape 5 (nouveau)** : Tests QA exploratoires + edge cases
+- **Étape 6 (nouveau)** : Documentation des bugs trouvés
+- Étape 7 : Logging actions + bugs
+- **Étape 8 (nouveau)** : Validation finale GO/NO-GO
+
+**4. Tests exploratoires ajoutés :**
+- **Données extrêmes** :
+  - Chaînes vides, très longues (10000 chars)
+  - Injection SQL : `'; DROP TABLE users;--`
+  - XSS : `<script>alert('XSS')</script>`
+  - Emojis et Unicode : `🎉`, `тест`, `测试`
+  
+- **Edge cases créatifs** :
+  - Email avec '+' : `test+tag@example.com` (RFC 5322 valide)
+  - Combinaisons inhabituelles d'appels
+  - Appels concurrents (multithreading)
+  - Valeurs limites (min/max, 0, -1, sys.maxsize)
+
+- **Tests de performance** :
+  - Temps de réponse < 5s
+  - Mémoire < 100MB
+  - Benchmarks avec tracemalloc
+
+**5. Documentation des bugs (format professionnel) :**
+```markdown
+## 🐛 [Titre clair]
+
+### 🔴 Sévérité : [Critique/Majeure/Mineure/Triviale]
+### ⚡ Priorité : [Urgente/Haute/Moyenne/Basse]
+
+### 📊 Environnement : [Python, OS, version, branche]
+### 🔄 Étapes pour reproduire : [1, 2, 3...]
+### ✅ Résultat attendu : [...]
+### ❌ Résultat observé : [...]
+### 📸 Éléments visuels : [screenshots, vidéos, logs]
+### 🔁 Fréquence : [100% / >50% / <50% / rare]
+### 💡 Workaround : [solution temporaire ?]
+```
+
+**6. Classification des bugs :**
+- **Sévérité** (impact utilisateur) :
+  - 🔴 Critique : Bloque complètement (crash, perte données)
+  - 🟠 Majeure : Fonctionnalité importante inutilisable
+  - 🟡 Mineure : Gênant mais contournable
+  - 🟢 Triviale : Cosmétique
+
+- **Priorité** (urgence correction) :
+  - 🔥 Urgente : Immédiate (bloque prod)
+  - ⚡ Haute : Avant prochaine release
+  - 📌 Moyenne : Prochaines releases
+  - 📋 Basse : Quand possible
+
+**7. Décision GO/NO-GO pour production :**
+- ✅ **GO** si :
+  - Couverture ≥ 90%
+  - Tous les tests passent
+  - Aucun bug critique
+  - Bugs majeurs acceptés
+
+- ❌ **NO-GO** si :
+  - Couverture < 90%
+  - Tests échouent
+  - Bugs critiques présents
+  - Bugs majeurs non acceptés
+
+**8. Checklist de validation étendue (22 points) :**
+- Tests unitaires : couverture, structure, patterns
+- Tests exploratoires : edge cases, performance
+- Documentation bugs : issues GitHub complètes
+- Validation finale : GO/NO-GO basé sur critères stricts
+
+**9. Format de réponse amélioré :**
+1. Récapitulatif (spec + plan de test)
+2. Création branche
+3. Tests unitaires (code complet)
+4. **Tests exploratoires** (edge cases, bugs trouvés)
+5. **Bugs documentés** (liste avec sévérité/priorité)
+6. Rapport couverture
+7. Log (tests + bugs)
+8. **Décision GO/NO-GO** (justifiée)
+
+**Exemples concrets ajoutés :**
+- Test email avec '+' (RFC 5322)
+- Test injection SQL
+- Test mémoire avec tracemalloc
+- Test appels concurrents
+- Rapport de bug complet avec toutes les sections
+
+**Fichiers impactés :**
+- `docs/.prompts/004_tester.md` : Modifié - v2.0 QA complet (735 lignes, +300 lignes)
+
+**Contraintes respectées :**
+- ✅ Tests unitaires ≥90% (conservé)
+- ✅ pytest + fixtures + mocks (conservé)
+- ✨ Tests exploratoires créatifs (nouveau)
+- ✨ Documentation bugs professionnelle (nouveau)
+- ✨ Validation GO/NO-GO formelle (nouveau)
+- ✨ Mindset QA détective (nouveau)
+- ✅ Workflow Git structuré (conservé)
+- ✅ Logging obligatoire (amélioré avec bugs)
+
+**Amélioration majeure** : L'agent ne fait plus que des tests unitaires, il devient un véritable **QA Senior** qui garantit la qualité globale du projet ! 🚀
+
+---
+
 ### 2025-10-15 14:20 - Création du prompt Agent Testeur
 
 **Quoi :** Création d'un prompt complet pour l'agent testeur dans `docs/.prompts/004_tester.md` qui gère la création automatique des tests unitaires avec couverture ≥ 90%.
