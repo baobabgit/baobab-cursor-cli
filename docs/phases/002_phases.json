@@ -1,0 +1,385 @@
+{
+  "project": {
+    "name": "baobab-cursor-cli",
+    "version": "1.0.0",
+    "description": "Bibliothèque Python pour interagir avec le client Cursor CLI"
+  },
+  "metadata": {
+    "created_date": "2025-10-15",
+    "last_updated": "2025-10-15",
+    "total_phases": 6,
+    "status": "planned",
+    "mvp_target_date": "2026-02-12"
+  },
+  "phases": [
+    {
+      "id": "1",
+      "name": "Fondations",
+      "description": "Mise en place de l'architecture de base du projet",
+      "priority": "critical",
+      "criticality_business": 5,
+      "complexity_technical": 2,
+      "risk_level": "low",
+      "status": "planned",
+      "duration_weeks": 1,
+      "effort_days": 5,
+      "start_date": "2025-10-15",
+      "end_date": "2025-10-22",
+      "team_size": 1,
+      "roles": ["Tech-Lead"],
+      "dependencies": [],
+      "deliverables": [
+        "Structure de projet complète",
+        "Configuration Poetry/pyproject.toml",
+        "Configuration pytest et coverage",
+        "Configuration linting (black, flake8)",
+        "CI/CD GitHub Actions de base",
+        "README.md et ARCHITECTURE.md"
+      ],
+      "milestones": [
+        {
+          "name": "J1: Structure projet créée",
+          "date": "2025-10-16",
+          "status": "pending"
+        },
+        {
+          "name": "J2: Outils dev configurés",
+          "date": "2025-10-18",
+          "status": "pending"
+        },
+        {
+          "name": "J3: Classes de base créées",
+          "date": "2025-10-20",
+          "status": "pending"
+        },
+        {
+          "name": "J4: Documentation structure",
+          "date": "2025-10-22",
+          "status": "pending"
+        }
+      ],
+      "validation_criteria": [
+        "Structure de projet conforme aux spécifications",
+        "Installation réussie avec poetry install",
+        "Tests unitaires exécutables avec pytest",
+        "Linting fonctionnel (black, flake8)"
+      ],
+      "documentation": "docs/phases/001_phase_fondations.md"
+    },
+    {
+      "id": "2",
+      "name": "Modules de Base",
+      "description": "Développement des modules fondamentaux réutilisables",
+      "priority": "critical",
+      "criticality_business": 5,
+      "complexity_technical": 4,
+      "risk_level": "medium",
+      "status": "planned",
+      "duration_weeks": 3,
+      "effort_days": 15,
+      "start_date": "2025-10-23",
+      "end_date": "2025-11-13",
+      "team_size": 3,
+      "roles": ["Dev 1", "Dev 2", "Dev 3"],
+      "dependencies": ["1"],
+      "modules_included": [
+        "001_authentication",
+        "002_configuration",
+        "003_logging",
+        "004_exceptions",
+        "005_validation",
+        "008_retry"
+      ],
+      "deliverables": [
+        "Module Authentication (001) complet avec tests ≥ 90%",
+        "Module Configuration (002) complet avec tests ≥ 90%",
+        "Module Logging (003) complet avec tests ≥ 90%",
+        "Module Exceptions (004) complet avec tests ≥ 95%",
+        "Module Validation (005) complet avec tests ≥ 90%",
+        "Module Retry (008) complet avec tests ≥ 90%",
+        "Documentation API de chaque module"
+      ],
+      "milestones": [
+        {
+          "name": "J1: Modules Auth + Config",
+          "date": "2025-10-30",
+          "status": "pending"
+        },
+        {
+          "name": "J2: Modules Logging + Exceptions",
+          "date": "2025-11-06",
+          "status": "pending"
+        },
+        {
+          "name": "J3: Modules Validation + Retry",
+          "date": "2025-11-13",
+          "status": "pending"
+        }
+      ],
+      "validation_criteria": [
+        "Les 6 modules sont complétés et testés",
+        "Tests d'intégration entre modules passants",
+        "Couverture de tests ≥ 90% pour chaque module",
+        "Documentation API complète"
+      ],
+      "documentation": "docs/phases/002_phase_modules_base.md"
+    },
+    {
+      "id": "3",
+      "name": "Wrappers CLI",
+      "description": "Développement des wrappers pour Cursor CLI et GitHub CLI",
+      "priority": "critical",
+      "criticality_business": 5,
+      "complexity_technical": 5,
+      "risk_level": "high",
+      "status": "planned",
+      "duration_weeks": 3,
+      "effort_days": 15,
+      "start_date": "2025-11-14",
+      "end_date": "2025-12-04",
+      "team_size": 2,
+      "roles": ["Dev 1", "Dev 2"],
+      "dependencies": ["2"],
+      "modules_included": [
+        "006_cursor_cli_wrapper",
+        "007_github_cli_wrapper"
+      ],
+      "deliverables": [
+        "Module Cursor CLI Wrapper (006) complet avec tests ≥ 90%",
+        "Module GitHub CLI Wrapper (007) complet avec tests ≥ 90%",
+        "Vérification installation des CLI",
+        "Documentation API des wrappers"
+      ],
+      "milestones": [
+        {
+          "name": "J1: Module Cursor CLI Wrapper",
+          "date": "2025-11-27",
+          "status": "pending"
+        },
+        {
+          "name": "J2: Module GitHub CLI Wrapper",
+          "date": "2025-12-04",
+          "status": "pending"
+        }
+      ],
+      "validation_criteria": [
+        "Les 2 wrappers sont complétés et testés",
+        "Tests d'intégration avec vrais CLI passants",
+        "Vérification installation CLI fonctionne",
+        "Performance : commandes < 5s"
+      ],
+      "documentation": "docs/phases/003_phase_wrappers_cli.md"
+    },
+    {
+      "id": "4",
+      "name": "Fonctionnalités Métier",
+      "description": "Développement des fonctionnalités métier principales",
+      "priority": "critical",
+      "criticality_business": 5,
+      "complexity_technical": 5,
+      "risk_level": "high",
+      "status": "planned",
+      "duration_weeks": 4,
+      "effort_days": 20,
+      "start_date": "2025-12-05",
+      "end_date": "2026-01-01",
+      "team_size": 4,
+      "roles": ["Dev 1", "Dev 2", "Dev 3", "Dev 4"],
+      "dependencies": ["3"],
+      "deliverables": [
+        "CodeGenerator : Génération de code fonctionnel",
+        "FileModifier : Modification de fichiers fonctionnel",
+        "CodeAnalyzer : Analyse de code fonctionnel",
+        "ConversationManager : Gestion conversations fonctionnel",
+        "GitHubIntegration : Intégration GitHub fonctionnel",
+        "Tests unitaires : couverture ≥ 80%"
+      ],
+      "milestones": [
+        {
+          "name": "J1: Génération de code",
+          "date": "2025-12-15",
+          "status": "pending"
+        },
+        {
+          "name": "J2: Modification fichiers",
+          "date": "2025-12-22",
+          "status": "pending"
+        },
+        {
+          "name": "J3: Analyse et suggestions",
+          "date": "2025-12-29",
+          "status": "pending"
+        },
+        {
+          "name": "J4: Intégration GitHub",
+          "date": "2026-01-01",
+          "status": "pending"
+        }
+      ],
+      "validation_criteria": [
+        "Toutes les fonctionnalités Must Have complétées",
+        "Tests fonctionnels passants",
+        "Performance conforme : < 5s pour opérations courantes",
+        "Mémoire < 100MB"
+      ],
+      "documentation": "docs/phases/004_phase_fonctionnalites_metier.md"
+    },
+    {
+      "id": "5",
+      "name": "Interface Dual (CLI + API Python)",
+      "description": "Développement de l'interface CLI et de l'API Python publique",
+      "priority": "critical",
+      "criticality_business": 5,
+      "complexity_technical": 3,
+      "risk_level": "medium",
+      "status": "planned",
+      "duration_weeks": 3,
+      "effort_days": 12,
+      "start_date": "2026-01-02",
+      "end_date": "2026-01-22",
+      "team_size": 2,
+      "roles": ["Dev 1", "Dev 2"],
+      "dependencies": ["4"],
+      "deliverables": [
+        "CLI baobab-cursor complète avec toutes sous-commandes",
+        "API Python publique cohérente",
+        "Documentation CLI (--help)",
+        "Documentation API Python",
+        "Exemples d'utilisation (CLI et Python)"
+      ],
+      "milestones": [
+        {
+          "name": "J1: CLI baobab-cursor",
+          "date": "2026-01-12",
+          "status": "pending"
+        },
+        {
+          "name": "J2: API Python publique",
+          "date": "2026-01-22",
+          "status": "pending"
+        }
+      ],
+      "validation_criteria": [
+        "CLI fonctionnelle avec toutes les sous-commandes",
+        "API Python fonctionnelle avec tous les modules",
+        "Documentation complète (CLI et Python)",
+        "Performance identique entre CLI et API Python"
+      ],
+      "documentation": "docs/phases/005_phase_interface_dual.md"
+    },
+    {
+      "id": "6",
+      "name": "Tests et Documentation",
+      "description": "Finalisation des tests et génération de la documentation complète",
+      "priority": "high",
+      "criticality_business": 4,
+      "complexity_technical": 3,
+      "risk_level": "low",
+      "status": "planned",
+      "duration_weeks": 3,
+      "effort_days": 10,
+      "start_date": "2026-01-23",
+      "end_date": "2026-02-12",
+      "team_size": 4,
+      "roles": ["QA", "Tech Writer", "DevOps", "Dev"],
+      "dependencies": ["5"],
+      "deliverables": [
+        "Tests unitaires : couverture ≥ 80%",
+        "Tests d'intégration complets",
+        "Documentation Sphinx complète",
+        "CI/CD GitHub Actions complet",
+        "Guide d'installation",
+        "Guide utilisateur (CLI et Python)",
+        "Tutoriels et exemples",
+        "FAQ"
+      ],
+      "milestones": [
+        {
+          "name": "J1: Tests complets (≥80%)",
+          "date": "2026-02-02",
+          "status": "pending"
+        },
+        {
+          "name": "J2: Documentation Sphinx",
+          "date": "2026-02-09",
+          "status": "pending"
+        },
+        {
+          "name": "J3: CI/CD complet",
+          "date": "2026-02-12",
+          "status": "pending"
+        }
+      ],
+      "validation_criteria": [
+        "Couverture de tests ≥ 80%",
+        "Documentation complète et publiée",
+        "CI/CD fonctionnel",
+        "Aucun bug critique ouvert"
+      ],
+      "documentation": "docs/phases/006_phase_tests_documentation.md"
+    }
+  ],
+  "timeline": {
+    "total_duration_weeks": 17,
+    "total_effort_days": 77,
+    "start_date": "2025-10-15",
+    "end_date": "2026-02-12",
+    "mvp_target_date": "2026-02-12"
+  },
+  "resources": {
+    "peak_team_size": 4,
+    "total_developers": 4,
+    "qa_engineers": 1,
+    "tech_writers": 1,
+    "devops": 1
+  },
+  "risks": [
+    {
+      "phase": "2",
+      "risk": "Retard modules de base",
+      "probability": "medium",
+      "impact": "high",
+      "mitigation": "Buffer de 3 jours, commencer tôt"
+    },
+    {
+      "phase": "3",
+      "risk": "CLI externes non disponibles",
+      "probability": "low",
+      "impact": "critical",
+      "mitigation": "Vérifier installation dès Phase 1"
+    },
+    {
+      "phase": "3",
+      "risk": "Complexité sous-estimée wrappers",
+      "probability": "medium",
+      "impact": "high",
+      "mitigation": "Prévoir +20% de temps"
+    },
+    {
+      "phase": "4",
+      "risk": "Problèmes d'intégration",
+      "probability": "medium",
+      "impact": "high",
+      "mitigation": "Tests d'intégration continus"
+    }
+  ],
+  "budget": {
+    "total_man_days": 77,
+    "development_cost": 38500,
+    "infrastructure_cost": 200,
+    "licenses_cost": 200,
+    "total_cost": 38900,
+    "currency": "EUR"
+  },
+  "success_criteria": [
+    "Les 6 phases sont complétées",
+    "Couverture de tests ≥ 80%",
+    "Documentation complète (Sphinx)",
+    "CLI baobab-cursor fonctionnelle",
+    "API Python fonctionnelle",
+    "CI/CD opérationnel",
+    "Aucun bug critique ouvert",
+    "Guides utilisateur disponibles"
+  ]
+}
+

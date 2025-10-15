@@ -1,0 +1,335 @@
+{
+  "project": {
+    "name": "baobab-cursor-cli",
+    "version": "1.0.0",
+    "description": "Bibliothèque Python pour interagir avec le client Cursor CLI"
+  },
+  "metadata": {
+    "created_date": "2025-10-15",
+    "last_updated": "2025-10-15",
+    "total_modules": 8,
+    "status": "planned"
+  },
+  "modules": [
+    {
+      "id": "001",
+      "name": "Authentication",
+      "description": "Gestion de l'authentification pour Cursor CLI et GitHub",
+      "priority": "very_high",
+      "score": 4.8,
+      "criticality_business": 5,
+      "complexity_technical": 4,
+      "dependencies_count": 5,
+      "status": "planned",
+      "duration_weeks": 1,
+      "effort_days": 5,
+      "start_date": "2025-10-23",
+      "end_date": "2025-10-30",
+      "dependencies": [
+        "004_exceptions",
+        "002_configuration"
+      ],
+      "used_by": [
+        "006_cursor_cli_wrapper",
+        "007_github_cli_wrapper"
+      ],
+      "technologies": [
+        "Python 3.8+",
+        "requests"
+      ],
+      "files": [
+        "src/baobab_cursor_cli/auth/__init__.py",
+        "src/baobab_cursor_cli/auth/manager.py",
+        "src/baobab_cursor_cli/auth/cursor_auth.py",
+        "src/baobab_cursor_cli/auth/github_auth.py",
+        "src/baobab_cursor_cli/auth/validator.py"
+      ],
+      "test_coverage_target": 90,
+      "documentation": "docs/modules/001_module_authentication.md"
+    },
+    {
+      "id": "002",
+      "name": "Configuration",
+      "description": "Gestion de la configuration depuis fichiers YAML et variables d'environnement",
+      "priority": "very_high",
+      "score": 4.7,
+      "criticality_business": 5,
+      "complexity_technical": 3,
+      "dependencies_count": 5,
+      "status": "planned",
+      "duration_weeks": 1,
+      "effort_days": 5,
+      "start_date": "2025-10-23",
+      "end_date": "2025-10-30",
+      "dependencies": [
+        "004_exceptions"
+      ],
+      "used_by": [
+        "001_authentication",
+        "003_logging",
+        "005_validation",
+        "006_cursor_cli_wrapper",
+        "007_github_cli_wrapper"
+      ],
+      "technologies": [
+        "Python 3.8+",
+        "pyyaml",
+        "pydantic"
+      ],
+      "files": [
+        "src/baobab_cursor_cli/config/__init__.py",
+        "src/baobab_cursor_cli/config/manager.py",
+        "src/baobab_cursor_cli/config/loader.py",
+        "src/baobab_cursor_cli/config/validator.py",
+        "src/baobab_cursor_cli/config/schema.py"
+      ],
+      "test_coverage_target": 90,
+      "documentation": "docs/modules/002_module_configuration.md"
+    },
+    {
+      "id": "003",
+      "name": "Logging",
+      "description": "Système de logging avec SQLite, rotation hebdomadaire et notification email",
+      "priority": "high",
+      "score": 4.3,
+      "criticality_business": 4,
+      "complexity_technical": 4,
+      "dependencies_count": 5,
+      "status": "planned",
+      "duration_weeks": 1,
+      "effort_days": 4,
+      "start_date": "2025-10-31",
+      "end_date": "2025-11-06",
+      "dependencies": [
+        "002_configuration",
+        "004_exceptions"
+      ],
+      "used_by": [
+        "006_cursor_cli_wrapper",
+        "007_github_cli_wrapper"
+      ],
+      "technologies": [
+        "Python 3.8+",
+        "sqlite3",
+        "smtplib",
+        "schedule"
+      ],
+      "files": [
+        "src/baobab_cursor_cli/logging/__init__.py",
+        "src/baobab_cursor_cli/logging/manager.py",
+        "src/baobab_cursor_cli/logging/handlers.py",
+        "src/baobab_cursor_cli/logging/formatters.py",
+        "src/baobab_cursor_cli/logging/masker.py",
+        "src/baobab_cursor_cli/logging/rotator.py",
+        "src/baobab_cursor_cli/logging/emailer.py"
+      ],
+      "test_coverage_target": 90,
+      "documentation": "docs/modules/003_module_logging.md"
+    },
+    {
+      "id": "004",
+      "name": "Exceptions",
+      "description": "Hiérarchie d'exceptions personnalisées avec codes d'erreur en français",
+      "priority": "high",
+      "score": 4.5,
+      "criticality_business": 5,
+      "complexity_technical": 2,
+      "dependencies_count": 5,
+      "status": "planned",
+      "duration_weeks": 0.5,
+      "effort_days": 2,
+      "start_date": "2025-10-31",
+      "end_date": "2025-11-06",
+      "dependencies": [],
+      "used_by": [
+        "001_authentication",
+        "002_configuration",
+        "003_logging",
+        "005_validation",
+        "006_cursor_cli_wrapper",
+        "007_github_cli_wrapper",
+        "008_retry"
+      ],
+      "technologies": [
+        "Python 3.8+"
+      ],
+      "files": [
+        "src/baobab_cursor_cli/exceptions/__init__.py",
+        "src/baobab_cursor_cli/exceptions/base.py",
+        "src/baobab_cursor_cli/exceptions/auth.py",
+        "src/baobab_cursor_cli/exceptions/config.py",
+        "src/baobab_cursor_cli/exceptions/execution.py",
+        "src/baobab_cursor_cli/exceptions/network.py",
+        "src/baobab_cursor_cli/exceptions/validation.py",
+        "src/baobab_cursor_cli/exceptions/codes.py"
+      ],
+      "test_coverage_target": 95,
+      "documentation": "docs/modules/004_module_exceptions.md"
+    },
+    {
+      "id": "005",
+      "name": "Validation",
+      "description": "Validation de paramètres et données avec Pydantic",
+      "priority": "medium",
+      "score": 4.0,
+      "criticality_business": 4,
+      "complexity_technical": 3,
+      "dependencies_count": 4,
+      "status": "planned",
+      "duration_weeks": 1,
+      "effort_days": 3,
+      "start_date": "2025-11-07",
+      "end_date": "2025-11-13",
+      "dependencies": [
+        "004_exceptions"
+      ],
+      "used_by": [
+        "006_cursor_cli_wrapper",
+        "007_github_cli_wrapper"
+      ],
+      "technologies": [
+        "Python 3.8+",
+        "pydantic"
+      ],
+      "files": [
+        "src/baobab_cursor_cli/validation/__init__.py",
+        "src/baobab_cursor_cli/validation/manager.py",
+        "src/baobab_cursor_cli/validation/validators.py",
+        "src/baobab_cursor_cli/validation/decorators.py",
+        "src/baobab_cursor_cli/validation/schemas.py"
+      ],
+      "test_coverage_target": 90,
+      "documentation": "docs/modules/005_module_validation.md"
+    },
+    {
+      "id": "006",
+      "name": "Cursor CLI Wrapper",
+      "description": "Wrapper Python pour le client Cursor CLI",
+      "priority": "very_high",
+      "score": 4.9,
+      "criticality_business": 5,
+      "complexity_technical": 5,
+      "dependencies_count": 4,
+      "status": "planned",
+      "duration_weeks": 2,
+      "effort_days": 10,
+      "start_date": "2025-11-14",
+      "end_date": "2025-11-27",
+      "dependencies": [
+        "001_authentication",
+        "004_exceptions",
+        "008_retry",
+        "003_logging",
+        "005_validation"
+      ],
+      "used_by": [],
+      "technologies": [
+        "Python 3.8+",
+        "subprocess",
+        "asyncio"
+      ],
+      "files": [
+        "src/baobab_cursor_cli/cursor/__init__.py",
+        "src/baobab_cursor_cli/cursor/client.py",
+        "src/baobab_cursor_cli/cursor/commands.py",
+        "src/baobab_cursor_cli/cursor/executor.py",
+        "src/baobab_cursor_cli/cursor/parser.py",
+        "src/baobab_cursor_cli/cursor/models.py"
+      ],
+      "test_coverage_target": 90,
+      "documentation": "docs/modules/006_module_cursor_cli_wrapper.md"
+    },
+    {
+      "id": "007",
+      "name": "GitHub CLI Wrapper",
+      "description": "Wrapper Python pour GitHub CLI (gh)",
+      "priority": "high",
+      "score": 4.4,
+      "criticality_business": 4,
+      "complexity_technical": 4,
+      "dependencies_count": 3,
+      "status": "planned",
+      "duration_weeks": 2,
+      "effort_days": 10,
+      "start_date": "2025-11-21",
+      "end_date": "2025-12-04",
+      "dependencies": [
+        "001_authentication",
+        "004_exceptions",
+        "008_retry",
+        "003_logging"
+      ],
+      "used_by": [],
+      "technologies": [
+        "Python 3.8+",
+        "subprocess",
+        "json"
+      ],
+      "files": [
+        "src/baobab_cursor_cli/github/__init__.py",
+        "src/baobab_cursor_cli/github/client.py",
+        "src/baobab_cursor_cli/github/repository.py",
+        "src/baobab_cursor_cli/github/pull_request.py",
+        "src/baobab_cursor_cli/github/issue.py",
+        "src/baobab_cursor_cli/github/workflow.py",
+        "src/baobab_cursor_cli/github/executor.py"
+      ],
+      "test_coverage_target": 90,
+      "documentation": "docs/modules/007_module_github_cli_wrapper.md"
+    },
+    {
+      "id": "008",
+      "name": "Retry",
+      "description": "Gestion des retry avec backoff exponentiel et stratégies configurables",
+      "priority": "high",
+      "score": 4.2,
+      "criticality_business": 4,
+      "complexity_technical": 3,
+      "dependencies_count": 4,
+      "status": "planned",
+      "duration_weeks": 1,
+      "effort_days": 4,
+      "start_date": "2025-11-07",
+      "end_date": "2025-11-13",
+      "dependencies": [
+        "004_exceptions"
+      ],
+      "used_by": [
+        "006_cursor_cli_wrapper",
+        "007_github_cli_wrapper"
+      ],
+      "technologies": [
+        "Python 3.8+"
+      ],
+      "files": [
+        "src/baobab_cursor_cli/retry/__init__.py",
+        "src/baobab_cursor_cli/retry/manager.py",
+        "src/baobab_cursor_cli/retry/strategies.py",
+        "src/baobab_cursor_cli/retry/decorators.py"
+      ],
+      "test_coverage_target": 90,
+      "documentation": "docs/modules/008_module_retry.md"
+    }
+  ],
+  "summary": {
+    "total_duration_weeks": 7,
+    "total_effort_days": 50,
+    "modules_by_priority": {
+      "very_high": 3,
+      "high": 4,
+      "medium": 1
+    },
+    "average_test_coverage_target": 90.6,
+    "technologies": [
+      "Python 3.8+",
+      "pyyaml",
+      "pydantic",
+      "requests",
+      "sqlite3",
+      "smtplib",
+      "subprocess",
+      "asyncio"
+    ]
+  }
+}
+
