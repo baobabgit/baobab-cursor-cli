@@ -6,6 +6,51 @@
 
 ---
 
+### 2025-10-15 14:15 - Ajout contrainte : Une classe par fichier pour le code source
+
+**Quoi :** Ajout d'une nouvelle contrainte dans `docs/002_project_contraints.md` spécifiant qu'une classe doit avoir son propre fichier dans le code source, similairement aux tests unitaires.
+
+**Pourquoi :** Améliorer la maintenabilité, la lisibilité et la structure du code en évitant les fichiers trop volumineux avec plusieurs classes. Cette pratique facilite la navigation, les imports et le versioning.
+
+**Comment :**
+
+**1. Nouvelle section ajoutée :**
+- **Section 2.1** : "Organisation du code source"
+- **Règle fondamentale** : Une classe = un fichier
+- **Nom du fichier** : Doit correspondre au nom de la classe en snake_case
+
+**2. Exemples fournis :**
+```python
+# Fichier: src/baobab_cursor_cli/cursor_client.py
+class CursorClient:
+    pass
+
+# Fichier: src/baobab_cursor_cli/token_manager.py
+class TokenManager:
+    pass
+```
+
+**3. Exceptions définies :**
+- Classes utilitaires très petites (<20 lignes) peuvent être regroupées si fortement liées
+- Classes internes (nested classes) restent dans le fichier de la classe parente
+
+**4. Renumérotation des sections :**
+- Ancienne 2.1 "Tests unitaires" → **2.2 "Tests unitaires"**
+- Ancienne 2.2 "Configuration des tests" → **2.3 "Configuration des tests"**
+- Ancienne 2.3 "Documentation et rapports" → **2.4 "Documentation et rapports"**
+- Correction section Versioning : 8.2 → **9.2** (dans la section 9 "Contraintes de maintenance")
+
+**Fichiers impactés :**
+- `docs/002_project_contraints.md` : Modifié - Ajout contrainte organisation code + renumérotation sections
+
+**Contraintes respectées :**
+- ✅ Structure de fichiers claire et cohérente
+- ✅ Une classe = un fichier (bonne pratique Python)
+- ✅ Exceptions bien définies pour les cas particuliers
+- ✅ Documentation complète avec exemples
+
+---
+
 ### 2025-10-15 14:10 - Ajout de la gestion des branches de développement au prompt développeur
 
 **Quoi :** Modification du prompt de l'agent développeur (`docs/.prompts/003_developper.md`) pour inclure la création obligatoire d'une branche de développement avec une nomenclature stricte avant tout développement.

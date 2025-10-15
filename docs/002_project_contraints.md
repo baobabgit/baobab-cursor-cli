@@ -33,9 +33,28 @@
 
 ## 2. Contraintes de qualité
 
-### 2.1 Tests unitaires
+### 2.1 Organisation du code source
 
-#### 2.1.1 Organisation des tests
+#### 2.1.1 Structure des fichiers
+- **Règle fondamentale** : Une classe par fichier
+- **Nom du fichier** : Doit correspondre au nom de la classe en snake_case
+- **Exemple** :
+  ```python
+  # Fichier: src/baobab_cursor_cli/cursor_client.py
+  class CursorClient:
+      pass
+  
+  # Fichier: src/baobab_cursor_cli/token_manager.py
+  class TokenManager:
+      pass
+  ```
+- **Exceptions** : 
+  - Classes utilitaires très petites (<20 lignes) peuvent être regroupées si fortement liées
+  - Classes internes (nested classes) restent dans le fichier de la classe parente
+
+### 2.2 Tests unitaires
+
+#### 2.2.1 Organisation des tests
 - **Structure** : Un fichier de test par classe
 - **Emplacement** : Dossier `tests/` avec arborescence identique au code source
 - **Exemple** :
@@ -50,20 +69,20 @@
         test_client.py
   ```
 
-#### 2.1.2 Couverture de code
+#### 2.2.2 Couverture de code
 - **Minimum** : 80% de couverture de code
 - **Mesure** : Calculée par classe testée
 - **Outils** : pytest-cov ou coverage.py
 - **Rapports** : Générés dans `docs/coverage/`
 
-#### 2.1.3 Classes abstraites
+#### 2.2.3 Classes abstraites
 - **Règle** : Utiliser des classes concrètes pour tester les classes abstraites
 - **Méthode** : Créer des implémentations de test (test doubles)
 - **Exemple** : Mock objects ou classes de test héritant de la classe abstraite
 
-### 2.2 Configuration des tests
+### 2.3 Configuration des tests
 
-#### 2.2.1 Fichier pyproject.toml
+#### 2.3.1 Fichier pyproject.toml
 - **Configuration pytest** : Paramètres de test dans `[tool.pytest.ini_options]`
 - **Configuration coverage** : Paramètres dans `[tool.coverage]`
 - **Configuration Docker** : Support des environnements de test Docker
@@ -86,9 +105,9 @@
   fail_under = 80
   ```
 
-### 2.3 Documentation et rapports
+### 2.4 Documentation et rapports
 
-#### 2.3.1 Rapports de couverture
+#### 2.4.1 Rapports de couverture
 - **Emplacement** : Dossier `docs/coverage/`
 - **Formats** : HTML, XML, JSON
 - **Contenu** :
@@ -97,7 +116,7 @@
   - Fichier JSON pour analyse programmatique
   - Fichier de configuration coverage
 
-#### 2.3.2 Journal de développement
+#### 2.4.2 Journal de développement
 - **Fichier** : `docs/000_dev_diary.md`
 - **Format** : Markdown avec structure standardisée
 - **Contenu obligatoire** pour chaque modification :
@@ -383,15 +402,15 @@ baobab-cursor-cli/
 - **CI/CD** : GitHub Actions pour la génération automatique
 - **Documentation CLI** : Documentation des commandes en ligne de commande
 
-### 8.2 Versioning
+### 9.2 Versioning
 
-#### 8.2.1 Sémantique
+#### 9.2.1 Sémantique
 - **Format** : Semantic Versioning (MAJOR.MINOR.PATCH)
 - **Changelog** : Maintenir un fichier CHANGELOG.md
 - **Tags** : Créer des tags Git pour chaque version
 - **Distribution** : Pas de distribution PyPI ou conda-forge en v1.0.0
 
-#### 8.2.2 Rétrocompatibilité
+#### 9.2.2 Rétrocompatibilité
 - **Principe** : Maintenir la rétrocompatibilité dans les versions mineures
 - **Dépréciation** : Utiliser des warnings pour les fonctionnalités dépréciées
 - **Migration** : Fournir des guides de migration
