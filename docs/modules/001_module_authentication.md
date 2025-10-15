@@ -3,29 +3,30 @@
 ## 1. Vue d'ensemble
 
 ### 1.1 Description
-Module autonome responsable de la gestion de l'authentification pour le client Cursor CLI et l'intégration GitHub. Il gère les tokens d'accès, leur validation, leur stockage sécurisé et leur rotation.
+Module de gestion centralisée de l'authentification pour les tokens Cursor CLI et GitHub. Il fournit une interface unifiée pour gérer, valider et renouveler les tokens d'accès nécessaires aux opérations du projet.
 
 ### 1.2 Objectif
-Fournir une interface unifiée et sécurisée pour gérer l'authentification auprès des différents services (Cursor, GitHub) sans exposer les détails d'implémentation. Assurer la sécurité des secrets et la facilité d'intégration.
+Simplifier et sécuriser l'authentification auprès des services externes (Cursor CLI et GitHub) en centralisant la gestion des tokens, leur validation et leur stockage sécurisé.
 
 ### 1.3 Périmètre
 **Inclus :**
-- Gestion des tokens Cursor et GitHub
-- Validation de la validité des tokens
-- Stockage sécurisé via variables d'environnement
-- Gestion des limites de tokens (notification, pas de facturation)
-- Vérification des scopes GitHub (repo, issue, branch)
+- Gestion des tokens GitHub (lecture, validation, stockage)
+- Gestion des tokens Cursor CLI (lecture, validation, stockage)
+- Vérification de la validité des tokens
+- Stockage sécurisé des tokens (variables d'environnement)
+- Notification en cas d'expiration ou d'invalidité
+- Gestion des scopes GitHub (repo, issue, branch)
 
 **Exclus :**
-- Interface utilisateur pour la saisie des tokens
-- Gestion de l'authentification OAuth complète
-- Stockage en base de données des tokens
+- Création de tokens (fait manuellement par l'utilisateur)
+- Gestion de multiples profils utilisateur (v1.0.0)
+- OAuth flow complet
+- Rotation automatique des tokens
 
 ### 1.4 Cas d'usage
-1. Initialiser l'authentification avec les tokens configurés
-2. Valider un token avant d'effectuer une opération
-3. Notifier l'utilisateur en cas d'épuisement du token
-4. Vérifier les permissions GitHub avant une opération sur un repository
+1. **Initialisation de session** : Récupération et validation des tokens au démarrage de l'application
+2. **Validation préalable** : Vérification de la validité des tokens avant chaque opération critique
+3. **Gestion des erreurs d'authentification** : Détection et notification des problèmes d'authentification
 
 ---
 
@@ -34,24 +35,23 @@ Fournir une interface unifiée et sécurisée pour gérer l'authentification aup
 ### 2.1 Fonctionnalités principales
 | ID | Fonctionnalité | Description | Priorité |
 |----|----------------|-------------|----------|
-| F1 | Gestion tokens Cursor | Chargement, validation et utilisation des tokens Cursor | Haute |
-| F2 | Gestion tokens GitHub | Chargement, validation et vérification des scopes GitHub | Haute |
-| F3 | Validation tokens | Vérifier la validité d'un token avant utilisation | Haute |
-| F4 | Notification limites | Notifier l'utilisateur en cas d'épuisement des tokens | Moyenne |
-| F5 | Vérification scopes GitHub | Vérifier que le token GitHub a les scopes requis (repo, issue, branch) | Haute |
+| F1 | Lecture tokens GitHub | Récupération du token depuis env vars ou config | Haute |
+| F2 | Validation tokens | Vérification de la validité et des scopes requis | Haute |
+| F3 | Stockage sécurisé | Gestion sécurisée des tokens en mémoire | Haute |
+| F4 | Vérification scopes | Validation des permissions GitHub requises | Haute |
+| F5 | Notification invalidité | Alerte en cas de token invalide ou expiré | Moyenne |
 
-### 2.2 User Stories
-- **US1** : En tant que développeur, je veux que mes tokens soient chargés depuis les variables d'environnement afin de ne pas les hardcoder
-- **US2** : En tant que développeur, je veux être notifié si mon token est invalide afin de le corriger rapidement
-- **US3** : En tant qu'utilisateur, je veux être notifié si j'atteins les limites de mon token afin de planifier mes opérations
-- **US4** : En tant que développeur, je veux vérifier automatiquement les scopes GitHub afin d'éviter les erreurs de permission
+### 2.2 User Stories (si applicable)
+- **US1** : En tant que développeur, je veux que mes tokens soient automatiquement récupérés afin de ne pas avoir à les ressaisir
+- **US2** : En tant que système, je veux valider les tokens avant chaque opération afin d'éviter des erreurs d'authentification
+- **US3** : En tant que utilisateur, je veux être notifié si mon token est invalide afin de pouvoir le renouveler
 
 ### 2.3 Règles métier
-1. Les tokens ne doivent JAMAIS être hardcodés dans le code
-2. Un token invalide doit lever une exception personnalisée `CursorAuthenticationError`
-3. La validation d'un token doit être effectuée avant toute opération critique
-4. Les notifications de limite doivent être loggées au niveau WARNING
-5. Les tokens GitHub doivent avoir au minimum les scopes : repo, issue, branch
+1. Les tokens ne doivent jamais être hardcodés dans le code
+2. Les tokens GitHub doivent avoir les scopes minimaux : repo, issue, branch
+3. En cas de token invalide, lever une exception personnalisée `AuthenticationError`
+4. Les tokens doivent être validés au démarrage de l'application
+5. Limite de 3 tentatives de validation avant échec définitif
 
 ---
 
@@ -59,43 +59,42 @@ Fournir une interface unifiée et sécurisée pour gérer l'authentification aup
 
 ### 3.1 Architecture
 ```
-┌─────────────────────────────┐
-│   AuthenticationManager     │ ← API Publique
-├─────────────────────────────┤
-│  CursorAuth │  GitHubAuth   │ ← Gestionnaires spécifiques
-├─────────────────────────────┤
-│      TokenValidator         │ ← Validation centralisée
-├─────────────────────────────┤
-│      SecureStorage          │ ← Stockage (env vars)
-└─────────────────────────────┘
+┌─────────────────────────────────┐
+│      AuthenticationManager      │ ← API Publique
+├─────────────────────────────────┤
+│  - TokenValidator               │
+│  - TokenStorage                 │
+│  - ScopeChecker                 │
+├─────────────────────────────────┤
+│  Configuration + Env Variables  │
+└─────────────────────────────────┘
 ```
 
 ### 3.2 Technologies
 - **Langage** : Python 3.8+
-- **Framework** : N/A (module autonome)
-- **Base de données** : N/A (utilise variables d'environnement)
+- **Framework** : N/A (module standalone)
+- **Base de données** : N/A
 - **Librairies principales** :
-  - `os` : Pour accéder aux variables d'environnement
-  - `abc` : Pour définir des classes abstraites
-  - `typing` : Pour le typage des signatures
+  - `os` : Gestion des variables d'environnement
+  - `requests` : Validation des tokens GitHub via API
+  - `typing` : Typage Python pour validation
 
 ### 3.3 Structure du projet
 ```
-src/baobab_cursor_cli/
-├── auth/
-│   ├── __init__.py
-│   ├── manager.py          # AuthenticationManager
-│   ├── cursor_auth.py      # CursorAuth
-│   ├── github_auth.py      # GitHubAuth
-│   ├── validator.py        # TokenValidator
-│   └── exceptions.py       # Exceptions spécifiques
-tests/baobab_cursor_cli/
-└── auth/
-    ├── __init__.py
-    ├── test_manager.py
-    ├── test_cursor_auth.py
-    ├── test_github_auth.py
-    └── test_validator.py
+src/baobab_cursor_cli/modules/authentication/
+├── __init__.py              # Point d'entrée, expose AuthenticationManager
+├── authentication.py        # Implémentation principale
+├── interfaces.py            # Interfaces abstraites
+├── models.py                # Modèles de données (Token, Credentials)
+├── exceptions.py            # AuthenticationError, TokenInvalidError
+├── validators.py            # Validation de tokens
+└── README.md                # Documentation du module
+
+tests/baobab_cursor_cli/modules/authentication/
+├── __init__.py
+├── test_authentication.py   # Tests unitaires principaux
+├── test_validators.py       # Tests de validation
+└── conftest.py              # Fixtures pytest
 ```
 
 ### 3.4 API / Interface publique
@@ -103,64 +102,54 @@ tests/baobab_cursor_cli/
 #### Classes principales
 ```python
 class AuthenticationManager:
-    """Gestionnaire centralisé de l'authentification."""
+    """Gestionnaire principal d'authentification."""
     
-    def __init__(self, config: Optional[Dict] = None):
-        """Initialise le gestionnaire avec une configuration optionnelle."""
-        
-    def get_cursor_token(self) -> str:
-        """Récupère le token Cursor validé."""
+    def __init__(self, config: Optional[Config] = None) -> None:
+        """Initialise le gestionnaire avec une configuration."""
         
     def get_github_token(self) -> str:
-        """Récupère le token GitHub validé."""
+        """Récupère et valide le token GitHub."""
         
-    def validate_cursor_auth(self) -> bool:
-        """Valide l'authentification Cursor."""
+    def get_cursor_token(self) -> Optional[str]:
+        """Récupère le token Cursor CLI si disponible."""
         
-    def validate_github_auth(self, required_scopes: List[str]) -> bool:
-        """Valide l'authentification GitHub avec les scopes requis."""
+    def validate_github_token(self, token: str) -> bool:
+        """Valide un token GitHub et ses scopes."""
         
-    def check_token_limits(self) -> Dict[str, Any]:
-        """Vérifie l'état des limites des tokens."""
+    def is_authenticated(self) -> bool:
+        """Vérifie si l'authentification est valide."""
 
-
-class CursorAuth:
-    """Gestion de l'authentification Cursor."""
-    
-    def __init__(self, token: Optional[str] = None):
-        """Initialise avec un token optionnel."""
-        
-    def load_token(self) -> str:
-        """Charge le token depuis les variables d'environnement."""
-        
-    def validate(self) -> bool:
-        """Valide le token Cursor."""
-
-
-class GitHubAuth:
-    """Gestion de l'authentification GitHub."""
-    
-    def __init__(self, token: Optional[str] = None):
-        """Initialise avec un token optionnel."""
-        
-    def load_token(self) -> str:
-        """Charge le token depuis les variables d'environnement."""
-        
-    def validate(self, scopes: List[str]) -> bool:
-        """Valide le token GitHub avec les scopes requis."""
-        
-    def get_scopes(self) -> List[str]:
-        """Récupère les scopes du token GitHub."""
+class Token:
+    """Représente un token d'authentification."""
+    value: str
+    service: str  # 'github' | 'cursor'
+    scopes: List[str]
+    is_valid: bool
+    validated_at: datetime
 ```
 
 ### 3.5 Configuration
+```yaml
+# Exemple de configuration attendue
+authentication:
+  github:
+    required_scopes:
+      - repo
+      - issue
+      - branch
+  cursor:
+    optional: true  # Token Cursor optionnel
+  validation:
+    retry_count: 3
+    timeout: 5  # secondes
+```
 
 **Variables d'environnement :**
 | Variable | Description | Requis | Défaut |
 |----------|-------------|---------|--------|
-| `CURSOR_API_TOKEN` | Token d'authentification Cursor | Oui | - |
-| `GITHUB_TOKEN` | Token d'authentification GitHub | Oui | - |
-| `CURSOR_AUTH_TIMEOUT` | Timeout validation en secondes | Non | 5 |
+| `GITHUB_TOKEN` | Token d'accès GitHub | Oui | - |
+| `CURSOR_TOKEN` | Token d'accès Cursor CLI | Non | - |
+| `AUTH_TIMEOUT` | Timeout validation en secondes | Non | 5 |
 
 ---
 
@@ -169,16 +158,17 @@ class GitHubAuth:
 ### 4.1 Dépendances externes
 | Dépendance | Version | Usage | Critique |
 |------------|---------|-------|----------|
-| Python | >=3.8 | Runtime | Oui |
-| requests | ^2.31.0 | Validation tokens via API | Oui |
+| requests | ^2.31.0 | Validation tokens via API GitHub | Oui |
+| python-dotenv | ^1.0.0 | Chargement variables d'environnement | Non |
 
 ### 4.2 Services requis
-- **API Cursor** : Pour valider les tokens Cursor (si disponible)
-- **API GitHub** : Pour valider les tokens et récupérer les scopes
+- **API GitHub** : Validation des tokens et vérification des scopes
+- **Variables d'environnement** : Stockage des tokens
 
-### 4.3 Modules requis
-- **Module d'exceptions** : Pour les exceptions personnalisées `CursorAuthenticationError`
-- **Module de logging** : Pour logger les tentatives d'authentification et les erreurs
+### 4.3 Modules requis (autres sous-modules)
+- **Module Configuration** : Lecture de la configuration YAML
+- **Module Exceptions** : Exceptions personnalisées du projet
+- **Module Logging** : Traçage des opérations d'authentification
 
 ---
 
@@ -186,44 +176,40 @@ class GitHubAuth:
 
 ### 5.1 Installation
 ```bash
-# En tant que partie du package principal
+# Le module fait partie de baobab-cursor-cli
 pip install baobab-cursor-cli
 ```
 
 ### 5.2 Initialisation
 ```python
-from baobab_cursor_cli.auth import AuthenticationManager
+from baobab_cursor_cli.modules.authentication import AuthenticationManager
 
-# Initialisation avec tokens depuis les variables d'environnement
+# Initialisation avec configuration par défaut
 auth_manager = AuthenticationManager()
 
-# Ou avec configuration explicite
-auth_manager = AuthenticationManager(config={
-    'cursor_token': 'token_cursor',
-    'github_token': 'token_github'
-})
+# Initialisation avec configuration personnalisée
+from baobab_cursor_cli.modules.configuration import Config
+config = Config.load("config.yaml")
+auth_manager = AuthenticationManager(config=config)
 ```
 
 ### 5.3 Exemple d'utilisation
 ```python
+from baobab_cursor_cli.modules.authentication import AuthenticationManager
+from baobab_cursor_cli.modules.authentication.exceptions import AuthenticationError
+
 try:
-    # Valider l'authentification Cursor
-    if auth_manager.validate_cursor_auth():
-        cursor_token = auth_manager.get_cursor_token()
-        print(f"Authentifié avec Cursor")
+    auth_manager = AuthenticationManager()
     
-    # Valider l'authentification GitHub avec scopes requis
-    required_scopes = ['repo', 'issue', 'branch']
-    if auth_manager.validate_github_auth(required_scopes):
+    # Vérifier l'authentification
+    if auth_manager.is_authenticated():
         github_token = auth_manager.get_github_token()
-        print(f"Authentifié avec GitHub")
-    
-    # Vérifier les limites
-    limits = auth_manager.check_token_limits()
-    print(f"Limites: {limits}")
-    
-except CursorAuthenticationError as e:
-    print(f"Erreur d'authentification: {e}")
+        print(f"Token GitHub valide : {github_token[:10]}...")
+    else:
+        print("Authentification invalide")
+        
+except AuthenticationError as e:
+    print(f"Erreur d'authentification : {e}")
 ```
 
 ---
@@ -232,65 +218,65 @@ except CursorAuthenticationError as e:
 
 ### 6.1 Stratégie de test
 - **Tests unitaires** : Couverture minimale 90%
-- **Tests d'intégration** : Validation avec vrais tokens (environnement de test)
-- **Tests de sécurité** : Vérifier qu'aucun token n'est exposé dans les logs
+- **Tests d'intégration** : Validation avec API GitHub (mock)
+- **Tests de performance** : N/A
 
 ### 6.2 Commandes
 ```bash
-# Lancer les tests unitaires
-pytest tests/baobab_cursor_cli/auth/
+# Lancer les tests
+pytest tests/baobab_cursor_cli/modules/authentication/
 
 # Tests avec couverture
-pytest tests/baobab_cursor_cli/auth/ --cov=src/baobab_cursor_cli/auth --cov-report=html
+pytest --cov=src/baobab_cursor_cli/modules/authentication tests/baobab_cursor_cli/modules/authentication/
 
 # Tests d'intégration
-pytest tests/baobab_cursor_cli/auth/ -m integration
+pytest tests/baobab_cursor_cli/modules/authentication/test_integration.py
 ```
 
 ### 6.3 Scénarios de test critiques
-1. **Validation token valide** : Un token valide doit passer la validation
-2. **Rejet token invalide** : Un token invalide doit lever `CursorAuthenticationError`
-3. **Scopes GitHub insuffisants** : Doit lever une exception si les scopes sont manquants
-4. **Token absent** : Doit lever une exception si la variable d'environnement est absente
-5. **Notification limites** : Doit notifier quand le token approche de ses limites
+1. **Validation token GitHub valide** : Token avec scopes corrects doit être accepté
+2. **Rejet token GitHub invalide** : Token expiré ou invalide doit être rejeté
+3. **Gestion des scopes manquants** : Token sans les scopes requis doit être rejeté
+4. **Récupération depuis env vars** : Token doit être lu depuis GITHUB_TOKEN
+5. **Retry en cas d'échec réseau** : 3 tentatives avant échec définitif
 
 ---
 
 ## 7. Sécurité
 
 ### 7.1 Considérations de sécurité
-- Les tokens ne doivent JAMAIS apparaître dans les logs (masquage obligatoire)
-- Utilisation exclusive des variables d'environnement pour le stockage
-- Validation systématique avant utilisation
-- Audit des tentatives d'authentification échouées
+- Les tokens ne sont jamais loggés en clair
+- Les tokens sont stockés en mémoire uniquement (pas de persistance fichier)
+- Validation systématique des tokens avant utilisation
+- Gestion sécurisée des erreurs (pas de fuite d'information)
 
 ### 7.2 Authentification / Autorisation
-- **Tokens Cursor** : Chargés depuis `CURSOR_API_TOKEN`
-- **Tokens GitHub** : Chargés depuis `GITHUB_TOKEN`
+- Authentification via tokens personnels GitHub
 - Vérification des scopes GitHub : repo, issue, branch
+- Token Cursor CLI optionnel (validation si fourni)
 
 ### 7.3 Validation des entrées
-- Validation du format des tokens (longueur, caractères autorisés)
-- Sanitisation des tokens avant utilisation
-- Vérification de la présence des variables d'environnement
+- Validation du format des tokens (non vide, format attendu)
+- Vérification de la validité via API GitHub
+- Sanitisation des messages d'erreur
 
 ---
 
 ## 8. Performance
 
 ### 8.1 Métriques attendues
-- **Temps de chargement** : < 100ms pour charger et valider un token
-- **Timeout validation** : 5 secondes par défaut (configurable)
+- **Temps de réponse** : < 2s pour validation de token GitHub
+- **Throughput** : N/A (opération ponctuelle)
 - **Consommation mémoire** : < 5MB
 
 ### 8.2 Optimisations
-- Mise en cache des résultats de validation (durée limitée)
-- Validation asynchrone pour les opérations non critiques
-- Retry avec backoff exponentiel pour les validations réseau
+- Cache de validation de token (validité 5 minutes)
+- Timeout configurable pour les appels API
+- Validation asynchrone possible (future amélioration)
 
 ### 8.3 Limites connues
-- **Validation API** : Dépendante de la disponibilité des APIs externes
-- **Rate limiting** : Les validations fréquentes peuvent être limitées par les APIs
+- **Dépendance réseau** : Nécessite connexion pour valider les tokens GitHub
+- **Rate limiting GitHub** : Limité par les quotas API GitHub
 
 ---
 
@@ -299,58 +285,59 @@ pytest tests/baobab_cursor_cli/auth/ -m integration
 ### 9.1 Versioning
 - **Version actuelle** : 1.0.0
 - **Stratégie** : Semantic Versioning (SemVer)
-- **Changelog** : Voir docs/CHANGELOG.md
+- **Changelog** : Voir CHANGELOG.md
 
 ### 9.2 Rétrocompatibilité
-- Maintien de l'interface publique dans les versions mineures
-- Dépréciation progressive avec warnings pour les changements majeurs
+- Interface stable pour la v1.x
+- Dépréciation annoncée 6 mois avant breaking change
+- Support des anciennes versions pendant 1 an
 
 ### 9.3 Roadmap
 | Version | Fonctionnalités prévues | Date estimée |
 |---------|------------------------|--------------|
-| 1.1.0 | Support OAuth2, rotation automatique des tokens | Q2 2026 |
-| 2.0.0 | Support multi-comptes, gestionnaire de credentials | Q4 2026 |
+| 1.1.0 | Cache de validation, OAuth flow | Q2 2026 |
+| 2.0.0 | Support multi-profils | Q3 2026 |
 
 ---
 
 ## 10. Documentation
 
 ### 10.1 Documentation technique
-- **README.md** : Guide de démarrage rapide du module
+- **README.md** : Guide de démarrage rapide
 - **API Reference** : Documentation complète des classes et méthodes
-- **Security Guide** : Bonnes pratiques de sécurité
+- **Architecture Decision Records (ADR)** : Décisions sur gestion sécurisée des tokens
 
 ### 10.2 Exemples
-- `examples/auth/basic_usage.py` : Utilisation de base
-- `examples/auth/github_scopes.py` : Vérification des scopes GitHub
-- `examples/auth/error_handling.py` : Gestion des erreurs d'authentification
+- `examples/basic_auth.py` : Authentification basique
+- `examples/custom_config_auth.py` : Configuration personnalisée
+- `examples/error_handling_auth.py` : Gestion des erreurs
 
 ### 10.3 FAQ
-**Q: Où dois-je stocker mes tokens ?**
-R: Les tokens doivent être stockés dans des variables d'environnement (`CURSOR_API_TOKEN` et `GITHUB_TOKEN`) ou dans un fichier de configuration sécurisé non versionné.
+**Q: Où stocker mon token GitHub ?**
+R: Dans la variable d'environnement `GITHUB_TOKEN` ou dans un fichier de configuration sécurisé.
 
-**Q: Comment gérer les tokens expirés ?**
-R: Le module détecte automatiquement les tokens expirés et lève une exception `CursorAuthenticationError` avec un message explicite.
+**Q: Comment obtenir un token GitHub ?**
+R: Via GitHub Settings > Developer settings > Personal access tokens
 
-**Q: Puis-je utiliser plusieurs tokens GitHub ?**
-R: Dans la v1.0.0, un seul token GitHub est supporté. Le support multi-comptes est prévu pour la v2.0.0.
+**Q: Quels scopes sont requis pour le token GitHub ?**
+R: repo, issue, branch
 
 ---
 
 ## 11. Support et contribution
 
 ### 11.1 Canaux de support
-- **Issues GitHub** : https://github.com/user/baobab-cursor-cli/issues
-- **Documentation** : https://baobab-cursor-cli.readthedocs.io
-- **Contact** : tech-lead@project.com
+- **Issues GitHub** : https://github.com/[org]/baobab-cursor-cli/issues
+- **Documentation** : https://[org].github.io/baobab-cursor-cli/
+- **Contact** : [email]
 
 ### 11.2 Guide de contribution
 - Voir CONTRIBUTING.md
-- Code style : Black (formatter), flake8 (linter)
-- Process de PR : Review obligatoire par le Tech-Lead
+- Code style : PEP 8, formaté avec Black
+- Process de PR : Review obligatoire par Tech-Lead
 
 ### 11.3 Licence
-MIT License
+MIT
 
 ---
 
@@ -358,54 +345,48 @@ MIT License
 
 | Propriété | Valeur |
 |-----------|--------|
-| **Propriétaire** | Tech-Lead Principal |
-| **Repository** | https://github.com/user/baobab-cursor-cli |
+| **Propriétaire** | Équipe Core - baobab-cursor-cli |
+| **Repository** | https://github.com/[org]/baobab-cursor-cli |
 | **Status** | En développement |
 | **Créé le** | 15/10/2025 |
 | **Dernière MAJ** | 15/10/2025 |
 | **Projets utilisant ce module** | baobab-cursor-cli |
 | **Priorité** | Haute (Score: 4.8/5) |
-| **Criticité métier** | 5/5 |
-| **Complexité technique** | 4/5 |
-| **Dépendances** | 5/5 (beaucoup de modules en dépendent) |
+| **Complexité** | Moyenne (3/5) |
 
 ---
 
 ## 13. Annexes
 
 ### 13.1 Glossaire
-- **Token** : Chaîne de caractères utilisée pour authentifier un utilisateur auprès d'une API
-- **Scope** : Ensemble de permissions associées à un token (ex: lecture, écriture)
-- **Rate limiting** : Limitation du nombre de requêtes autorisées par unité de temps
+- **Token** : Jeton d'authentification personnel pour accéder aux APIs
+- **Scope** : Permission accordée à un token
+- **Rate limiting** : Limitation du nombre de requêtes par période
 
 ### 13.2 Références
-- [GitHub Token Scopes](https://docs.github.com/en/developers/apps/building-oauth-apps/scopes-for-oauth-apps)
-- [Cursor CLI Documentation](https://cursor.sh/docs)
-- [Python Security Best Practices](https://python.readthedocs.io/en/stable/library/security.html)
+- GitHub API Documentation : https://docs.github.com/en/rest
+- GitHub Token Scopes : https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/scopes-for-oauth-apps
+- Cursor CLI Documentation : [URL si disponible]
 
 ### 13.3 Diagrammes supplémentaires
 ```
-Séquence de validation d'authentification
-┌──────────┐          ┌────────────┐          ┌─────────┐
-│  Client  │          │ AuthManager│          │ API Ext │
-└────┬─────┘          └─────┬──────┘          └────┬────┘
-     │                      │                      │
-     │  validate_auth()     │                      │
-     │─────────────────────>│                      │
-     │                      │                      │
-     │                      │  load_token()        │
-     │                      │──────┐               │
-     │                      │      │               │
-     │                      │<─────┘               │
-     │                      │                      │
-     │                      │  validate_token()    │
-     │                      │─────────────────────>│
-     │                      │                      │
-     │                      │      token_valid     │
-     │                      │<─────────────────────│
-     │                      │                      │
-     │      True/False      │                      │
-     │<─────────────────────│                      │
-     │                      │                      │
+Séquence de validation de token :
+
+User -> AuthManager : get_github_token()
+AuthManager -> EnvVars : read GITHUB_TOKEN
+EnvVars --> AuthManager : token
+AuthManager -> TokenValidator : validate(token)
+TokenValidator -> GitHub API : GET /user
+GitHub API --> TokenValidator : user info + scopes
+TokenValidator -> ScopeChecker : check_scopes(scopes)
+ScopeChecker --> TokenValidator : valid
+TokenValidator --> AuthManager : token_valid
+AuthManager --> User : token
 ```
+
+---
+
+*Document créé le : 15/10/2025*  
+*Version : 1.0*  
+*Statut : En développement*
 

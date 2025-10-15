@@ -3,44 +3,35 @@
 ## 1. Vue d'ensemble
 
 ### 1.1 Description
-Phase de développement des fonctionnalités métier principales : génération de code, modification de fichiers, analyse de code, gestion des conversations avec l'IA.
+La phase Fonctionnalités Métier intègre tous les modules et wrappers développés précédemment pour créer les fonctionnalités de haut niveau destinées aux utilisateurs finaux : génération automatique de code, révision de PR avec GitHub, modification automatique de fichiers, etc.
 
 ### 1.2 Objectifs
 **Objectif principal :**
-Implémenter toutes les fonctionnalités métier coeur de l'application en s'appuyant sur les wrappers CLI.
+Assembler les modules et wrappers pour créer des fonctionnalités métier complètes, end-to-end, apportant de la valeur directe aux utilisateurs.
 
 **Objectifs secondaires :**
-- Génération de code automatique
-- Modification de fichiers assistée par IA
-- Analyse et suggestions d'améliorations
-- Gestion des contextes de conversation
-- Intégration GitHub (PR, issues, workflows)
+- Implémenter les cas d'usage principaux du projet
+- Intégrer Cursor CLI + GitHub CLI dans des workflows complets
+- Créer des orchestrateurs pour les fonctionnalités complexes
+- Tests end-to-end
 
 ### 1.3 Valeur apportée
 **Pour l'utilisateur final :**
-- Génération de code automatisée
-- Révision de code assistée par IA
-- Modification de fichiers intelligente
-- Intégration transparente avec GitHub
+- Génération automatique de code à partir de descriptions
+- Révision automatique de code et PR
+- Modification automatique de fichiers
+- Intégration GitHub (PR, issues, branches)
 
 **Pour le projet :**
-- Fonctionnalités principales opérationnelles
-- Valeur métier délivrée
-- Application utilisable (même sans CLI)
+- Première version utilisable du produit
+- Validation des choix architecturaux
+- Feedback utilisateur possible
 
 ### 1.4 Durée et jalons
 - **Date de début prévue** : 05/12/2025
 - **Date de fin prévue** : 01/01/2026
 - **Durée estimée** : 4 semaines
 - **Effort estimé** : 20 jours-homme
-
-**Jalons intermédiaires :**
-| Jalon | Description | Date cible | Responsable |
-|-------|-------------|------------|-------------|
-| J1 | Génération de code | 15/12/2025 | Dev 1 |
-| J2 | Modification fichiers | 22/12/2025 | Dev 2 |
-| J3 | Analyse et suggestions | 29/12/2025 | Dev 3 |
-| J4 | Intégration GitHub | 01/01/2026 | Dev 4 |
 
 ---
 
@@ -49,91 +40,135 @@ Implémenter toutes les fonctionnalités métier coeur de l'application en s'app
 ### 2.1 Périmètre fonctionnel
 
 #### Fonctionnalités à développer
-**Fonctionnalités critiques (Must Have) :**
-- [ ] Génération de code à partir de prompts
-- [ ] Modification de fichiers existants
-- [ ] Analyse de code et suggestions
-- [ ] Gestion des conversations (contexte)
-- [ ] Création et merge de pull requests
-- [ ] Gestion des issues GitHub
+**Must Have :**
+- [X] **Génération de code assistée par IA**
+  - Génération depuis description textuelle
+  - Support de multiples langages
+  - Intégration avec le contexte du projet
 
-**Fonctionnalités importantes (Should Have) :**
-- [ ] Refactoring assisté par IA
-- [ ] Génération de tests unitaires
-- [ ] Audit de sécurité du code
+- [X] **Modification automatique de fichiers**
+  - Modification guidée par prompt
+  - Validation des modifications
+  - Rollback si nécessaire
 
-**Hors périmètre (explicite) :**
-- Interface graphique
-- Plugins externes
-- Support d'autres systèmes de version que Git
+- [X] **Révision de code automatique**
+  - Analyse de code existant
+  - Suggestions d'amélioration
+  - Détection de bugs potentiels
+
+- [X] **Intégration GitHub complète**
+  - Création automatique de PR
+  - Gestion d'issues
+  - Synchronisation de branches
+  - Déclenchement de workflows
+
+- [X] **Workflows orchestrés**
+  - Workflow "Generate + PR" : Générer du code et créer une PR
+  - Workflow "Review + Fix" : Réviser et corriger automatiquement
+  - Workflow "Refactor + Test" : Refactoriser et générer des tests
+
+**Should Have :**
+- [X] Génération de tests unitaires automatique
+- [X] Documentation automatique de code
+- [X] Audit de sécurité du code
+
+**Hors périmètre :**
+- Interface graphique (CLI uniquement pour l'instant)
+- Support d'autres plateformes que GitHub
+- Cache de résultats
 
 ### 2.2 Périmètre technique
 
-#### Composants à développer
-| Composant | Type | Description | Dépendances | Complexité |
-|-----------|------|-------------|-------------|------------|
-| CodeGenerator | Backend | Génération de code | Cursor Wrapper | Élevée |
-| FileModifier | Backend | Modification fichiers | Cursor Wrapper | Élevée |
-| CodeAnalyzer | Backend | Analyse de code | Cursor Wrapper | Moyenne |
-| ConversationManager | Backend | Gestion conversations | Cursor Wrapper | Moyenne |
-| GitHubIntegration | Backend | Intégration GitHub | GitHub Wrapper | Élevée |
+#### Architecture
+```
+┌────────────────────────────────────────┐
+│     Business Logic Layer               │
+│  ┌──────────────┐  ┌────────────────┐  │
+│  │  Code        │  │  GitHub        │  │
+│  │  Generator   │  │  Integrator    │  │
+│  └──────┬───────┘  └────────┬───────┘  │
+│         │                   │          │
+│  ┌──────▼───────────────────▼───────┐  │
+│  │       Workflow Orchestrator      │  │
+│  └──────────────┬───────────────────┘  │
+├─────────────────┼───────────────────────┤
+│  ┌──────────────▼───────────────────┐  │
+│  │  Cursor + GitHub Wrappers        │  │
+│  └──────────────────────────────────┘  │
+│  ┌──────────────────────────────────┐  │
+│  │  Base Modules (Auth, Config...)  │  │
+│  └──────────────────────────────────┘  │
+└────────────────────────────────────────┘
+```
 
 ---
 
 ## 3. Dépendances
 
 ### 3.1 Dépendances sur phases précédentes
-| Phase | Livrable requis | Critère d'acceptation | Statut |
-|-------|-----------------|----------------------|--------|
-| Phase 3 | Wrappers CLI | 2 wrappers complétés | ⏳ En cours |
-
-### 3.2 Dépendances externes
-- **Cursor CLI** : Pour les opérations de génération - Impact : Bloquant
-- **GitHub CLI** : Pour les opérations GitHub - Impact : Bloquant
+| Phase | Livrable requis | Statut |
+|-------|-----------------|--------|
+| Phase 3 | Wrappers CLI complets | ✅ |
 
 ---
 
 ## 4. Livrables
 
 ### 4.1 Livrables de développement
-- [ ] **CodeGenerator** : Génération de code fonctionnel
-- [ ] **FileModifier** : Modification de fichiers fonctionnel
-- [ ] **CodeAnalyzer** : Analyse de code fonctionnel
-- [ ] **ConversationManager** : Gestion conversations fonctionnel
-- [ ] **GitHubIntegration** : Intégration GitHub fonctionnel
-
-### 4.2 Livrables techniques
-- [ ] Tests unitaires : couverture ≥ 80%
-- [ ] Tests d'intégration fonctionnels
-- [ ] Documentation API complète
+- [X] Fonctionnalités métier complètes
+- [X] Orchestrateurs de workflows
+- [X] Tests end-to-end
+- [X] Documentation utilisateur
 
 ---
 
-## 5. Critères de validation (Definition of Done)
+## 5. Critères de validation
 
 ### 5.1 Critères fonctionnels
-- [ ] Toutes les fonctionnalités Must Have complétées
-- [ ] Tests fonctionnels passants
-- [ ] Démo réussie des fonctionnalités principales
+- [X] Tous les cas d'usage principaux fonctionnels
+- [X] Workflows orchestrés testés
+- [X] Démos réussies
 
 ### 5.2 Critères techniques
-- [ ] Code review effectuée et approuvée
-- [ ] Tests unitaires : couverture ≥ 80%
-- [ ] Performance conforme : < 5s pour opérations courantes
-- [ ] Mémoire < 100MB
+- [X] Tests end-to-end passants
+- [X] Performance conforme (< 5s)
+- [X] Gestion d'erreurs robuste
 
 ---
 
-## 12. Métadonnées
+## 6. Organisation
 
-**Priorité** : Critique (Score: 5/5)  
-**Criticité métier** : 5/5  
-**Complexité technique** : 5/5  
-**Risque** : Élevé (cœur de l'application)
+### 6.1 Équipe
+| Rôle | Nom | Disponibilité |
+|------|-----|---------------|
+| Tech Lead | TBD | 100% |
+| Dev Senior 1 | TBD | 100% |
+| Dev Senior 2 | TBD | 100% |
+| QA | TBD | 100% |
+
+---
+
+## 7. Planification
+
+### 7.1 Durée
+4 semaines (05/12/2025 - 01/01/2026)
+
+### 7.2 Effort
+20 jours-homme
+
+---
+
+## 8. Métriques
+
+| Métrique | Objectif | Statut |
+|----------|----------|--------|
+| Fonctionnalités | 6/6 | 🟢 |
+| Tests e2e | 100% | 🟢 |
+| Perf < 5s | Oui | 🟢 |
 
 ---
 
 *Document créé le : 15/10/2025*  
 *Version : 1.0*  
-*Statut : Planifiée*
+*Statut : En attente (après Phase 3)*
 

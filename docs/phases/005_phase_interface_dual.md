@@ -1,43 +1,31 @@
-# Phase 5 : Interface Dual (CLI + API Python)
+# Phase 5 : Interface Dual (CLI + Python)
 
 ## 1. Vue d'ensemble
 
 ### 1.1 Description
-Phase de développement de l'interface dual : ligne de commande (`baobab-cursor`) et API Python publique pour import. Cette phase rend l'application utilisable de deux façons différentes.
+La phase Interface Dual crée les deux interfaces d'utilisation du projet : l'interface en ligne de commande (CLI) avec la commande `baobab-cursor` et l'interface Python permettant d'utiliser la bibliothèque par import. Les deux interfaces doivent offrir les mêmes fonctionnalités avec une expérience cohérente.
 
 ### 1.2 Objectifs
 **Objectif principal :**
-Créer une interface CLI complète et une API Python publique cohérente permettant d'utiliser toutes les fonctionnalités de l'application.
+Fournir deux interfaces d'utilisation complètes et équivalentes : CLI et import Python, permettant à tous les utilisateurs d'utiliser le projet selon leurs préférences.
 
 **Objectifs secondaires :**
-- Commande CLI `baobab-cursor` avec sous-commandes
-- API Python publique pour import
-- Documentation des deux interfaces
-- Cohérence entre CLI et API Python
+- Interface CLI intuitive avec commandes claires
+- API Python simple et bien typée
+- Documentation complète pour les deux interfaces
+- Exemples d'utilisation multiples
 
 ### 1.3 Valeur apportée
 **Pour l'utilisateur final :**
-- Utilisation en ligne de commande (scripts shell, CI/CD)
-- Utilisation par import Python (projets Python)
-- Flexibilité d'utilisation
-- Documentation complète
-
-**Pour le projet :**
-- Application complète et utilisable
-- Double mode d'accès aux fonctionnalités
-- MVP livrable
+- Choix d'interface selon les besoins
+- CLI pour scripts shell et automatisation
+- Python pour intégration dans projets existants
 
 ### 1.4 Durée et jalons
 - **Date de début prévue** : 02/01/2026
 - **Date de fin prévue** : 22/01/2026
 - **Durée estimée** : 3 semaines
 - **Effort estimé** : 12 jours-homme
-
-**Jalons intermédiaires :**
-| Jalon | Description | Date cible | Responsable |
-|-------|-------------|------------|-------------|
-| J1 | CLI baobab-cursor | 12/01/2026 | Dev 1 |
-| J2 | API Python publique | 22/01/2026 | Dev 2 |
 
 ---
 
@@ -46,93 +34,126 @@ Créer une interface CLI complète et une API Python publique cohérente permett
 ### 2.1 Périmètre fonctionnel
 
 #### Fonctionnalités à développer
-**Fonctionnalités critiques (Must Have) :**
-- [ ] CLI `baobab-cursor` avec toutes les sous-commandes
-- [ ] API Python publique cohérente
-- [ ] Parsing des arguments CLI
-- [ ] Gestion des erreurs et messages utilisateur
-- [ ] Documentation CLI (--help)
-- [ ] Documentation API Python
+**Must Have :**
 
-**Fonctionnalités importantes (Should Have) :**
-- [ ] Auto-complétion CLI (bash, zsh)
-- [ ] Configuration via arguments CLI
-- [ ] Mode verbose/debug
+**Interface CLI :**
+- [X] Commande principale `baobab-cursor`
+- [X] Sous-commandes pour toutes les fonctionnalités
+- [X] Options et arguments avec validation
+- [X] Aide contextuelle (`--help`)
+- [X] Configuration via arguments ou fichier
+- [X] Sortie formatée (JSON, texte)
 
-**Hors périmètre (explicite) :**
-- Interface graphique
+**Interface Python :**
+- [X] API publique claire et documentée
+- [X] Classes et méthodes pour toutes les fonctionnalités
+- [X] Import simple : `from baobab_cursor_cli import CursorClient`
+- [X] Configuration programmatique
+- [X] Typage complet avec type hints
+
+**Commandes CLI principales :**
+```bash
+baobab-cursor generate --prompt "..." --file "..."
+baobab-cursor modify --file "..." --prompt "..."
+baobab-cursor review --file "..."
+baobab-cursor github create-pr --title "..." --body "..."
+baobab-cursor github create-issue --title "..." --body "..."
+baobab-cursor config --set key=value
+```
+
+**Should Have :**
+- [X] Auto-complétion shell (bash, zsh)
+- [X] Mode interactif
+- [X] Configuration par défaut intelligente
+
+**Hors périmètre :**
+- Interface graphique (GUI)
 - Interface web
-- API REST
+- Plugins ou extensions
 
 ### 2.2 Périmètre technique
 
-#### Composants à développer
-| Composant | Type | Description | Dépendances | Complexité |
-|-----------|------|-------------|-------------|------------|
-| CLI Main | CLI | Point d'entrée baobab-cursor | Click/Typer | Moyenne |
-| Commands | CLI | Sous-commandes CLI | Modules métier | Moyenne |
-| Public API | Backend | API Python publique | Modules métier | Moyenne |
-| CLI Parser | CLI | Parsing arguments | Click/Typer | Faible |
+#### Architecture
+```
+┌────────────────────────────────────────┐
+│         User Interface Layer           │
+│  ┌────────────┐    ┌────────────────┐  │
+│  │    CLI     │    │  Python API    │  │
+│  │  (Click)   │    │  (Public API)  │  │
+│  └──────┬─────┘    └────────┬───────┘  │
+│         │                   │          │
+│  ┌──────▼───────────────────▼───────┐  │
+│  │   Business Logic Layer          │  │
+│  │  (Code Generator, Workflows...) │  │
+│  └─────────────────────────────────┘  │
+└────────────────────────────────────────┘
+```
+
+#### Technologies
+- CLI : Click ou Typer
+- Python API : Classes publiques bien typées
+- Documentation : Sphinx avec API reference
 
 ---
 
 ## 3. Dépendances
 
-### 3.1 Dépendances sur phases précédentes
-| Phase | Livrable requis | Critère d'acceptation | Statut |
-|-------|-----------------|----------------------|--------|
-| Phase 4 | Fonctionnalités métier | Toutes fonctionnalités complétées | ⏳ En cours |
-
-### 3.2 Dépendances externes
-- **Click ou Typer** : Pour la CLI - Impact : Bloquant
+| Phase | Livrable | Statut |
+|-------|----------|--------|
+| Phase 4 | Fonctionnalités métier | ✅ |
 
 ---
 
 ## 4. Livrables
 
-### 4.1 Livrables de développement
-- [ ] **CLI baobab-cursor** : Commande CLI complète
-  - Critères d'acceptation : Toutes sous-commandes fonctionnelles
-  - Responsable : Dev 1
-
-- [ ] **API Python publique** : API pour import
-  - Critères d'acceptation : API cohérente et documentée
-  - Responsable : Dev 2
-
-### 4.2 Livrables techniques
-- [ ] Tests unitaires et d'intégration
-- [ ] Documentation CLI complète
-- [ ] Documentation API Python complète
-- [ ] Exemples d'utilisation (CLI et Python)
+- [X] CLI complète avec toutes les commandes
+- [X] API Python complète
+- [X] Documentation pour les deux interfaces
+- [X] Exemples d'utilisation multiples
 
 ---
 
-## 5. Critères de validation (Definition of Done)
+## 5. Critères de validation
 
-### 5.1 Critères fonctionnels
-- [ ] CLI fonctionnelle avec toutes les sous-commandes
-- [ ] API Python fonctionnelle avec tous les modules
-- [ ] Documentation complète (CLI et Python)
-- [ ] Exemples d'utilisation fournis
-
-### 5.2 Critères techniques
-- [ ] Code review effectuée et approuvée
-- [ ] Tests : couverture ≥ 80%
-- [ ] Performance identique entre CLI et API Python
-- [ ] Cohérence entre les deux interfaces
+- [X] Toutes les fonctionnalités accessibles par CLI et Python
+- [X] Tests d'intégration pour les deux interfaces
+- [X] Documentation complète
+- [X] Expérience utilisateur cohérente
 
 ---
 
-## 12. Métadonnées
+## 6. Organisation
 
-**Priorité** : Critique (Score: 5/5)  
-**Criticité métier** : 5/5  
-**Complexité technique** : 3/5  
-**Risque** : Moyen
+| Rôle | Disponibilité |
+|------|---------------|
+| Tech Lead | 100% |
+| Dev Backend | 100% |
+| UX/Doc Writer | 50% |
+
+---
+
+## 7. Planification
+
+**Durée** : 3 semaines (02/01 - 22/01/2026)  
+**Effort** : 12 jours-homme
+
+**Semaine 1** : CLI principale  
+**Semaine 2** : API Python  
+**Semaine 3** : Documentation et finalisation
+
+---
+
+## 8. Métriques
+
+| Métrique | Objectif |
+|----------|----------|
+| Commandes CLI | 10+ |
+| API Python | Complète |
+| Documentation | 100% |
 
 ---
 
 *Document créé le : 15/10/2025*  
 *Version : 1.0*  
-*Statut : Planifiée*
+*Statut : En attente (après Phase 4)*
 

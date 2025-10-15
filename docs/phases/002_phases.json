@@ -2,87 +2,89 @@
   "project": {
     "name": "baobab-cursor-cli",
     "version": "1.0.0",
-    "description": "Bibliothèque Python pour interagir avec le client Cursor CLI"
-  },
-  "metadata": {
-    "created_date": "2025-10-15",
-    "last_updated": "2025-10-15",
-    "total_phases": 6,
-    "status": "planned",
-    "mvp_target_date": "2026-02-12"
+    "description": "Bibliothèque Python pour interagir avec le client Cursor CLI",
+    "start_date": "2025-10-15",
+    "end_date": "2026-02-12",
+    "phases_count": 6,
+    "total_effort_days": 77,
+    "total_duration_weeks": 17,
+    "target_mvp_date": "2026-02-12"
   },
   "phases": [
     {
-      "id": "1",
+      "id": "001",
       "name": "Fondations",
-      "description": "Mise en place de l'architecture de base du projet",
-      "priority": "critical",
-      "criticality_business": 5,
-      "complexity_technical": 2,
-      "risk_level": "low",
-      "status": "planned",
-      "duration_weeks": 1,
-      "effort_days": 5,
-      "start_date": "2025-10-15",
-      "end_date": "2025-10-22",
-      "team_size": 1,
-      "roles": ["Tech-Lead"],
-      "dependencies": [],
+      "slug": "fondations",
+      "description": "Infrastructure de développement, structure projet, CI/CD, standards qualité",
+      "objectives": {
+        "main": "Créer une base technique solide et opérationnelle",
+        "secondary": [
+          "Établir l'architecture du projet",
+          "Configurer les outils de développement et CI/CD",
+          "Mettre en place les standards de qualité"
+        ]
+      },
+      "duration": {
+        "weeks": 1,
+        "days": 7,
+        "effort_days": 5
+      },
+      "schedule": {
+        "start_date": "2025-10-15",
+        "end_date": "2025-10-22",
+        "weeks": "S1"
+      },
+      "team": {
+        "size": 1.5,
+        "roles": ["Tech Lead", "DevOps (50%)"]
+      },
       "deliverables": [
         "Structure de projet complète",
-        "Configuration Poetry/pyproject.toml",
-        "Configuration pytest et coverage",
-        "Configuration linting (black, flake8)",
-        "CI/CD GitHub Actions de base",
-        "README.md et ARCHITECTURE.md"
+        "Pipeline CI/CD configuré",
+        "Standards de qualité établis",
+        "Documentation de base"
       ],
-      "milestones": [
-        {
-          "name": "J1: Structure projet créée",
-          "date": "2025-10-16",
-          "status": "pending"
-        },
-        {
-          "name": "J2: Outils dev configurés",
-          "date": "2025-10-18",
-          "status": "pending"
-        },
-        {
-          "name": "J3: Classes de base créées",
-          "date": "2025-10-20",
-          "status": "pending"
-        },
-        {
-          "name": "J4: Documentation structure",
-          "date": "2025-10-22",
-          "status": "pending"
-        }
-      ],
-      "validation_criteria": [
-        "Structure de projet conforme aux spécifications",
-        "Installation réussie avec poetry install",
-        "Tests unitaires exécutables avec pytest",
-        "Linting fonctionnel (black, flake8)"
-      ],
-      "documentation": "docs/phases/001_phase_fondations.md"
+      "dependencies": {
+        "phases": [],
+        "modules": [],
+        "external": ["GitHub", "PyPI"]
+      },
+      "value": {
+        "user": "Aucune (phase technique)",
+        "project": "Infrastructure opérationnelle, standards établis"
+      },
+      "status": "completed",
+      "completion_date": "2025-10-22",
+      "documentation_file": "docs/phases/001_phase_fondations.md"
     },
     {
-      "id": "2",
+      "id": "002",
       "name": "Modules de Base",
-      "description": "Développement des modules fondamentaux réutilisables",
-      "priority": "critical",
-      "criticality_business": 5,
-      "complexity_technical": 4,
-      "risk_level": "medium",
-      "status": "planned",
-      "duration_weeks": 3,
-      "effort_days": 15,
-      "start_date": "2025-10-23",
-      "end_date": "2025-11-13",
-      "team_size": 3,
-      "roles": ["Dev 1", "Dev 2", "Dev 3"],
-      "dependencies": ["1"],
-      "modules_included": [
+      "slug": "modules_base",
+      "description": "Développement des 6 modules fondamentaux réutilisables",
+      "objectives": {
+        "main": "Créer une couche de modules de base robuste et testée",
+        "secondary": [
+          "Développer 6 modules autonomes",
+          "Atteindre 90% de couverture de tests",
+          "Établir les patterns de développement"
+        ]
+      },
+      "duration": {
+        "weeks": 3,
+        "days": 21,
+        "effort_days": 15
+      },
+      "schedule": {
+        "start_date": "2025-10-23",
+        "end_date": "2025-11-13",
+        "weeks": "S2-S4"
+      },
+      "team": {
+        "size": 2.5,
+        "roles": ["Dev Backend 1", "Dev Backend 2", "QA (50%)"]
+      },
+      "modules": [
         "001_authentication",
         "002_configuration",
         "003_logging",
@@ -91,295 +93,396 @@
         "008_retry"
       ],
       "deliverables": [
-        "Module Authentication (001) complet avec tests ≥ 90%",
-        "Module Configuration (002) complet avec tests ≥ 90%",
-        "Module Logging (003) complet avec tests ≥ 90%",
-        "Module Exceptions (004) complet avec tests ≥ 95%",
-        "Module Validation (005) complet avec tests ≥ 90%",
-        "Module Retry (008) complet avec tests ≥ 90%",
-        "Documentation API de chaque module"
+        "6 modules complets et testés (≥90%)",
+        "Documentation complète par module",
+        "Patterns de développement établis"
       ],
-      "milestones": [
-        {
-          "name": "J1: Modules Auth + Config",
-          "date": "2025-10-30",
-          "status": "pending"
-        },
-        {
-          "name": "J2: Modules Logging + Exceptions",
-          "date": "2025-11-06",
-          "status": "pending"
-        },
-        {
-          "name": "J3: Modules Validation + Retry",
-          "date": "2025-11-13",
-          "status": "pending"
-        }
-      ],
-      "validation_criteria": [
-        "Les 6 modules sont complétés et testés",
-        "Tests d'intégration entre modules passants",
-        "Couverture de tests ≥ 90% pour chaque module",
-        "Documentation API complète"
-      ],
-      "documentation": "docs/phases/002_phase_modules_base.md"
+      "dependencies": {
+        "phases": ["001"],
+        "modules": [],
+        "external": ["GitHub API", "SMTP Gmail", "SQLite"]
+      },
+      "value": {
+        "user": "Aucune (modules techniques)",
+        "project": "Fondations solides, réutilisabilité maximale"
+      },
+      "status": "in_progress",
+      "documentation_file": "docs/phases/002_phase_modules_base.md"
     },
     {
-      "id": "3",
+      "id": "003",
       "name": "Wrappers CLI",
-      "description": "Développement des wrappers pour Cursor CLI et GitHub CLI",
-      "priority": "critical",
-      "criticality_business": 5,
-      "complexity_technical": 5,
-      "risk_level": "high",
-      "status": "planned",
-      "duration_weeks": 3,
-      "effort_days": 15,
-      "start_date": "2025-11-14",
-      "end_date": "2025-12-04",
-      "team_size": 2,
-      "roles": ["Dev 1", "Dev 2"],
-      "dependencies": ["2"],
-      "modules_included": [
+      "slug": "wrappers_cli",
+      "description": "Wrappers Python pour Cursor CLI et GitHub CLI",
+      "objectives": {
+        "main": "Créer des wrappers Python robustes pour les CLI externes",
+        "secondary": [
+          "Wrapper complet de Cursor CLI",
+          "Wrapper complet de GitHub CLI",
+          "Gestion automatique des erreurs"
+        ]
+      },
+      "duration": {
+        "weeks": 3,
+        "days": 21,
+        "effort_days": 15
+      },
+      "schedule": {
+        "start_date": "2025-11-14",
+        "end_date": "2025-12-04",
+        "weeks": "S5-S7"
+      },
+      "team": {
+        "size": 3.5,
+        "roles": ["Dev Senior 1", "Dev Senior 2", "Dev Backend", "QA (50%)"]
+      },
+      "modules": [
         "006_cursor_cli_wrapper",
         "007_github_cli_wrapper"
       ],
       "deliverables": [
-        "Module Cursor CLI Wrapper (006) complet avec tests ≥ 90%",
-        "Module GitHub CLI Wrapper (007) complet avec tests ≥ 90%",
-        "Vérification installation des CLI",
-        "Documentation API des wrappers"
+        "Cursor CLI Wrapper complet",
+        "GitHub CLI Wrapper complet",
+        "Tests ≥90% avec intégration",
+        "Documentation et exemples"
       ],
-      "milestones": [
-        {
-          "name": "J1: Module Cursor CLI Wrapper",
-          "date": "2025-11-27",
-          "status": "pending"
-        },
-        {
-          "name": "J2: Module GitHub CLI Wrapper",
-          "date": "2025-12-04",
-          "status": "pending"
-        }
-      ],
-      "validation_criteria": [
-        "Les 2 wrappers sont complétés et testés",
-        "Tests d'intégration avec vrais CLI passants",
-        "Vérification installation CLI fonctionne",
-        "Performance : commandes < 5s"
-      ],
-      "documentation": "docs/phases/003_phase_wrappers_cli.md"
+      "dependencies": {
+        "phases": ["002"],
+        "modules": ["001", "002", "003", "004", "005", "008"],
+        "external": ["Cursor CLI", "GitHub CLI (gh)", "GitHub API"]
+      },
+      "value": {
+        "user": "Aucune (wrappers techniques)",
+        "project": "Abstraction des CLI, interface Python native"
+      },
+      "status": "pending",
+      "documentation_file": "docs/phases/003_phase_wrappers_cli.md"
     },
     {
-      "id": "4",
+      "id": "004",
       "name": "Fonctionnalités Métier",
-      "description": "Développement des fonctionnalités métier principales",
-      "priority": "critical",
-      "criticality_business": 5,
-      "complexity_technical": 5,
-      "risk_level": "high",
-      "status": "planned",
-      "duration_weeks": 4,
-      "effort_days": 20,
-      "start_date": "2025-12-05",
-      "end_date": "2026-01-01",
-      "team_size": 4,
-      "roles": ["Dev 1", "Dev 2", "Dev 3", "Dev 4"],
-      "dependencies": ["3"],
+      "slug": "fonctionnalites_metier",
+      "description": "Fonctionnalités utilisateur end-to-end assemblant modules et wrappers",
+      "objectives": {
+        "main": "Créer des fonctionnalités métier complètes apportant de la valeur",
+        "secondary": [
+          "Implémenter les cas d'usage principaux",
+          "Intégrer Cursor + GitHub dans des workflows",
+          "Tests end-to-end"
+        ]
+      },
+      "duration": {
+        "weeks": 4,
+        "days": 28,
+        "effort_days": 20
+      },
+      "schedule": {
+        "start_date": "2025-12-05",
+        "end_date": "2026-01-01",
+        "weeks": "S8-S11"
+      },
+      "team": {
+        "size": 3,
+        "roles": ["Dev Senior 1", "Dev Senior 2", "QA"]
+      },
+      "features": [
+        "Génération de code assistée par IA",
+        "Modification automatique de fichiers",
+        "Révision de code automatique",
+        "Intégration GitHub complète",
+        "Workflows orchestrés"
+      ],
       "deliverables": [
-        "CodeGenerator : Génération de code fonctionnel",
-        "FileModifier : Modification de fichiers fonctionnel",
-        "CodeAnalyzer : Analyse de code fonctionnel",
-        "ConversationManager : Gestion conversations fonctionnel",
-        "GitHubIntegration : Intégration GitHub fonctionnel",
-        "Tests unitaires : couverture ≥ 80%"
+        "Fonctionnalités métier complètes",
+        "Orchestrateurs de workflows",
+        "Tests end-to-end",
+        "Documentation utilisateur préliminaire"
       ],
-      "milestones": [
-        {
-          "name": "J1: Génération de code",
-          "date": "2025-12-15",
-          "status": "pending"
-        },
-        {
-          "name": "J2: Modification fichiers",
-          "date": "2025-12-22",
-          "status": "pending"
-        },
-        {
-          "name": "J3: Analyse et suggestions",
-          "date": "2025-12-29",
-          "status": "pending"
-        },
-        {
-          "name": "J4: Intégration GitHub",
-          "date": "2026-01-01",
-          "status": "pending"
-        }
-      ],
-      "validation_criteria": [
-        "Toutes les fonctionnalités Must Have complétées",
-        "Tests fonctionnels passants",
-        "Performance conforme : < 5s pour opérations courantes",
-        "Mémoire < 100MB"
-      ],
-      "documentation": "docs/phases/004_phase_fonctionnalites_metier.md"
+      "dependencies": {
+        "phases": ["003"],
+        "modules": ["006", "007"],
+        "external": []
+      },
+      "value": {
+        "user": "Valeur directe : génération code, révision, PR automatiques",
+        "project": "Première version utilisable, validation architecture"
+      },
+      "status": "pending",
+      "documentation_file": "docs/phases/004_phase_fonctionnalites_metier.md"
     },
     {
-      "id": "5",
-      "name": "Interface Dual (CLI + API Python)",
-      "description": "Développement de l'interface CLI et de l'API Python publique",
-      "priority": "critical",
-      "criticality_business": 5,
-      "complexity_technical": 3,
-      "risk_level": "medium",
-      "status": "planned",
-      "duration_weeks": 3,
-      "effort_days": 12,
-      "start_date": "2026-01-02",
-      "end_date": "2026-01-22",
-      "team_size": 2,
-      "roles": ["Dev 1", "Dev 2"],
-      "dependencies": ["4"],
+      "id": "005",
+      "name": "Interface Dual",
+      "slug": "interface_dual",
+      "description": "Interfaces CLI et Python pour utiliser toutes les fonctionnalités",
+      "objectives": {
+        "main": "Fournir deux interfaces complètes et équivalentes",
+        "secondary": [
+          "Interface CLI intuitive",
+          "API Python simple et typée",
+          "Documentation pour les deux"
+        ]
+      },
+      "duration": {
+        "weeks": 3,
+        "days": 21,
+        "effort_days": 12
+      },
+      "schedule": {
+        "start_date": "2026-01-02",
+        "end_date": "2026-01-22",
+        "weeks": "S12-S14"
+      },
+      "team": {
+        "size": 2.5,
+        "roles": ["Tech Lead", "Dev Backend", "UX/Doc Writer (50%)"]
+      },
+      "interfaces": [
+        "CLI avec commande baobab-cursor",
+        "API Python publique",
+        "Auto-complétion shell",
+        "Mode interactif"
+      ],
       "deliverables": [
-        "CLI baobab-cursor complète avec toutes sous-commandes",
-        "API Python publique cohérente",
-        "Documentation CLI (--help)",
-        "Documentation API Python",
-        "Exemples d'utilisation (CLI et Python)"
+        "CLI complète avec toutes les commandes",
+        "API Python complète et typée",
+        "Documentation utilisateur",
+        "Exemples multiples"
       ],
-      "milestones": [
-        {
-          "name": "J1: CLI baobab-cursor",
-          "date": "2026-01-12",
-          "status": "pending"
-        },
-        {
-          "name": "J2: API Python publique",
-          "date": "2026-01-22",
-          "status": "pending"
-        }
-      ],
-      "validation_criteria": [
-        "CLI fonctionnelle avec toutes les sous-commandes",
-        "API Python fonctionnelle avec tous les modules",
-        "Documentation complète (CLI et Python)",
-        "Performance identique entre CLI et API Python"
-      ],
-      "documentation": "docs/phases/005_phase_interface_dual.md"
+      "dependencies": {
+        "phases": ["004"],
+        "modules": [],
+        "external": []
+      },
+      "value": {
+        "user": "Choix d'interface, CLI pour scripts, Python pour intégration",
+        "project": "Produit accessible à tous les utilisateurs"
+      },
+      "status": "pending",
+      "documentation_file": "docs/phases/005_phase_interface_dual.md"
     },
     {
-      "id": "6",
+      "id": "006",
       "name": "Tests et Documentation",
-      "description": "Finalisation des tests et génération de la documentation complète",
-      "priority": "high",
-      "criticality_business": 4,
-      "complexity_technical": 3,
-      "risk_level": "low",
-      "status": "planned",
-      "duration_weeks": 3,
-      "effort_days": 10,
-      "start_date": "2026-01-23",
-      "end_date": "2026-02-12",
-      "team_size": 4,
-      "roles": ["QA", "Tech Writer", "DevOps", "Dev"],
-      "dependencies": ["5"],
+      "slug": "tests_documentation",
+      "description": "Tests complets, documentation finale, release v1.0.0",
+      "objectives": {
+        "main": "Garantir qualité par tests ≥80% et documentation complète",
+        "secondary": [
+          "Compléter tous les types de tests",
+          "Créer documentation utilisateur complète",
+          "Préparer release v1.0.0"
+        ]
+      },
+      "duration": {
+        "weeks": 3,
+        "days": 21,
+        "effort_days": 10
+      },
+      "schedule": {
+        "start_date": "2026-01-23",
+        "end_date": "2026-02-12",
+        "weeks": "S15-S17"
+      },
+      "team": {
+        "size": 3,
+        "roles": ["QA Engineer", "Technical Writer", "Tech Lead"]
+      },
       "deliverables": [
-        "Tests unitaires : couverture ≥ 80%",
-        "Tests d'intégration complets",
-        "Documentation Sphinx complète",
-        "CI/CD GitHub Actions complet",
+        "Tests complets (≥80% couverture)",
+        "Documentation utilisateur complète",
+        "Documentation API (Sphinx)",
+        "Guides et tutoriels",
+        "Release v1.0.0"
+      ],
+      "tests": {
+        "unit": "90% pour modules",
+        "integration": "80%",
+        "e2e": "Tous les cas d'usage principaux",
+        "performance": "< 5s, < 100MB",
+        "security": "Validé"
+      },
+      "documentation": [
         "Guide d'installation",
-        "Guide utilisateur (CLI et Python)",
-        "Tutoriels et exemples",
-        "FAQ"
+        "Guide de démarrage rapide",
+        "Documentation API complète",
+        "Tutoriels (5+)",
+        "FAQ et troubleshooting",
+        "CHANGELOG"
       ],
-      "milestones": [
-        {
-          "name": "J1: Tests complets (≥80%)",
-          "date": "2026-02-02",
-          "status": "pending"
-        },
-        {
-          "name": "J2: Documentation Sphinx",
-          "date": "2026-02-09",
-          "status": "pending"
-        },
-        {
-          "name": "J3: CI/CD complet",
-          "date": "2026-02-12",
-          "status": "pending"
-        }
-      ],
-      "validation_criteria": [
-        "Couverture de tests ≥ 80%",
-        "Documentation complète et publiée",
-        "CI/CD fonctionnel",
-        "Aucun bug critique ouvert"
-      ],
-      "documentation": "docs/phases/006_phase_tests_documentation.md"
+      "dependencies": {
+        "phases": ["005"],
+        "modules": [],
+        "external": []
+      },
+      "value": {
+        "user": "Documentation claire, confiance dans la qualité",
+        "project": "Produit prêt pour production, v1.0.0 release"
+      },
+      "status": "pending",
+      "release": {
+        "version": "1.0.0",
+        "date": "2026-02-12"
+      },
+      "documentation_file": "docs/phases/006_phase_tests_documentation.md"
     }
   ],
-  "timeline": {
-    "total_duration_weeks": 17,
-    "total_effort_days": 77,
-    "start_date": "2025-10-15",
-    "end_date": "2026-02-12",
-    "mvp_target_date": "2026-02-12"
-  },
-  "resources": {
-    "peak_team_size": 4,
-    "total_developers": 4,
-    "qa_engineers": 1,
-    "tech_writers": 1,
-    "devops": 1
-  },
+  "milestones": [
+    {
+      "id": "M1",
+      "name": "Infrastructure prête",
+      "date": "2025-10-22",
+      "phase": "001",
+      "description": "CI/CD opérationnel, standards établis",
+      "criteria": [
+        "Structure projet conforme",
+        "Pipeline CI/CD fonctionnel",
+        "Standards de qualité définis"
+      ],
+      "status": "completed"
+    },
+    {
+      "id": "M2",
+      "name": "Modules de base complétés",
+      "date": "2025-11-13",
+      "phase": "002",
+      "description": "6 modules testés ≥90%, documentation complète",
+      "criteria": [
+        "6 modules testés ≥90%",
+        "Documentation complète",
+        "Patterns établis"
+      ],
+      "status": "in_progress"
+    },
+    {
+      "id": "M3",
+      "name": "Wrappers CLI complétés",
+      "date": "2025-12-04",
+      "phase": "003",
+      "description": "Cursor + GitHub wrappers fonctionnels",
+      "criteria": [
+        "Wrappers testés ≥90%",
+        "Intégration CLI validée",
+        "Documentation complète"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "M4",
+      "name": "Fonctionnalités métier livrées",
+      "date": "2026-01-01",
+      "phase": "004",
+      "description": "Cas d'usage principaux fonctionnels",
+      "criteria": [
+        "Fonctionnalités end-to-end",
+        "Tests e2e passants",
+        "Workflows orchestrés"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "M5",
+      "name": "Interfaces utilisateur complètes",
+      "date": "2026-01-22",
+      "phase": "005",
+      "description": "CLI + API Python opérationnelles",
+      "criteria": [
+        "CLI complète",
+        "API Python complète",
+        "Documentation utilisateur"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "M6",
+      "name": "Release v1.0.0",
+      "date": "2026-02-12",
+      "phase": "006",
+      "description": "Tests ≥80%, documentation complète, prêt prod",
+      "criteria": [
+        "Tests ≥80%",
+        "Documentation complète",
+        "Release v1.0.0 publiée"
+      ],
+      "status": "pending"
+    }
+  ],
+  "critical_path": [
+    "001_fondations",
+    "002_modules_base",
+    "003_wrappers_cli",
+    "004_fonctionnalites_metier",
+    "005_interface_dual",
+    "006_tests_documentation"
+  ],
   "risks": [
     {
-      "phase": "2",
-      "risk": "Retard modules de base",
-      "probability": "medium",
-      "impact": "high",
-      "mitigation": "Buffer de 3 jours, commencer tôt"
+      "id": "R1",
+      "description": "Évolution API Cursor CLI",
+      "probability": "Moyenne",
+      "impact": "Élevé",
+      "phase": "003",
+      "mitigation": "Abstraction forte, tests d'intégration réguliers"
     },
     {
-      "phase": "3",
-      "risk": "CLI externes non disponibles",
-      "probability": "low",
-      "impact": "critical",
-      "mitigation": "Vérifier installation dès Phase 1"
+      "id": "R2",
+      "description": "Complexité des wrappers",
+      "probability": "Moyenne",
+      "impact": "Élevé",
+      "phase": "003",
+      "mitigation": "2 développeurs seniors, revue continue"
     },
     {
-      "phase": "3",
-      "risk": "Complexité sous-estimée wrappers",
-      "probability": "medium",
-      "impact": "high",
-      "mitigation": "Prévoir +20% de temps"
+      "id": "R3",
+      "description": "Retard sur chemin critique",
+      "probability": "Moyenne",
+      "impact": "Critique",
+      "phase": "all",
+      "mitigation": "Buffer de 1 semaine, priorisation stricte"
     },
     {
-      "phase": "4",
-      "risk": "Problèmes d'intégration",
-      "probability": "medium",
-      "impact": "high",
-      "mitigation": "Tests d'intégration continus"
+      "id": "R4",
+      "description": "Problèmes d'intégration",
+      "probability": "Faible",
+      "impact": "Moyen",
+      "phase": "004",
+      "mitigation": "Tests d'intégration dès Phase 2"
     }
   ],
-  "budget": {
-    "total_man_days": 77,
-    "development_cost": 38500,
-    "infrastructure_cost": 200,
-    "licenses_cost": 200,
-    "total_cost": 38900,
-    "currency": "EUR"
+  "resources": {
+    "total_effort_days": 77,
+    "by_phase": {
+      "001": 5,
+      "002": 15,
+      "003": 15,
+      "004": 20,
+      "005": 12,
+      "006": 10
+    },
+    "peak_team_size": 3.5,
+    "average_team_size": 2.5
   },
-  "success_criteria": [
-    "Les 6 phases sont complétées",
-    "Couverture de tests ≥ 80%",
-    "Documentation complète (Sphinx)",
-    "CLI baobab-cursor fonctionnelle",
-    "API Python fonctionnelle",
-    "CI/CD opérationnel",
-    "Aucun bug critique ouvert",
-    "Guides utilisateur disponibles"
-  ]
+  "quality_targets": {
+    "test_coverage": {
+      "modules": "≥90%",
+      "global": "≥80%"
+    },
+    "performance": {
+      "response_time": "< 5s",
+      "memory": "< 100MB",
+      "cpu": "< 50%"
+    },
+    "documentation": {
+      "api": "100%",
+      "user_guides": "Complete",
+      "tutorials": "5+"
+    }
+  },
+  "metadata": {
+    "created_at": "2025-10-15",
+    "created_by": "Tech-Lead Agent",
+    "version": "1.0",
+    "last_updated": "2025-10-15"
+  }
 }
 

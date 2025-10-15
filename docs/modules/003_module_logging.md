@@ -3,32 +3,33 @@
 ## 1. Vue d'ensemble
 
 ### 1.1 Description
-Module autonome responsable de la gestion centralisée des logs de l'application. Il fournit un système de logging structuré avec stockage SQLite, rotation hebdomadaire, notification email et intégration avec le module `logging` de Python.
+Module de gestion centralisée des logs de l'application. Il fournit un système de logging robuste avec stockage en base SQLite, rotation automatique des logs, notification par email et support de différents niveaux de log (DEBUG, INFO, WARNING, ERROR, CRITICAL).
 
 ### 1.2 Objectif
-Assurer une traçabilité complète des opérations de l'application avec un système de logs performant, persistant et facilement consultable. Fournir des notifications automatiques en cas d'erreurs critiques.
+Centraliser et normaliser la gestion des logs pour faciliter le débogage, le monitoring et l'audit de l'application, avec persistance en base de données et notification des erreurs critiques.
 
 ### 1.3 Périmètre
 **Inclus :**
 - Logging structuré avec niveaux (DEBUG, INFO, WARNING, ERROR, CRITICAL)
-- Stockage persistant dans SQLite
+- Stockage persistant en base SQLite
 - Rotation hebdomadaire automatique des logs
-- Notification email en cas d'erreur critique
-- Formatage personnalisé des messages de log
-- Masquage automatique des secrets dans les logs
+- Notification par email pour les erreurs critiques (via Gmail)
+- Formatage standardisé des logs
+- Recherche et filtrage des logs
+- Métadonnées contextuelles (timestamp, module, fonction, ligne)
 
 **Exclus :**
+- Agrégation de logs centralisée (ELK, Splunk) en v1.0.0
 - Interface web de consultation des logs
-- Export vers des systèmes externes (ELK, Splunk)
-- Agrégation de logs multi-applications
+- Monitoring en temps réel avec alertes avancées
+- Export vers des systèmes externes (Datadog, NewRelic)
 
 ### 1.4 Cas d'usage
-1. Logger une opération normale (INFO)
-2. Logger un avertissement sur une opération (WARNING)
-3. Logger une erreur avec stacktrace (ERROR)
-4. Envoyer une notification email pour une erreur critique (CRITICAL)
-5. Consulter l'historique des logs via SQLite
-6. Effectuer la rotation hebdomadaire des logs
+1. **Traçage des opérations** : Logger toutes les opérations importantes de l'application
+2. **Débogage** : Analyser les logs pour identifier les problèmes
+3. **Notification d'erreurs** : Recevoir des emails pour les erreurs critiques
+4. **Audit** : Historique complet des actions effectuées
+5. **Rotation automatique** : Gestion de la taille des logs
 
 ---
 
@@ -38,25 +39,23 @@ Assurer une traçabilité complète des opérations de l'application avec un sys
 | ID | Fonctionnalité | Description | Priorité |
 |----|----------------|-------------|----------|
 | F1 | Logging multi-niveaux | Support DEBUG, INFO, WARNING, ERROR, CRITICAL | Haute |
-| F2 | Stockage SQLite | Persistence dans une base de données SQLite | Haute |
-| F3 | Rotation hebdomadaire | Rotation automatique tous les lundis | Haute |
-| F4 | Notification email | Envoi d'email pour les erreurs critiques | Moyenne |
-| F5 | Masquage secrets | Masquage automatique des tokens dans les logs | Haute |
-| F6 | Formatage structuré | Messages formatés avec contexte (timestamp, module, niveau) | Haute |
+| F2 | Stockage SQLite | Persistance des logs en base de données | Haute |
+| F3 | Rotation hebdomadaire | Rotation automatique chaque semaine | Haute |
+| F4 | Notification email | Envoi d'email pour erreurs critiques | Haute |
+| F5 | Formatage structuré | Logs avec métadonnées (timestamp, contexte) | Haute |
+| F6 | Recherche et filtrage | Requêtes SQL pour rechercher dans les logs | Moyenne |
 
-### 2.2 User Stories
-- **US1** : En tant que développeur, je veux logger toutes les opérations afin de diagnostiquer les problèmes
-- **US2** : En tant qu'administrateur, je veux être notifié par email des erreurs critiques afin de réagir rapidement
-- **US3** : En tant que développeur, je veux que les secrets soient automatiquement masqués afin d'éviter les fuites
-- **US4** : En tant qu'utilisateur, je veux que les logs soient automatiquement nettoyés afin de ne pas saturer le disque
-- **US5** : En tant que développeur, je veux consulter l'historique des logs afin d'analyser les comportements passés
+### 2.2 User Stories (si applicable)
+- **US1** : En tant que développeur, je veux logger mes opérations afin de pouvoir déboguer facilement
+- **US2** : En tant que administrateur, je veux recevoir un email en cas d'erreur critique afin d'intervenir rapidement
+- **US3** : En tant que système, je veux gérer automatiquement la rotation des logs afin d'éviter la saturation du disque
 
 ### 2.3 Règles métier
-1. Les logs doivent être stockés dans `logs/cursor_cli.db`
-2. La rotation doit se faire tous les lundis à 00:00
-3. Les logs de plus de 8 semaines doivent être archivés ou supprimés
-4. Les tokens et secrets doivent être masqués avec `***` dans les logs
-5. Les notifications email ne doivent être envoyées que pour les niveaux CRITICAL
+1. Tous les logs doivent avoir un timestamp précis (milliseconde)
+2. Les logs CRITICAL doivent déclencher une notification email
+3. La rotation des logs se fait chaque semaine (dimanche minuit)
+4. Les logs de plus de 3 mois sont archivés puis supprimés
+5. Les mots de passe et tokens ne doivent JAMAIS être loggés
 
 ---
 
@@ -64,143 +63,125 @@ Assurer une traçabilité complète des opérations de l'application avec un sys
 
 ### 3.1 Architecture
 ```
-┌─────────────────────────────┐
-│      LogManager             │ ← API Publique
-├─────────────────────────────┤
-│ ConsoleHandler│ DBHandler   │ ← Handlers de sortie
-├─────────────────────────────┤
-│     SecretMasker            │ ← Masquage des secrets
-├─────────────────────────────┤
-│  LogRotator │ EmailNotifier │ ← Services additionnels
-└─────────────────────────────┘
+┌─────────────────────────────────┐
+│      LoggerManager              │ ← API Publique
+├─────────────────────────────────┤
+│  - Logger (Python logging)      │
+│  - SQLiteHandler                │
+│  - EmailNotifier                │
+│  - LogRotator                   │
+│  - LogFormatter                 │
+├─────────────────────────────────┤
+│  SQLite Database + SMTP Gmail   │
+└─────────────────────────────────┘
 ```
 
 ### 3.2 Technologies
 - **Langage** : Python 3.8+
-- **Framework** : N/A (module autonome)
+- **Framework** : N/A (module standalone)
 - **Base de données** : SQLite 3
 - **Librairies principales** :
-  - `logging` : Module logging Python standard
-  - `sqlite3` : Base de données embarquée
-  - `smtplib` : Envoi d'emails
+  - `logging` : Module Python standard de logging
+  - `sqlite3` : Interface SQLite Python
+  - `smtplib` : Envoi d'emails via SMTP
   - `email` : Construction de messages email
-  - `schedule` : Planification de tâches (rotation)
 
 ### 3.3 Structure du projet
 ```
-src/baobab_cursor_cli/
-├── logging/
-│   ├── __init__.py
-│   ├── manager.py          # LogManager
-│   ├── handlers.py         # Custom handlers (DB, Email)
-│   ├── formatters.py       # Custom formatters
-│   ├── masker.py           # SecretMasker
-│   ├── rotator.py          # LogRotator
-│   ├── emailer.py          # EmailNotifier
-│   └── models.py           # SQLite models
-logs/
-└── cursor_cli.db           # Base de données SQLite
-tests/baobab_cursor_cli/
-└── logging/
-    ├── __init__.py
-    ├── test_manager.py
-    ├── test_handlers.py
-    ├── test_masker.py
-    ├── test_rotator.py
-    └── test_emailer.py
+src/baobab_cursor_cli/modules/logging/
+├── __init__.py              # Point d'entrée, expose LoggerManager
+├── logger.py                # Implémentation principale
+├── handlers.py              # SQLiteHandler, EmailHandler
+├── formatters.py            # LogFormatter personnalisé
+├── rotator.py               # Rotation automatique des logs
+├── models.py                # Modèles de données de log
+├── exceptions.py            # LoggingError
+└── README.md                # Documentation du module
+
+tests/baobab_cursor_cli/modules/logging/
+├── __init__.py
+├── test_logger.py           # Tests unitaires principaux
+├── test_handlers.py         # Tests des handlers
+├── test_rotator.py          # Tests de rotation
+└── conftest.py              # Fixtures pytest
 ```
 
 ### 3.4 API / Interface publique
 
 #### Classes principales
 ```python
-class LogManager:
-    """Gestionnaire centralisé des logs."""
+class LoggerManager:
+    """Gestionnaire principal de logging."""
     
-    def __init__(self, config: Optional[Dict] = None):
-        """Initialise le gestionnaire avec configuration."""
-        
-    def get_logger(self, name: str) -> logging.Logger:
-        """Récupère un logger nommé."""
+    def __init__(self, config: Optional[LoggingConfig] = None) -> None:
+        """Initialise le logger avec une configuration."""
         
     def debug(self, message: str, **kwargs) -> None:
-        """Log un message DEBUG."""
+        """Log un message de niveau DEBUG."""
         
     def info(self, message: str, **kwargs) -> None:
-        """Log un message INFO."""
+        """Log un message de niveau INFO."""
         
     def warning(self, message: str, **kwargs) -> None:
-        """Log un message WARNING."""
+        """Log un message de niveau WARNING."""
         
-    def error(self, message: str, exc_info: bool = True, **kwargs) -> None:
-        """Log un message ERROR avec stacktrace optionnel."""
+    def error(self, message: str, **kwargs) -> None:
+        """Log un message de niveau ERROR."""
         
-    def critical(self, message: str, exc_info: bool = True, 
-                 notify: bool = True, **kwargs) -> None:
-        """Log un message CRITICAL avec notification email."""
+    def critical(self, message: str, **kwargs) -> None:
+        """Log un message de niveau CRITICAL (déclenche email)."""
+        
+    def query_logs(self, 
+                   level: Optional[str] = None,
+                   start_date: Optional[datetime] = None,
+                   end_date: Optional[datetime] = None,
+                   limit: int = 100) -> List[LogEntry]:
+        """Recherche dans les logs."""
         
     def rotate_logs(self) -> None:
         """Force la rotation des logs."""
-        
-    def query_logs(self, level: Optional[str] = None, 
-                   start_date: Optional[datetime] = None,
-                   end_date: Optional[datetime] = None) -> List[Dict]:
-        """Requête l'historique des logs."""
 
-
-class DatabaseHandler(logging.Handler):
-    """Handler pour stocker les logs dans SQLite."""
-    
-    def __init__(self, db_path: Path):
-        """Initialise avec le chemin de la base de données."""
-        
-    def emit(self, record: logging.LogRecord) -> None:
-        """Émet un log record vers la base de données."""
-
-
-class EmailNotifier:
-    """Service de notification email pour les erreurs critiques."""
-    
-    def __init__(self, smtp_config: Dict):
-        """Initialise avec la configuration SMTP."""
-        
-    def send_critical_notification(self, log_record: Dict) -> bool:
-        """Envoie une notification pour une erreur critique."""
+class LogEntry(BaseModel):
+    """Représente une entrée de log."""
+    id: int
+    timestamp: datetime
+    level: str
+    module: str
+    function: str
+    line: int
+    message: str
+    extra: Dict[str, Any]
 ```
 
 ### 3.5 Configuration
-
-**Schéma SQLite :**
-```sql
-CREATE TABLE logs (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    timestamp DATETIME NOT NULL,
-    level VARCHAR(10) NOT NULL,
-    logger_name VARCHAR(255) NOT NULL,
-    module VARCHAR(255),
-    function VARCHAR(255),
-    line_number INTEGER,
-    message TEXT NOT NULL,
-    exception TEXT,
-    context JSON,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE INDEX idx_logs_timestamp ON logs(timestamp);
-CREATE INDEX idx_logs_level ON logs(level);
-CREATE INDEX idx_logs_logger ON logs(logger_name);
+```yaml
+# Exemple de configuration de logging
+logging:
+  level: INFO  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  database: logs/cursor_cli.db
+  rotation:
+    enabled: true
+    frequency: weekly  # daily, weekly, monthly
+    retention_days: 90  # Garde 3 mois
+  email:
+    enabled: true
+    smtp_server: smtp.gmail.com
+    smtp_port: 587
+    from_email: noreply@example.com
+    to_emails:
+      - admin@example.com
+    send_on_levels:
+      - CRITICAL
+  format: "[{timestamp}] [{level}] {module}.{function}:{line} - {message}"
 ```
 
 **Variables d'environnement :**
 | Variable | Description | Requis | Défaut |
 |----------|-------------|---------|--------|
-| `BAOBAB_LOG_LEVEL` | Niveau de log | Non | INFO |
-| `BAOBAB_LOG_DB_PATH` | Chemin vers la base SQLite | Non | logs/cursor_cli.db |
-| `BAOBAB_EMAIL_ENABLED` | Activer les notifications email | Non | false |
-| `BAOBAB_EMAIL_HOST` | Serveur SMTP | Non (si email activé) | - |
-| `BAOBAB_EMAIL_PORT` | Port SMTP | Non | 587 |
-| `BAOBAB_EMAIL_FROM` | Email expéditeur | Non (si email activé) | - |
-| `BAOBAB_EMAIL_TO` | Email destinataire | Non (si email activé) | - |
+| `LOG_LEVEL` | Niveau de log minimum | Non | INFO |
+| `LOG_DATABASE` | Chemin vers la BDD SQLite | Non | logs/cursor_cli.db |
+| `SMTP_USER` | Utilisateur SMTP Gmail | Si email activé | - |
+| `SMTP_PASSWORD` | Mot de passe SMTP Gmail | Si email activé | - |
 
 ---
 
@@ -209,15 +190,16 @@ CREATE INDEX idx_logs_logger ON logs(logger_name);
 ### 4.1 Dépendances externes
 | Dépendance | Version | Usage | Critique |
 |------------|---------|-------|----------|
-| Python | >=3.8 | Runtime | Oui |
-| schedule | ^1.2.0 | Planification rotation | Non |
+| sqlite3 | stdlib | Stockage des logs | Oui |
+| smtplib | stdlib | Envoi d'emails | Non (optionnel) |
 
 ### 4.2 Services requis
-- **Serveur SMTP** : Pour l'envoi d'emails (Gmail recommandé)
+- **SQLite** : Base de données pour logs
+- **SMTP Gmail** : Serveur SMTP pour notifications email (optionnel)
 
-### 4.3 Modules requis
-- **Module de configuration** : Pour charger les paramètres de logging
-- **Module d'exceptions** : Pour les exceptions personnalisées
+### 4.3 Modules requis (autres sous-modules)
+- **Module Configuration** : Lecture de la configuration de logging
+- **Module Exceptions** : LoggingError personnalisée
 
 ---
 
@@ -225,66 +207,41 @@ CREATE INDEX idx_logs_logger ON logs(logger_name);
 
 ### 5.1 Installation
 ```bash
-# En tant que partie du package principal
+# Le module fait partie de baobab-cursor-cli
 pip install baobab-cursor-cli
 ```
 
 ### 5.2 Initialisation
 ```python
-from baobab_cursor_cli.logging import LogManager
+from baobab_cursor_cli.modules.logging import LoggerManager
+from baobab_cursor_cli.modules.configuration import ConfigurationManager
+
+# Initialisation avec configuration
+config = ConfigurationManager.load("config.yaml")
+logger = LoggerManager(config=config.logging)
 
 # Initialisation avec configuration par défaut
-log_manager = LogManager()
-
-# Initialisation avec configuration personnalisée
-log_manager = LogManager(config={
-    'level': 'DEBUG',
-    'db_path': 'custom/logs.db',
-    'email_enabled': True,
-    'email_config': {
-        'host': 'smtp.gmail.com',
-        'port': 587,
-        'from': 'app@example.com',
-        'to': 'admin@example.com'
-    }
-})
+logger = LoggerManager()
 ```
 
 ### 5.3 Exemple d'utilisation
 ```python
-from baobab_cursor_cli.logging import LogManager
+from baobab_cursor_cli.modules.logging import LoggerManager
 
-# Initialiser le gestionnaire
-log_manager = LogManager()
+# Créer le logger
+logger = LoggerManager()
 
-# Obtenir un logger nommé
-logger = log_manager.get_logger(__name__)
+# Logger des messages
+logger.info("Application démarrée")
+logger.debug("Configuration chargée", config_path="/path/to/config.yaml")
+logger.warning("Token GitHub expire bientôt", days_remaining=7)
+logger.error("Échec de connexion à l'API", error="Connection timeout")
+logger.critical("Base de données corrompue", database="logs/cursor_cli.db")
 
-# Logger différents niveaux
-logger.info("Démarrage de l'application")
-logger.debug(f"Configuration chargée: {config}")
-logger.warning("Token proche de la limite")
-
-try:
-    # Opération risquée
-    result = process_data()
-except Exception as e:
-    # Log avec stacktrace
-    logger.error("Erreur lors du traitement", exc_info=True)
-    
-# Erreur critique avec notification email
-if critical_error:
-    logger.critical(
-        "Erreur critique système", 
-        exc_info=True, 
-        notify=True
-    )
-
-# Consulter les logs
-recent_errors = log_manager.query_logs(
-    level='ERROR',
-    start_date=datetime.now() - timedelta(days=7)
-)
+# Rechercher dans les logs
+logs = logger.query_logs(level="ERROR", limit=50)
+for log in logs:
+    print(f"{log.timestamp} - {log.message}")
 ```
 
 ---
@@ -293,67 +250,64 @@ recent_errors = log_manager.query_logs(
 
 ### 6.1 Stratégie de test
 - **Tests unitaires** : Couverture minimale 90%
-- **Tests d'intégration** : Vérifier le stockage SQLite et l'envoi d'emails
-- **Tests de performance** : Vérifier que le logging n'impacte pas les performances
+- **Tests d'intégration** : Test avec vraie BDD SQLite
+- **Tests de performance** : Test de rotation avec gros volumes
 
 ### 6.2 Commandes
 ```bash
-# Lancer les tests unitaires
-pytest tests/baobab_cursor_cli/logging/
+# Lancer les tests
+pytest tests/baobab_cursor_cli/modules/logging/
 
 # Tests avec couverture
-pytest tests/baobab_cursor_cli/logging/ --cov=src/baobab_cursor_cli/logging --cov-report=html
+pytest --cov=src/baobab_cursor_cli/modules/logging tests/baobab_cursor_cli/modules/logging/
 
-# Tests d'intégration
-pytest tests/baobab_cursor_cli/logging/ -m integration
+# Tests de rotation
+pytest tests/baobab_cursor_cli/modules/logging/test_rotator.py -v
 ```
 
 ### 6.3 Scénarios de test critiques
-1. **Stockage SQLite** : Les logs doivent être correctement stockés dans la base
-2. **Masquage secrets** : Les tokens doivent être masqués avec `***`
-3. **Rotation hebdomadaire** : La rotation doit créer une nouvelle table
-4. **Notification email** : Un log CRITICAL doit déclencher un email
-5. **Performance** : 1000 logs doivent être écrits en < 1 seconde
-6. **Requête logs** : Les requêtes doivent retourner les logs filtrés correctement
+1. **Logging multi-niveaux** : Tous les niveaux doivent être enregistrés correctement
+2. **Stockage SQLite** : Les logs doivent être persistés en BDD
+3. **Notification email** : Email envoyé pour CRITICAL
+4. **Rotation automatique** : Les logs anciens doivent être archivés
+5. **Recherche** : Les requêtes SQL doivent fonctionner
 
 ---
 
 ## 7. Sécurité
 
 ### 7.1 Considérations de sécurité
-- Les secrets doivent être automatiquement masqués dans tous les logs
-- Les mots de passe SMTP doivent être stockés dans des variables d'environnement
-- La base SQLite doit avoir des permissions restreintes (lecture/écriture propriétaire uniquement)
-- Les emails de notification ne doivent pas contenir de secrets
+- Ne jamais logger de tokens, mots de passe ou données sensibles
+- Sanitisation automatique des données sensibles
+- Accès en lecture seule à la BDD pour les utilisateurs non-admin
+- Chiffrement des emails (TLS)
 
 ### 7.2 Authentification / Autorisation
-- **SMTP** : Authentification via username/password ou token
-- Pas d'authentification requise pour écrire des logs (application interne)
+- Authentification SMTP pour envoi d'emails
+- Protection de la BDD SQLite (permissions fichier)
 
 ### 7.3 Validation des entrées
-- Validation des niveaux de log (DEBUG, INFO, WARNING, ERROR, CRITICAL)
-- Sanitisation des messages de log pour éviter les injections SQL
+- Échappement des caractères spéciaux dans les logs
 - Validation des adresses email
+- Limitation de la taille des messages de log (max 10KB)
 
 ---
 
 ## 8. Performance
 
 ### 8.1 Métriques attendues
-- **Temps d'écriture** : < 1ms par log en moyenne
-- **Throughput** : > 1000 logs/seconde
-- **Consommation mémoire** : < 10MB
-- **Taille base de données** : ~1MB pour 10 000 logs
+- **Temps de réponse** : < 10ms pour écrire un log
+- **Throughput** : 1000+ logs/seconde
+- **Consommation mémoire** : < 20MB
 
 ### 8.2 Optimisations
-- Batch writes pour SQLite (toutes les 100ms ou 100 logs)
-- Index sur les colonnes fréquemment requêtées
-- Async writing pour ne pas bloquer l'application
-- Compression des anciens logs lors de la rotation
+- Buffer de logs en mémoire (flush périodique)
+- Index SQLite sur timestamp et level
+- Rotation asynchrone en arrière-plan
 
 ### 8.3 Limites connues
-- **Volume élevé** : Pas optimisé pour > 100 000 logs/jour (nécessiterait un système externe)
-- **Emails** : Limité par le rate limiting du serveur SMTP
+- **Taille BDD** : BDD SQLite > 1GB peut être lente
+- **Envoi email** : Peut ralentir l'application si SMTP lent
 
 ---
 
@@ -362,18 +316,17 @@ pytest tests/baobab_cursor_cli/logging/ -m integration
 ### 9.1 Versioning
 - **Version actuelle** : 1.0.0
 - **Stratégie** : Semantic Versioning (SemVer)
-- **Changelog** : Voir docs/CHANGELOG.md
+- **Changelog** : Voir CHANGELOG.md
 
 ### 9.2 Rétrocompatibilité
-- Maintien du schéma SQLite dans les versions mineures
-- Migration automatique du schéma si nécessaire
+- Schéma BDD SQLite stable pour v1.x
+- Migration automatique de schéma si nécessaire
 
 ### 9.3 Roadmap
 | Version | Fonctionnalités prévues | Date estimée |
 |---------|------------------------|--------------|
-| 1.1.0 | Export vers formats standards (JSON, CSV) | Q2 2026 |
-| 1.2.0 | Interface web de consultation des logs | Q3 2026 |
-| 2.0.0 | Intégration avec systèmes externes (ELK, Splunk) | Q4 2026 |
+| 1.1.0 | Export JSON, interface web | Q2 2026 |
+| 2.0.0 | Intégration ELK, alertes avancées | Q3 2026 |
 
 ---
 
@@ -381,40 +334,40 @@ pytest tests/baobab_cursor_cli/logging/ -m integration
 
 ### 10.1 Documentation technique
 - **README.md** : Guide de démarrage rapide
-- **Logging Guide** : Documentation complète du système de logs
-- **Query Guide** : Guide pour requêter les logs SQLite
+- **API Reference** : Documentation complète
+- **Schema SQL** : Schéma de la base SQLite
 
 ### 10.2 Exemples
-- `examples/logging/basic_usage.py` : Utilisation de base
-- `examples/logging/email_notification.py` : Configuration des notifications email
-- `examples/logging/query_logs.py` : Requêter l'historique des logs
+- `examples/basic_logging.py` : Logging basique
+- `examples/email_notification.py` : Configuration email
+- `examples/log_search.py` : Recherche dans les logs
 
 ### 10.3 FAQ
-**Q: Comment configurer Gmail pour l'envoi d'emails ?**
-R: Utiliser un App Password Gmail et configurer les variables d'environnement `BAOBAB_EMAIL_HOST=smtp.gmail.com`, `BAOBAB_EMAIL_PORT=587`.
+**Q: Comment configurer l'envoi d'emails ?**
+R: Configurer les paramètres SMTP dans config.yaml et définir SMTP_USER et SMTP_PASSWORD
 
-**Q: Les logs impactent-ils les performances ?**
-R: Non, le logging est asynchrone et n'impacte pas les performances de l'application (< 1ms overhead).
+**Q: Où sont stockés les logs ?**
+R: Dans `logs/cursor_cli.db` par défaut
 
-**Q: Comment archiver les anciens logs ?**
-R: La rotation hebdomadaire archive automatiquement les logs de plus de 8 semaines dans des fichiers compressés.
+**Q: Comment désactiver les notifications email ?**
+R: Mettre `logging.email.enabled: false` dans config.yaml
 
 ---
 
 ## 11. Support et contribution
 
 ### 11.1 Canaux de support
-- **Issues GitHub** : https://github.com/user/baobab-cursor-cli/issues
-- **Documentation** : https://baobab-cursor-cli.readthedocs.io
-- **Contact** : tech-lead@project.com
+- **Issues GitHub** : https://github.com/[org]/baobab-cursor-cli/issues
+- **Documentation** : https://[org].github.io/baobab-cursor-cli/
+- **Contact** : [email]
 
 ### 11.2 Guide de contribution
 - Voir CONTRIBUTING.md
-- Code style : Black (formatter), flake8 (linter)
-- Process de PR : Review obligatoire par le Tech-Lead
+- Code style : PEP 8, formaté avec Black
+- Process de PR : Review obligatoire par Tech-Lead
 
 ### 11.3 Licence
-MIT License
+MIT
 
 ---
 
@@ -422,53 +375,52 @@ MIT License
 
 | Propriété | Valeur |
 |-----------|--------|
-| **Propriétaire** | Tech-Lead Principal |
-| **Repository** | https://github.com/user/baobab-cursor-cli |
+| **Propriétaire** | Équipe Core - baobab-cursor-cli |
+| **Repository** | https://github.com/[org]/baobab-cursor-cli |
 | **Status** | En développement |
 | **Créé le** | 15/10/2025 |
 | **Dernière MAJ** | 15/10/2025 |
 | **Projets utilisant ce module** | baobab-cursor-cli |
 | **Priorité** | Haute (Score: 4.3/5) |
-| **Criticité métier** | 4/5 |
-| **Complexité technique** | 4/5 |
-| **Dépendances** | 5/5 (tous les modules l'utilisent) |
+| **Complexité** | Moyenne (3/5) |
 
 ---
 
 ## 13. Annexes
 
 ### 13.1 Glossaire
-- **Log rotation** : Processus d'archivage et de nettoyage des logs anciens
-- **Handler** : Composant qui détermine où les logs sont écrits
-- **Formatter** : Composant qui détermine le format des messages de log
+- **Log rotation** : Archivage et suppression des anciens logs
+- **Handler** : Composant qui traite les logs (fichier, BDD, email)
+- **SMTP** : Protocole d'envoi d'emails
 
 ### 13.2 Références
-- [Python Logging Documentation](https://docs.python.org/3/library/logging.html)
-- [SQLite Documentation](https://www.sqlite.org/docs.html)
-- [Gmail SMTP Configuration](https://support.google.com/mail/answer/7126229)
+- Python logging : https://docs.python.org/3/library/logging.html
+- SQLite Documentation : https://www.sqlite.org/docs.html
+- Gmail SMTP : https://support.google.com/mail/answer/7126229
 
 ### 13.3 Diagrammes supplémentaires
 ```
-Architecture du système de logging
-┌────────────┐
-│Application │
-└─────┬──────┘
-      │ log()
-      ▼
-┌─────────────────┐
-│   LogManager    │
-└────┬────────┬───┘
-     │        │
-     ▼        ▼
-┌──────────┐ ┌──────────┐
-│ Console  │ │ Database │
-│ Handler  │ │ Handler  │
-└──────────┘ └────┬─────┘
-                  │
-                  ▼
-            ┌────────────┐      ┌────────────┐
-            │  SQLite    │      │   Email    │
-            │   Store    │      │  Notifier  │
-            └────────────┘      └────────────┘
+Schéma SQLite :
+
+CREATE TABLE logs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    timestamp DATETIME NOT NULL,
+    level VARCHAR(20) NOT NULL,
+    module VARCHAR(100),
+    function VARCHAR(100),
+    line INTEGER,
+    message TEXT NOT NULL,
+    extra TEXT,  -- JSON
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_timestamp ON logs(timestamp);
+CREATE INDEX idx_level ON logs(level);
 ```
+
+---
+
+*Document créé le : 15/10/2025*  
+*Version : 1.0*  
+*Statut : En développement*
 

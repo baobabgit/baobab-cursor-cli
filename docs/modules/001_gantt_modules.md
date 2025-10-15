@@ -2,231 +2,288 @@
 
 ## Vue d'ensemble
 
-Ce document présente le diagramme de Gantt des 8 modules de développement identifiés pour le projet **baobab-cursor-cli**.
+Ce document présente le planning de développement des 8 modules identifiés pour le projet **baobab-cursor-cli**. Les modules sont organisés selon leurs dépendances et leurs priorités.
 
-### Méthodologie de priorisation
+## Planning Global
 
-Les modules sont organisés selon les critères suivants :
-- **Criticité métier** (1-5) : Impact sur les utilisateurs finaux
-- **Complexité technique** (1-5) : Effort de développement estimé
-- **Dépendances** (1-5) : Nombre de modules qui en dépendent
-- **Score global** : Moyenne pondérée des trois critères
-
----
-
-## Liste des modules
-
-| ID | Module | Criticité | Complexité | Dépendances | Score | Priorité |
-|----|--------|-----------|------------|-------------|-------|----------|
-| 001 | Authentication | 5 | 4 | 5 | 4.8 | Très Haute |
-| 002 | Configuration | 5 | 3 | 5 | 4.7 | Très Haute |
-| 003 | Logging | 4 | 4 | 5 | 4.3 | Haute |
-| 004 | Exceptions | 5 | 2 | 5 | 4.5 | Haute |
-| 005 | Validation | 4 | 3 | 4 | 4.0 | Moyenne |
-| 006 | Cursor CLI Wrapper | 5 | 5 | 4 | 4.9 | Très Haute |
-| 007 | GitHub CLI Wrapper | 4 | 4 | 3 | 4.4 | Haute |
-| 008 | Retry | 4 | 3 | 4 | 4.2 | Haute |
-
----
+- **Durée totale** : 7 semaines
+- **Date de début** : 15 octobre 2025
+- **Date de fin** : 4 décembre 2025
+- **Effort total** : 32 jours-homme
 
 ## Diagramme de Gantt
 
-### Phase 1: Fondations (Semaine 1)
-**Durée : 1 semaine**
-
 ```
-Semaine 1: [========== Structure Projet ==========]
-```
-
-### Phase 2: Modules de Base (Semaines 2-4)
-**Durée : 3 semaines**
-
-```
-Semaine 2: [====== Auth (001) ======][==== Config (002) ====]
-Semaine 3:                            [=== Logging (003) ===][= Exceptions (004) =]
-Semaine 4:                                                    [== Validation (005) ==][= Retry (008) =]
-```
-
-**Parallélisation :**
-- Semaine 2 : Auth et Config peuvent être développés en parallèle (2 devs)
-- Semaine 3 : Logging et Exceptions peuvent être développés en parallèle (2 devs)
-- Semaine 4 : Validation et Retry peuvent être développés en parallèle (2 devs)
-
-### Phase 3: Wrappers CLI (Semaines 5-7)
-**Durée : 3 semaines**
-
-```
-Semaine 5-6: [============== Cursor CLI Wrapper (006) ==============]
-Semaine 6-7:         [============== GitHub CLI Wrapper (007) ==============]
+Module                          | Semaine 1    | Semaine 2    | Semaine 3    | Semaine 4    | Semaine 5    | Semaine 6    | Semaine 7
+                                | 15-21 Oct    | 22-28 Oct    | 29 Oct-4 Nov | 5-11 Nov     | 12-18 Nov    | 19-25 Nov    | 26 Nov-4 Déc
+--------------------------------|--------------|--------------|--------------|--------------|--------------|--------------|-------------
+001 - Authentication            | [====]       |              |              |              |              |              |
+002 - Configuration             | [====]       |              |              |              |              |              |
+004 - Exceptions                | [====]       |              |              |              |              |              |
+                                |              |              |              |              |              |              |
+003 - Logging                   |      [======|====]         |              |              |              |              |
+005 - Validation                |      [======|====]         |              |              |              |              |
+008 - Retry                     |              |      [====]  |              |              |              |              |
+                                |              |              |              |              |              |              |
+006 - Cursor CLI Wrapper        |              |              |      [======|======|======] |              |              |
+                                |              |              |              |              |              |              |
+007 - GitHub CLI Wrapper        |              |              |              |              |      [======|======]        |
 ```
 
-**Parallélisation :**
-- Semaines 5-7 : Les deux wrappers peuvent être développés en parallèle avec un léger décalage (2 devs)
+## Légende
 
----
+- `[====]` : 1 semaine de développement
+- Les modules peuvent se chevaucher si développés en parallèle
 
-## Calendrier détaillé
+## Détail des modules
 
-### Semaine 1 : 15/10/2025 - 22/10/2025
-- **Tâche** : Structure du projet et fondations
-- **Responsable** : Tech-Lead
-- **Livrables** : Structure de dossiers, pyproject.toml, configuration outils
+### Phase 1 : Modules de Base (Semaine 1 - 15 au 21 octobre)
 
-### Semaine 2 : 23/10/2025 - 30/10/2025
-- **Tâches** :
-  - Module Authentication (001) - Dev 1
-  - Module Configuration (002) - Dev 1
-- **Livrables** : 2 modules complétés avec tests ≥ 90%
+#### 001 - Module Authentication
+- **Durée** : 1 semaine (3 jours-homme)
+- **Équipe** : 1 développeur
+- **Dépendances** : Aucune
+- **Priorité** : Très haute (Score: 4.8/5)
+- **Date début** : 15/10/2025
+- **Date fin** : 21/10/2025
+- **Livrables** :
+  - Gestion des tokens GitHub et Cursor
+  - Validation des tokens
+  - Tests unitaires (couverture ≥ 90%)
 
-### Semaine 3 : 31/10/2025 - 06/11/2025
-- **Tâches** :
-  - Module Logging (003) - Dev 2
-  - Module Exceptions (004) - Dev 2
-- **Livrables** : 2 modules complétés avec tests ≥ 90%
+#### 002 - Module Configuration
+- **Durée** : 1 semaine (3 jours-homme)
+- **Équipe** : 1 développeur
+- **Dépendances** : Aucune
+- **Priorité** : Très haute (Score: 4.7/5)
+- **Date début** : 15/10/2025
+- **Date fin** : 21/10/2025
+- **Livrables** :
+  - Chargement de fichiers YAML
+  - Variables d'environnement
+  - Validation de configuration
+  - Tests unitaires (couverture ≥ 90%)
 
-### Semaine 4 : 07/11/2025 - 13/11/2025
-- **Tâches** :
-  - Module Validation (005) - Dev 3
-  - Module Retry (008) - Dev 3
-- **Livrables** : 2 modules complétés avec tests ≥ 90%
+#### 004 - Module Exceptions
+- **Durée** : 1 semaine (2 jours-homme)
+- **Équipe** : 1 développeur
+- **Dépendances** : Aucune
+- **Priorité** : Très haute (Score: 4.5/5)
+- **Date début** : 15/10/2025
+- **Date fin** : 21/10/2025
+- **Livrables** :
+  - Hiérarchie d'exceptions
+  - Codes d'erreur personnalisés
+  - Serialization JSON
+  - Tests unitaires (couverture ≥ 90%)
 
-### Semaines 5-6 : 14/11/2025 - 27/11/2025
-- **Tâche** : Module Cursor CLI Wrapper (006) - Dev 1
-- **Livrable** : Wrapper complet avec tests ≥ 90%
+### Phase 2 : Modules Secondaires (Semaines 2-3 - 22 octobre au 4 novembre)
 
-### Semaines 6-7 : 21/11/2025 - 04/12/2025
-- **Tâche** : Module GitHub CLI Wrapper (007) - Dev 2
-- **Livrable** : Wrapper complet avec tests ≥ 90%
+#### 003 - Module Logging
+- **Durée** : 1,5 semaines (4 jours-homme)
+- **Équipe** : 1 développeur
+- **Dépendances** : Module Configuration, Module Exceptions
+- **Priorité** : Haute (Score: 4.3/5)
+- **Date début** : 18/10/2025
+- **Date fin** : 28/10/2025
+- **Livrables** :
+  - Logging multi-niveaux
+  - Stockage SQLite
+  - Notification email
+  - Rotation hebdomadaire
+  - Tests unitaires (couverture ≥ 90%)
 
----
+#### 005 - Module Validation
+- **Durée** : 1,5 semaines (3 jours-homme)
+- **Équipe** : 1 développeur
+- **Dépendances** : Module Exceptions
+- **Priorité** : Haute (Score: 4.0/5)
+- **Date début** : 18/10/2025
+- **Date fin** : 28/10/2025
+- **Livrables** :
+  - Schémas Pydantic
+  - Validation de formats
+  - Sanitisation
+  - Tests unitaires (couverture ≥ 90%)
+
+#### 008 - Module Retry
+- **Durée** : 1 semaine (2 jours-homme)
+- **Équipe** : 1 développeur
+- **Dépendances** : Module Logging, Module Exceptions
+- **Priorité** : Haute (Score: 4.2/5)
+- **Date début** : 29/10/2025
+- **Date fin** : 4/11/2025
+- **Livrables** :
+  - Décorateur @retry
+  - Backoff exponentiel
+  - Tests unitaires (couverture ≥ 90%)
+
+### Phase 3 : Wrappers CLI (Semaines 4-7 - 5 novembre au 4 décembre)
+
+#### 006 - Module Cursor CLI Wrapper
+- **Durée** : 3 semaines (10 jours-homme)
+- **Équipe** : 2 développeurs
+- **Dépendances** : Tous les modules précédents
+- **Priorité** : Très haute (Score: 4.9/5)
+- **Date début** : 5/11/2025
+- **Date fin** : 25/11/2025
+- **Livrables** :
+  - Wrapper complet Cursor CLI
+  - Génération de code
+  - Modification de fichiers
+  - Révision de code
+  - Gestion du contexte
+  - Tests unitaires (couverture ≥ 90%)
+
+#### 007 - Module GitHub CLI Wrapper
+- **Durée** : 2 semaines (5 jours-homme)
+- **Équipe** : 1 développeur
+- **Dépendances** : Auth, Config, Exceptions, Logging, Retry
+- **Priorité** : Haute (Score: 4.4/5)
+- **Date début** : 19/11/2025
+- **Date fin** : 4/12/2025
+- **Livrables** :
+  - Wrapper complet GitHub CLI
+  - Gestion des PR
+  - Gestion des issues
+  - Gestion des branches
+  - Tests unitaires (couverture ≥ 90%)
+
+## Chemin critique
+
+Le **chemin critique** du projet suit cette séquence :
+
+```
+001 Authentication (S1)
+    → 003 Logging (S1-S2)
+        → 008 Retry (S3)
+            → 006 Cursor CLI Wrapper (S4-S6)
+```
+
+**Durée du chemin critique** : 6,5 semaines
+
+Tout retard sur ce chemin impactera directement la date de fin du projet.
 
 ## Dépendances entre modules
 
-### Graphe de dépendances
-
 ```
-Exceptions (004)
-    ↓
-    ├──→ Authentication (001)
-    ├──→ Configuration (002)
-    ├──→ Logging (003)
-    ├──→ Validation (005)
-    ├──→ Retry (008)
-    ├──→ Cursor CLI Wrapper (006)
-    └──→ GitHub CLI Wrapper (007)
-
-Logging (003)
-    ↓
-    ├──→ Cursor CLI Wrapper (006)
-    └──→ GitHub CLI Wrapper (007)
-
-Configuration (002)
-    ↓
-    ├──→ Authentication (001)
-    ├──→ Logging (003)
-    └──→ Tous les autres modules
-
-Authentication (001)
-    ↓
-    ├──→ Cursor CLI Wrapper (006)
-    └──→ GitHub CLI Wrapper (007)
-
-Validation (005)
-    ↓
-    ├──→ Cursor CLI Wrapper (006)
-    └──→ GitHub CLI Wrapper (007)
-
-Retry (008)
-    ↓
-    ├──→ Cursor CLI Wrapper (006)
-    └──→ GitHub CLI Wrapper (007)
+┌──────────────┐     ┌──────────────┐
+│ 001 Auth     │     │ 002 Config   │
+└──────┬───────┘     └──────┬───────┘
+       │                    │
+       │    ┌───────────────┴──────┐
+       │    │                      │
+       │    │    ┌──────────────┐  │
+       │    │    │ 004 Exception│  │
+       │    │    └──────┬───────┘  │
+       │    │           │          │
+       │    └─────┬─────┴──────────┘
+       │          │
+       │    ┌─────▼─────────┐
+       └───▶│ 003 Logging   │
+            └─────┬─────────┘
+                  │
+            ┌─────▼─────────┐     ┌──────────────┐
+            │ 005 Validation│     │ 008 Retry    │
+            └─────┬─────────┘     └──────┬───────┘
+                  │                      │
+                  └──────┬───────────────┘
+                         │
+                   ┌─────▼──────────────┐
+                   │ 006 Cursor CLI     │
+                   │     Wrapper        │
+                   └─────┬──────────────┘
+                         │
+                   ┌─────▼──────────────┐
+                   │ 007 GitHub CLI     │
+                   │     Wrapper        │
+                   └────────────────────┘
 ```
-
-### Ordre de développement optimal
-
-1. **Premier groupe (pas de dépendances critiques)** :
-   - Exceptions (004) - Base pour tous
-   - Configuration (002) - Utilisé par tous
-   
-2. **Deuxième groupe (dépend du premier groupe)** :
-   - Authentication (001) - Dépend de Config et Exceptions
-   - Logging (003) - Dépend de Config et Exceptions
-   - Validation (005) - Dépend de Exceptions
-   - Retry (008) - Dépend de Exceptions
-
-3. **Troisième groupe (dépend des deux premiers)** :
-   - Cursor CLI Wrapper (006) - Dépend de Auth, Validation, Retry, Logging, Exceptions
-   - GitHub CLI Wrapper (007) - Dépend de Auth, Validation, Retry, Logging, Exceptions
-
----
 
 ## Ressources nécessaires
 
 ### Par semaine
 
-| Semaine | Développeurs | Modules | Charge (j-h) |
-|---------|--------------|---------|--------------|
-| 1 | 1 (Tech-Lead) | Structure | 5 |
-| 2 | 2 (Dev 1 + Dev 1) | Auth + Config | 10 |
-| 3 | 2 (Dev 2 + Dev 2) | Logging + Exceptions | 8 |
-| 4 | 2 (Dev 3 + Dev 3) | Validation + Retry | 7 |
-| 5-6 | 1 (Dev 1) | Cursor Wrapper | 10 |
-| 6-7 | 1 (Dev 2) | GitHub Wrapper | 10 |
+| Semaine | Modules en cours | Développeurs | Effort (j-h) |
+|---------|------------------|--------------|--------------|
+| S1 (15-21 Oct) | 001, 002, 004 | 3 | 8 |
+| S2 (22-28 Oct) | 003, 005 | 2 | 7 |
+| S3 (29 Oct-4 Nov) | 008 | 1 | 2 |
+| S4 (5-11 Nov) | 006 | 2 | 3 |
+| S5 (12-18 Nov) | 006 | 2 | 3 |
+| S6 (19-25 Nov) | 006, 007 | 3 | 4 |
+| S7 (26 Nov-4 Déc) | 007 | 1 | 5 |
 
-**Total : 50 jours-homme sur 7 semaines**
+### Par module
 
----
+| Module | Priorité | Complexité | Effort (j-h) |
+|--------|----------|------------|--------------|
+| 001 - Authentication | 4.8/5 | 3/5 | 3 |
+| 002 - Configuration | 4.7/5 | 3/5 | 3 |
+| 003 - Logging | 4.3/5 | 3/5 | 4 |
+| 004 - Exceptions | 4.5/5 | 2/5 | 2 |
+| 005 - Validation | 4.0/5 | 3/5 | 3 |
+| 006 - Cursor CLI Wrapper | 4.9/5 | 4/5 | 10 |
+| 007 - GitHub CLI Wrapper | 4.4/5 | 4/5 | 5 |
+| 008 - Retry | 4.2/5 | 3/5 | 2 |
+| **Total** | - | - | **32** |
 
-## Risques et mitigations
+## Jalons (Milestones)
 
-### Risques identifiés
+| Jalon | Date | Description | Critères de validation |
+|-------|------|-------------|------------------------|
+| **M1** | 21/10/2025 | Modules de base complétés | Auth, Config, Exceptions testés et validés |
+| **M2** | 4/11/2025 | Modules secondaires complétés | Logging, Validation, Retry testés et validés |
+| **M3** | 25/11/2025 | Cursor CLI Wrapper complété | Wrapper fonctionnel avec tous les cas d'usage |
+| **M4** | 4/12/2025 | Tous les modules complétés | GitHub CLI Wrapper fonctionnel, tous les tests passent |
+
+## Risques et mitigation
 
 | Risque | Probabilité | Impact | Mitigation |
 |--------|-------------|--------|------------|
-| Retard sur modules de base | Moyenne | Élevé | Prévoir des buffers, commencer tôt |
-| Dépendance CLI externes non disponibles | Faible | Critique | Vérifier installation dès semaine 1 |
-| Complexité sous-estimée des wrappers | Moyenne | Élevé | Prévoir 20% de temps supplémentaire |
-| Problèmes d'intégration entre modules | Moyenne | Moyen | Tests d'intégration continus |
+| Évolution API Cursor CLI | Moyenne | Élevé | Abstraction forte, tests d'intégration |
+| Complexité du wrapper Cursor | Moyenne | Élevé | 2 développeurs, revue de code fréquente |
+| Dépendances bloquantes | Faible | Moyen | Développement parallèle des modules indépendants |
+| Retard sur le chemin critique | Moyenne | Élevé | Buffer de 1 semaine prévu |
+| Problèmes d'authentification | Faible | Moyen | Tests avec plusieurs comptes GitHub |
 
----
+## Stratégie de développement
 
-## Jalons et validation
+### Semaines 1 : Fondations
+- **Objectif** : Créer les modules de base indépendants
+- **Parallélisation** : 3 développeurs sur 3 modules différents
+- **Risque** : Faible (modules indépendants)
 
-### Jalons principaux
+### Semaines 2-3 : Modules secondaires
+- **Objectif** : Ajouter les couches de logging, validation et retry
+- **Parallélisation** : 2 développeurs sur Logging et Validation
+- **Risque** : Faible à moyen
 
-| Jalon | Date | Critères de validation |
-|-------|------|------------------------|
-| J1 : Structure complète | 22/10/2025 | Tests et linting fonctionnels |
-| J2 : Modules de base (1-2) | 30/10/2025 | 2 modules avec tests ≥ 90% |
-| J3 : Modules de base (3-4) | 06/11/2025 | 2 modules avec tests ≥ 90% |
-| J4 : Modules de base (5-8) | 13/11/2025 | 2 modules avec tests ≥ 90% |
-| J5 : Cursor Wrapper | 27/11/2025 | Wrapper fonctionnel avec tests ≥ 90% |
-| J6 : GitHub Wrapper | 04/12/2025 | Wrapper fonctionnel avec tests ≥ 90% |
+### Semaines 4-6 : Wrapper Cursor CLI
+- **Objectif** : Développer le wrapper le plus complexe
+- **Parallélisation** : 2 développeurs pour accélérer
+- **Risque** : Élevé (module critique et complexe)
 
----
+### Semaines 6-7 : Wrapper GitHub CLI
+- **Objectif** : Finaliser avec le wrapper GitHub
+- **Parallélisation** : 1 développeur dédié
+- **Risque** : Moyen
 
-## Indicateurs de suivi
+## Notes importantes
 
-### Métriques clés
+1. **Tests** : Chaque module doit avoir une couverture de tests ≥ 90% avant d'être considéré comme terminé
+2. **Code review** : Review obligatoire par le Tech-Lead pour tous les modules
+3. **Documentation** : Documentation complète requise (README, API reference, exemples)
+4. **Intégration continue** : Pipeline CI/CD configuré dès la semaine 1
+5. **Buffer** : 1 semaine de buffer prévue après la semaine 7 si nécessaire
 
-- **Avancement** : Nombre de modules complétés / 8
-- **Qualité** : Couverture de tests moyenne
-- **Performance** : Vélocité (modules/semaine)
-- **Risque** : Nombre de blocages critiques
+## Prochaines étapes
 
-### Tableau de bord
-
-| Métrique | Objectif | Actuel | Statut |
-|----------|----------|--------|--------|
-| Modules complétés | 8 | 0 | ⏳ |
-| Couverture tests moyenne | ≥ 90% | - | ⏳ |
-| Vélocité | 1.14 modules/sem | - | ⏳ |
-| Blocages critiques | 0 | 0 | ✅ |
+Après la complétion de tous les modules (4 décembre 2025), le projet passera aux **phases de développement** pour intégrer ces modules dans des fonctionnalités métier complètes.
 
 ---
 
 *Document créé le : 15/10/2025*  
 *Version : 1.0*  
-*Statut : Planifié*  
-*Prochaine révision : 22/10/2025*
+*Statut : En cours*
 

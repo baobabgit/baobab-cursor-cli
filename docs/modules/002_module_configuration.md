@@ -3,30 +3,31 @@
 ## 1. Vue d'ensemble
 
 ### 1.1 Description
-Module autonome responsable de la gestion de la configuration de l'application. Il charge, valide et fournit l'accès à la configuration depuis plusieurs sources (fichiers YAML, variables d'environnement) avec support de la validation et des valeurs par défaut.
+Module de gestion centralisée de la configuration de l'application. Il permet de charger, valider et gérer les paramètres de configuration depuis des fichiers YAML et des variables d'environnement de manière cohérente et sécurisée.
 
 ### 1.2 Objectif
-Centraliser la gestion de la configuration pour éviter les valeurs hardcodées, faciliter les changements d'environnement et assurer la cohérence des paramètres à travers toute l'application.
+Fournir une interface unique et typée pour accéder à toute la configuration de l'application, en supportant plusieurs sources (fichiers YAML, variables d'environnement) et en validant la cohérence des paramètres.
 
 ### 1.3 Périmètre
 **Inclus :**
-- Chargement de configuration depuis fichiers YAML
-- Support des variables d'environnement (sauf tokens/secrets)
-- Validation de la configuration avec schémas
-- Valeurs par défaut et configuration hiérarchique
-- Hot-reload de la configuration (si fichier modifié)
+- Chargement de fichiers de configuration YAML
+- Lecture de variables d'environnement
+- Fusion de configurations multiples (hiérarchie)
+- Validation des paramètres de configuration
+- Configuration par défaut (fallback)
+- Support des environnements (dev, staging, prod)
 
 **Exclus :**
-- Gestion des secrets (délégué au module d'authentification)
+- Stockage des secrets (tokens, mots de passe) dans les fichiers
+- Gestion de multiples profils utilisateur (v1.0.0)
 - Interface graphique de configuration
-- Support de formats autres que YAML (JSON, TOML)
+- Configuration distribuée (consul, etcd)
 
 ### 1.4 Cas d'usage
-1. Charger la configuration au démarrage de l'application
-2. Récupérer une valeur de configuration typée
-3. Valider la configuration avant utilisation
-4. Surcharger la configuration via variables d'environnement
-5. Recharger la configuration sans redémarrer l'application
+1. **Initialisation application** : Chargement de la configuration au démarrage
+2. **Configuration par environnement** : Adaptation selon dev/staging/prod
+3. **Override par env vars** : Surcharge de configuration via variables d'environnement
+4. **Validation configuration** : Vérification de la cohérence avant démarrage
 
 ---
 
@@ -35,25 +36,23 @@ Centraliser la gestion de la configuration pour éviter les valeurs hardcodées,
 ### 2.1 Fonctionnalités principales
 | ID | Fonctionnalité | Description | Priorité |
 |----|----------------|-------------|----------|
-| F1 | Chargement YAML | Charger la configuration depuis fichiers YAML | Haute |
-| F2 | Variables d'environnement | Surcharge via variables d'environnement | Haute |
-| F3 | Validation schéma | Valider la configuration avec un schéma défini | Haute |
-| F4 | Valeurs par défaut | Fournir des valeurs par défaut cohérentes | Moyenne |
-| F5 | Accès typé | Récupérer des valeurs avec typage Python | Haute |
-| F6 | Hot-reload | Recharger la configuration dynamiquement | Basse |
+| F1 | Chargement YAML | Lecture et parsing de fichiers config.yaml | Haute |
+| F2 | Variables d'environnement | Override de config via env vars | Haute |
+| F3 | Validation | Validation de la structure et des valeurs | Haute |
+| F4 | Configuration par défaut | Valeurs par défaut pour paramètres optionnels | Haute |
+| F5 | Hiérarchie de config | Fusion de configs (base + env + override) | Moyenne |
 
-### 2.2 User Stories
-- **US1** : En tant que développeur, je veux charger ma configuration depuis un fichier YAML afin de ne pas hardcoder les valeurs
-- **US2** : En tant qu'utilisateur, je veux surcharger la configuration via des variables d'environnement afin d'adapter le comportement sans modifier le fichier
-- **US3** : En tant que développeur, je veux que la configuration soit validée au démarrage afin d'éviter les erreurs à l'exécution
-- **US4** : En tant qu'utilisateur, je veux avoir des valeurs par défaut sensées afin de minimiser la configuration nécessaire
+### 2.2 User Stories (si applicable)
+- **US1** : En tant que développeur, je veux charger ma configuration depuis un fichier YAML afin de centraliser mes paramètres
+- **US2** : En tant que utilisateur, je veux surcharger des paramètres via des variables d'environnement afin de m'adapter à différents environnements
+- **US3** : En tant que système, je veux valider la configuration au démarrage afin de détecter les erreurs rapidement
 
 ### 2.3 Règles métier
-1. Les secrets (tokens, mots de passe) ne doivent PAS être dans les fichiers YAML versionnés
-2. Les variables d'environnement ont priorité sur les fichiers de configuration
-3. Une configuration invalide doit lever `CursorConfigurationError` au démarrage
-4. Le fichier de configuration par défaut est `config/config.yaml`
-5. Les valeurs par défaut doivent permettre un fonctionnement minimal
+1. Les secrets (tokens, mots de passe) ne doivent JAMAIS être dans les fichiers YAML
+2. Les variables d'environnement prennent priorité sur les fichiers YAML
+3. La configuration doit être validée avant utilisation
+4. Les valeurs par défaut doivent être documentées
+5. Format YAML obligatoire pour les fichiers de configuration
 
 ---
 
@@ -61,48 +60,46 @@ Centraliser la gestion de la configuration pour éviter les valeurs hardcodées,
 
 ### 3.1 Architecture
 ```
-┌─────────────────────────────┐
-│   ConfigurationManager      │ ← API Publique
-├─────────────────────────────┤
-│  YAMLLoader │ EnvOverrider  │ ← Sources de configuration
-├─────────────────────────────┤
-│    ConfigValidator          │ ← Validation
-├─────────────────────────────┤
-│    ConfigSchema             │ ← Schéma de validation
-└─────────────────────────────┘
+┌─────────────────────────────────┐
+│      ConfigurationManager       │ ← API Publique
+├─────────────────────────────────┤
+│  - YAMLLoader                   │
+│  - EnvVarLoader                 │
+│  - ConfigValidator              │
+│  - ConfigMerger                 │
+├─────────────────────────────────┤
+│  Fichiers YAML + Env Variables  │
+└─────────────────────────────────┘
 ```
 
 ### 3.2 Technologies
 - **Langage** : Python 3.8+
-- **Framework** : N/A (module autonome)
+- **Framework** : N/A (module standalone)
 - **Base de données** : N/A
 - **Librairies principales** :
-  - `pyyaml` : ^6.0 - Parsing YAML
-  - `pydantic` : ^2.0 - Validation et typage
-  - `os` : Variables d'environnement
-  - `pathlib` : Gestion des chemins de fichiers
+  - `pyyaml` : ^6.0 - Parsing de fichiers YAML
+  - `pydantic` : ^2.0 - Validation de configuration
+  - `python-dotenv` : ^1.0.0 - Chargement de fichiers .env
 
 ### 3.3 Structure du projet
 ```
-src/baobab_cursor_cli/
-├── config/
-│   ├── __init__.py
-│   ├── manager.py          # ConfigurationManager
-│   ├── loader.py           # YAMLLoader
-│   ├── validator.py        # ConfigValidator
-│   ├── schema.py           # ConfigSchema (Pydantic)
-│   └── exceptions.py       # Exceptions spécifiques
-config/
-├── config.yaml             # Configuration par défaut
-└── config.example.yaml     # Exemple de configuration
-tests/baobab_cursor_cli/
-└── config/
-    ├── __init__.py
-    ├── test_manager.py
-    ├── test_loader.py
-    ├── test_validator.py
-    └── fixtures/
-        └── test_config.yaml
+src/baobab_cursor_cli/modules/configuration/
+├── __init__.py              # Point d'entrée, expose ConfigurationManager
+├── configuration.py         # Implémentation principale
+├── models.py                # Modèles Pydantic de configuration
+├── loaders.py               # YAMLLoader, EnvVarLoader
+├── validators.py            # Validation personnalisée
+├── exceptions.py            # ConfigurationError
+├── defaults.py              # Configuration par défaut
+└── README.md                # Documentation du module
+
+tests/baobab_cursor_cli/modules/configuration/
+├── __init__.py
+├── test_configuration.py    # Tests unitaires principaux
+├── test_loaders.py          # Tests des loaders
+├── test_validators.py       # Tests de validation
+├── conftest.py              # Fixtures pytest
+└── fixtures/                # Fichiers YAML de test
 ```
 
 ### 3.4 API / Interface publique
@@ -110,120 +107,98 @@ tests/baobab_cursor_cli/
 #### Classes principales
 ```python
 class ConfigurationManager:
-    """Gestionnaire centralisé de la configuration."""
+    """Gestionnaire principal de configuration."""
     
-    def __init__(self, config_path: Optional[Path] = None):
-        """Initialise avec un chemin de configuration optionnel."""
+    def __init__(self, config_path: Optional[str] = None) -> None:
+        """Initialise avec un chemin de fichier config optionnel."""
         
-    def load(self) -> None:
-        """Charge la configuration depuis toutes les sources."""
-        
-    def reload(self) -> None:
-        """Recharge la configuration."""
+    @classmethod
+    def load(cls, config_path: str) -> 'ConfigurationManager':
+        """Charge la configuration depuis un fichier."""
         
     def get(self, key: str, default: Any = None) -> Any:
         """Récupère une valeur de configuration."""
         
-    def get_typed(self, key: str, type_: Type[T]) -> T:
-        """Récupère une valeur avec typage strict."""
+    def get_nested(self, path: str, default: Any = None) -> Any:
+        """Récupère une valeur imbriquée (ex: 'auth.github.token')."""
         
     def validate(self) -> bool:
         """Valide la configuration complète."""
         
-    def as_dict(self) -> Dict[str, Any]:
-        """Retourne la configuration complète en dictionnaire."""
+    def to_dict(self) -> Dict[str, Any]:
+        """Exporte la configuration en dictionnaire."""
 
-
-class ConfigSchema(BaseModel):
-    """Schéma de validation Pydantic de la configuration."""
+class Config(BaseModel):
+    """Modèle Pydantic de configuration."""
     
-    # Application
-    app_name: str = "baobab-cursor-cli"
-    app_version: str = "1.0.0"
-    debug: bool = False
-    
-    # Cursor CLI
-    cursor_timeout: int = 5
-    cursor_model: str = "Auto"
-    cursor_retry_attempts: int = 3
-    
-    # GitHub
-    github_timeout: int = 10
-    github_retry_attempts: int = 3
-    github_backoff_factor: float = 2.0
+    # Authentication
+    authentication: AuthConfig
     
     # Logging
-    log_level: str = "INFO"
-    log_rotation: str = "weekly"
-    log_db_path: Path = Path("logs/cursor_cli.db")
+    logging: LoggingConfig
     
-    # Email notifications
-    email_enabled: bool = False
-    email_host: Optional[str] = None
-    email_port: int = 587
-    email_from: Optional[str] = None
-    email_to: Optional[str] = None
+    # Cursor CLI
+    cursor: CursorConfig
+    
+    # GitHub
+    github: GitHubConfig
+    
+    # Performance
+    performance: PerformanceConfig
 ```
 
 ### 3.5 Configuration
-
-**Fichier config/config.yaml :**
 ```yaml
-# Configuration de l'application
-app:
-  name: "baobab-cursor-cli"
-  version: "1.0.0"
-  debug: false
+# config.yaml - Exemple de fichier de configuration
 
-# Configuration Cursor CLI
-cursor:
-  timeout: 5
-  model: "Auto"
-  retry_attempts: 3
-  max_memory_mb: 100
+# Authentification
+authentication:
+  github:
+    required_scopes:
+      - repo
+      - issue
+      - branch
+  cursor:
+    optional: true
 
-# Configuration GitHub
-github:
-  timeout: 10
-  retry_attempts: 3
-  backoff_factor: 2.0
-  required_scopes:
-    - repo
-    - issue
-    - branch
-
-# Configuration Logging
+# Logging
 logging:
-  level: "INFO"
-  rotation: "weekly"
-  db_path: "logs/cursor_cli.db"
-  formats:
-    console: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-    file: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  level: INFO
+  database: logs/cursor_cli.db
+  rotation: weekly
+  email:
+    enabled: true
+    smtp_server: smtp.gmail.com
+    smtp_port: 587
 
-# Configuration Email
-email:
-  enabled: false
-  host: null
-  port: 587
-  use_tls: true
-  from: null
-  to: null
+# Cursor CLI
+cursor:
+  model: Auto  # Modèle par défaut
+  timeout: 5
+  retry:
+    max_attempts: 3
+    backoff_factor: 2
 
-# Limites de ressources
-resources:
-  max_cpu_percent: 50
+# GitHub
+github:
+  timeout: 5
+  retry:
+    max_attempts: 3
+    backoff_factor: 2
+
+# Performance
+performance:
   max_memory_mb: 100
-  max_disk_gb: 1
+  max_cpu_percent: 50
+  timeout_seconds: 5
 ```
 
-**Variables d'environnement supportées :**
-| Variable | Description | Priorité | Exemple |
-|----------|-------------|----------|---------|
-| `BAOBAB_CURSOR_TIMEOUT` | Timeout Cursor en secondes | Haute | 10 |
-| `BAOBAB_LOG_LEVEL` | Niveau de log | Haute | DEBUG |
-| `BAOBAB_CONFIG_PATH` | Chemin vers config.yaml | Haute | /custom/config.yaml |
-| `BAOBAB_DEBUG` | Mode debug | Moyenne | true |
+**Variables d'environnement :**
+| Variable | Description | Requis | Défaut |
+|----------|-------------|---------|--------|
+| `CONFIG_PATH` | Chemin vers config.yaml | Non | ./config/config.yaml |
+| `BAOBAB_ENV` | Environnement (dev/staging/prod) | Non | dev |
+| `LOG_LEVEL` | Niveau de log (override) | Non | INFO |
 
 ---
 
@@ -232,16 +207,18 @@ resources:
 ### 4.1 Dépendances externes
 | Dépendance | Version | Usage | Critique |
 |------------|---------|-------|----------|
-| Python | >=3.8 | Runtime | Oui |
 | pyyaml | ^6.0 | Parsing YAML | Oui |
-| pydantic | ^2.0 | Validation et typage | Oui |
+| pydantic | ^2.0 | Validation de configuration | Oui |
+| python-dotenv | ^1.0.0 | Chargement .env | Non |
 
 ### 4.2 Services requis
-- Aucun service externe requis
+- **Système de fichiers** : Lecture de fichiers YAML
+- **Variables d'environnement** : Lecture et override de configuration
 
-### 4.3 Modules requis
-- **Module d'exceptions** : Pour `CursorConfigurationError`
-- **Module de logging** : Pour logger les erreurs de configuration
+### 4.3 Modules requis (autres sous-modules)
+- **Module Exceptions** : ConfigurationError personnalisée
+- **Module Validation** : Validation de paramètres spécifiques
+- **Module Logging** : Traçage des opérations de configuration
 
 ---
 
@@ -249,52 +226,48 @@ resources:
 
 ### 5.1 Installation
 ```bash
-# En tant que partie du package principal
+# Le module fait partie de baobab-cursor-cli
 pip install baobab-cursor-cli
 ```
 
 ### 5.2 Initialisation
 ```python
-from baobab_cursor_cli.config import ConfigurationManager
+from baobab_cursor_cli.modules.configuration import ConfigurationManager
 
-# Chargement avec fichier par défaut (config/config.yaml)
+# Chargement avec chemin par défaut
+config = ConfigurationManager.load("config.yaml")
+
+# Chargement avec détection automatique
 config = ConfigurationManager()
-config.load()
 
-# Chargement avec fichier personnalisé
-from pathlib import Path
-config = ConfigurationManager(config_path=Path("/custom/config.yaml"))
-config.load()
+# Chargement avec env var
+import os
+os.environ['CONFIG_PATH'] = '/path/to/config.yaml'
+config = ConfigurationManager()
 ```
 
 ### 5.3 Exemple d'utilisation
 ```python
-from baobab_cursor_cli.config import ConfigurationManager
-from baobab_cursor_cli.config.exceptions import CursorConfigurationError
+from baobab_cursor_cli.modules.configuration import ConfigurationManager
+from baobab_cursor_cli.modules.configuration.exceptions import ConfigurationError
 
 try:
     # Charger la configuration
-    config = ConfigurationManager()
-    config.load()
+    config = ConfigurationManager.load("config.yaml")
     
-    # Valider la configuration
+    # Valider
     if not config.validate():
-        raise CursorConfigurationError("Configuration invalide")
+        raise ConfigurationError("Configuration invalide")
     
-    # Récupérer des valeurs
-    cursor_timeout = config.get_typed("cursor.timeout", int)
-    log_level = config.get("logging.level", "INFO")
-    debug_mode = config.get("app.debug", False)
+    # Accéder aux valeurs
+    log_level = config.get("logging.level")
+    github_scopes = config.get("authentication.github.required_scopes")
     
-    print(f"Timeout Cursor: {cursor_timeout}s")
     print(f"Log level: {log_level}")
-    print(f"Debug: {debug_mode}")
+    print(f"GitHub scopes: {github_scopes}")
     
-    # Récupérer toute la config
-    full_config = config.as_dict()
-    
-except CursorConfigurationError as e:
-    print(f"Erreur de configuration: {e}")
+except ConfigurationError as e:
+    print(f"Erreur de configuration : {e}")
 ```
 
 ---
@@ -303,66 +276,64 @@ except CursorConfigurationError as e:
 
 ### 6.1 Stratégie de test
 - **Tests unitaires** : Couverture minimale 90%
-- **Tests d'intégration** : Chargement avec différents fichiers YAML
-- **Tests de validation** : Vérifier les schémas de validation
+- **Tests d'intégration** : Chargement de fichiers réels
+- **Tests de performance** : N/A
 
 ### 6.2 Commandes
 ```bash
-# Lancer les tests unitaires
-pytest tests/baobab_cursor_cli/config/
+# Lancer les tests
+pytest tests/baobab_cursor_cli/modules/configuration/
 
 # Tests avec couverture
-pytest tests/baobab_cursor_cli/config/ --cov=src/baobab_cursor_cli/config --cov-report=html
+pytest --cov=src/baobab_cursor_cli/modules/configuration tests/baobab_cursor_cli/modules/configuration/
 
-# Tests avec fixtures
-pytest tests/baobab_cursor_cli/config/ -v
+# Tests avec fixtures YAML
+pytest tests/baobab_cursor_cli/modules/configuration/ -v
 ```
 
 ### 6.3 Scénarios de test critiques
-1. **Chargement YAML valide** : Doit charger correctement un fichier YAML valide
-2. **Fichier absent** : Doit utiliser les valeurs par défaut si le fichier n'existe pas
-3. **YAML invalide** : Doit lever `CursorConfigurationError` pour un YAML mal formé
-4. **Surcharge env vars** : Les variables d'environnement doivent surcharger le YAML
-5. **Validation schéma** : Un schéma invalide doit lever une exception
-6. **Valeurs typées** : `get_typed()` doit convertir correctement les types
+1. **Chargement YAML valide** : Fichier valide doit être chargé correctement
+2. **Validation configuration invalide** : Configuration invalide doit lever une exception
+3. **Override par env vars** : Variable d'environnement doit prendre priorité
+4. **Valeurs par défaut** : Paramètres optionnels doivent avoir leurs valeurs par défaut
+5. **Fichier YAML manquant** : Erreur explicite si fichier introuvable
 
 ---
 
 ## 7. Sécurité
 
 ### 7.1 Considérations de sécurité
-- Les secrets ne doivent JAMAIS être dans les fichiers YAML versionnés
-- Le fichier `config/secrets.yaml` doit être dans `.gitignore`
-- Validation stricte des chemins de fichiers pour éviter path traversal
-- Sanitisation des valeurs chargées depuis les variables d'environnement
+- Les secrets ne doivent JAMAIS être dans les fichiers YAML
+- Les fichiers de configuration doivent être exclus du versioning (.gitignore)
+- Validation stricte des chemins de fichiers (pas d'injection)
+- Sanitisation des valeurs de configuration
 
 ### 7.2 Authentification / Autorisation
-- Aucun token ou secret dans la configuration
-- Les secrets sont gérés par le module d'authentification
+- N/A (le module ne gère pas l'authentification directement)
 
 ### 7.3 Validation des entrées
-- Validation de tous les types avec Pydantic
-- Vérification des valeurs numériques (min/max)
-- Validation des chemins de fichiers
-- Sanitisation des chaînes de caractères
+- Validation de type avec Pydantic
+- Validation de format (email, URL, etc.)
+- Validation de plages de valeurs (min/max)
+- Détection de paramètres obsolètes ou inconnus
 
 ---
 
 ## 8. Performance
 
 ### 8.1 Métriques attendues
-- **Temps de chargement** : < 50ms pour un fichier de configuration typique
-- **Consommation mémoire** : < 2MB
-- **Hot-reload** : < 100ms
+- **Temps de réponse** : < 100ms pour chargement de configuration
+- **Throughput** : N/A (opération ponctuelle au démarrage)
+- **Consommation mémoire** : < 10MB
 
 ### 8.2 Optimisations
-- Mise en cache de la configuration chargée
-- Parsing YAML optimisé avec `pyyaml`
-- Validation lazy (seulement si demandée)
+- Cache de configuration en mémoire
+- Parsing YAML paresseux (lazy loading) si nécessaire
+- Validation incrémentale
 
 ### 8.3 Limites connues
-- **Fichiers volumineux** : Pas optimisé pour des fichiers YAML > 1MB
-- **Hot-reload** : Nécessite un mécanisme de file watcher (optionnel)
+- **Taille de fichier** : Fichiers YAML > 1MB peuvent être lents
+- **Complexité YAML** : Structures très imbriquées peuvent poser problème
 
 ---
 
@@ -371,18 +342,18 @@ pytest tests/baobab_cursor_cli/config/ -v
 ### 9.1 Versioning
 - **Version actuelle** : 1.0.0
 - **Stratégie** : Semantic Versioning (SemVer)
-- **Changelog** : Voir docs/CHANGELOG.md
+- **Changelog** : Voir CHANGELOG.md
 
 ### 9.2 Rétrocompatibilité
-- Maintien de la structure YAML dans les versions mineures
-- Migration automatique des anciennes configurations
+- Interface stable pour la v1.x
+- Migration automatique de configurations anciennes
+- Avertissements pour paramètres dépréciés
 
 ### 9.3 Roadmap
 | Version | Fonctionnalités prévues | Date estimée |
 |---------|------------------------|--------------|
-| 1.1.0 | Support JSON et TOML, hot-reload automatique | Q2 2026 |
-| 1.2.0 | Configuration distribuée (Consul, etcd) | Q3 2026 |
-| 2.0.0 | Interface graphique de configuration | Q4 2026 |
+| 1.1.0 | Support JSON, validation avancée | Q2 2026 |
+| 2.0.0 | Support multi-profils | Q3 2026 |
 
 ---
 
@@ -390,40 +361,40 @@ pytest tests/baobab_cursor_cli/config/ -v
 
 ### 10.1 Documentation technique
 - **README.md** : Guide de démarrage rapide
-- **Configuration Guide** : Documentation complète des options de configuration
-- **Migration Guide** : Guide de migration entre versions
+- **API Reference** : Documentation complète des classes
+- **Schema Documentation** : Documentation du schéma YAML
 
 ### 10.2 Exemples
-- `examples/config/basic_usage.py` : Utilisation de base
-- `examples/config/env_override.py` : Surcharge avec variables d'environnement
-- `examples/config/validation.py` : Validation personnalisée
+- `examples/basic_config.py` : Configuration basique
+- `examples/env_override.py` : Override par variables d'environnement
+- `examples/validation.py` : Validation de configuration
 
 ### 10.3 FAQ
-**Q: Comment ajouter une nouvelle option de configuration ?**
-R: Ajouter le champ dans `ConfigSchema` (schema.py) et dans le fichier `config.example.yaml`.
+**Q: Où placer mon fichier de configuration ?**
+R: Dans `config/config.yaml` à la racine du projet
 
-**Q: Les variables d'environnement surchargent-elles toujours le YAML ?**
-R: Oui, les variables d'environnement ont toujours la priorité sur les fichiers YAML.
+**Q: Comment surcharger un paramètre en production ?**
+R: Utiliser une variable d'environnement (ex: `LOG_LEVEL=DEBUG`)
 
-**Q: Peut-on avoir plusieurs fichiers de configuration ?**
-R: Oui, vous pouvez spécifier un chemin personnalisé lors de l'initialisation de `ConfigurationManager`.
+**Q: Comment valider ma configuration sans lancer l'application ?**
+R: `python -m baobab_cursor_cli.modules.configuration validate config.yaml`
 
 ---
 
 ## 11. Support et contribution
 
 ### 11.1 Canaux de support
-- **Issues GitHub** : https://github.com/user/baobab-cursor-cli/issues
-- **Documentation** : https://baobab-cursor-cli.readthedocs.io
-- **Contact** : tech-lead@project.com
+- **Issues GitHub** : https://github.com/[org]/baobab-cursor-cli/issues
+- **Documentation** : https://[org].github.io/baobab-cursor-cli/
+- **Contact** : [email]
 
 ### 11.2 Guide de contribution
 - Voir CONTRIBUTING.md
-- Code style : Black (formatter), flake8 (linter)
-- Process de PR : Review obligatoire par le Tech-Lead
+- Code style : PEP 8, formaté avec Black
+- Process de PR : Review obligatoire par Tech-Lead
 
 ### 11.3 Licence
-MIT License
+MIT
 
 ---
 
@@ -431,16 +402,14 @@ MIT License
 
 | Propriété | Valeur |
 |-----------|--------|
-| **Propriétaire** | Tech-Lead Principal |
-| **Repository** | https://github.com/user/baobab-cursor-cli |
+| **Propriétaire** | Équipe Core - baobab-cursor-cli |
+| **Repository** | https://github.com/[org]/baobab-cursor-cli |
 | **Status** | En développement |
 | **Créé le** | 15/10/2025 |
 | **Dernière MAJ** | 15/10/2025 |
 | **Projets utilisant ce module** | baobab-cursor-cli |
 | **Priorité** | Haute (Score: 4.7/5) |
-| **Criticité métier** | 5/5 |
-| **Complexité technique** | 3/5 |
-| **Dépendances** | 5/5 (beaucoup de modules en dépendent) |
+| **Complexité** | Moyenne (3/5) |
 
 ---
 
@@ -448,43 +417,30 @@ MIT License
 
 ### 13.1 Glossaire
 - **YAML** : Format de sérialisation de données lisible par l'humain
-- **Pydantic** : Librairie de validation de données avec typage Python
-- **Hot-reload** : Rechargement de la configuration sans redémarrage de l'application
+- **Env var** : Variable d'environnement système
+- **Pydantic** : Bibliothèque de validation de données Python
 
 ### 13.2 Références
-- [PyYAML Documentation](https://pyyaml.org/wiki/PyYAMLDocumentation)
-- [Pydantic Documentation](https://docs.pydantic.dev/)
-- [12-Factor App Configuration](https://12factor.net/config)
+- PyYAML Documentation : https://pyyaml.org/wiki/PyYAMLDocumentation
+- Pydantic Documentation : https://docs.pydantic.dev/
+- YAML Specification : https://yaml.org/spec/
 
 ### 13.3 Diagrammes supplémentaires
 ```
-Séquence de chargement de configuration
-┌──────────┐     ┌────────────┐     ┌──────────┐     ┌─────────┐
-│  Client  │     │ConfigMgr   │     │YAMLLoader│     │EnvLoader│
-└────┬─────┘     └─────┬──────┘     └────┬─────┘     └────┬────┘
-     │                 │                  │                │
-     │  load()         │                  │                │
-     │────────────────>│                  │                │
-     │                 │                  │                │
-     │                 │  load_yaml()     │                │
-     │                 │─────────────────>│                │
-     │                 │                  │                │
-     │                 │    config_dict   │                │
-     │                 │<─────────────────│                │
-     │                 │                  │                │
-     │                 │  load_env_vars() │                │
-     │                 │────────────────────────────────>  │
-     │                 │                  │                │
-     │                 │           env_overrides           │
-     │                 │<────────────────────────────────  │
-     │                 │                  │                │
-     │                 │  validate()      │                │
-     │                 │──────┐           │                │
-     │                 │      │           │                │
-     │                 │<─────┘           │                │
-     │                 │                  │                │
-     │      success    │                  │                │
-     │<────────────────│                  │                │
-     │                 │                  │                │
+Hiérarchie de configuration :
+
+1. Valeurs par défaut (defaults.py)
+     ↓ (fusionnées avec)
+2. Fichier config.yaml
+     ↓ (surchargées par)
+3. Variables d'environnement
+     ↓ (résultat)
+4. Configuration finale validée
 ```
+
+---
+
+*Document créé le : 15/10/2025*  
+*Version : 1.0*  
+*Statut : En développement*
 
