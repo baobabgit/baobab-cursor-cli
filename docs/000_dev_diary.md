@@ -6,6 +6,86 @@
 
 ---
 
+### 2025-10-15 14:20 - Création du prompt Agent Testeur
+
+**Quoi :** Création d'un prompt complet pour l'agent testeur dans `docs/.prompts/004_tester.md` qui gère la création automatique des tests unitaires avec couverture ≥ 90%.
+
+**Pourquoi :** Automatiser et standardiser la création des tests unitaires en suivant les mêmes principes que l'agent développeur, avec un workflow Git structuré et des exigences de qualité strictes.
+
+**Comment :**
+
+**1. Processus de travail en 6 étapes :**
+- **Étape 1** : Analyse de la spécification et du code source
+- **Étape 2** : Création de branche de test (dev- → tst-)
+- **Étape 3** : Vérification des contraintes de tests
+- **Étape 4** : Développement des tests (≥90% couverture)
+- **Étape 5** : Logging des actions
+- **Étape 6** : Validation finale
+
+**2. Gestion des branches Git :**
+- **Règle** : Branche de test créée depuis la branche de développement
+- **Nomenclature** : Remplacer `dev-` par `tst-` dans le nom
+- **Exemples** :
+  - `002-modules-base/001-authentication/001-dev-token-manager` 
+    → `002-modules-base/001-authentication/001-tst-token-manager`
+  - `003-wrappers-cli/001-cursor-wrapper/001-dev-command-executor`
+    → `003-wrappers-cli/001-cursor-wrapper/001-tst-command-executor`
+
+**3. Contraintes de tests implémentées :**
+- ✅ Un fichier de test par classe
+- ✅ Arborescence identique au code source
+- ✅ Couverture minimum 90% pour modules (80% global)
+- ✅ pytest + pytest-cov obligatoires
+- ✅ Nommage : `test_*.py`, `Test*`, `test_*`
+- ✅ Fixtures pytest pour réutilisabilité
+- ✅ Mocks pour dépendances externes
+- ✅ Pattern Arrange-Act-Assert
+
+**4. Types de tests à créer :**
+- Tests nominaux (Happy Path)
+- Tests de validation (entrées invalides)
+- Tests d'erreurs (exceptions, cas limites)
+- Tests d'intégration (si spécifié)
+- Tests paramétrés (@pytest.mark.parametrize)
+
+**5. Format de réponse structuré :**
+1. Récapitulatif de compréhension (spec + code à tester)
+2. Création de branche (commandes Git)
+3. Développement des tests (code complet)
+4. Rapport de couverture (%, lignes, branches)
+5. Log à ajouter
+6. Validation finale
+
+**6. Checklist de validation (15 points) :**
+- Branche de test créée avec bon format (tst-)
+- Couverture ≥ 90% par module
+- Tous les tests passent
+- Fixtures et mocks utilisés
+- Docstrings complètes
+- Pattern AAA respecté
+- Rapport de couverture généré
+- Logging effectué
+
+**7. Règles strictes :**
+- ❌ NE PAS créer/modifier du code fonctionnel
+- ❌ NE PAS créer la branche depuis main/phase (seulement dev)
+- ✅ DOIT partir de la branche de développement
+- ✅ DOIT atteindre ≥90% de couverture
+- ✅ DOIT logger dans dev_diary.md
+
+**Fichiers impactés :**
+- `docs/.prompts/004_tester.md` : Créé - Prompt complet agent testeur (438 lignes)
+
+**Contraintes respectées :**
+- ✅ Workflow Git structuré (branches de test)
+- ✅ Standards de tests pytest
+- ✅ Couverture ≥ 90% pour modules
+- ✅ Documentation complète avec exemples
+- ✅ Format de réponse standardisé
+- ✅ Logging obligatoire
+
+---
+
 ### 2025-10-15 14:15 - Ajout contrainte : Une classe par fichier pour le code source
 
 **Quoi :** Ajout d'une nouvelle contrainte dans `docs/002_project_contraints.md` spécifiant qu'une classe doit avoir son propre fichier dans le code source, similairement aux tests unitaires.
