@@ -6,6 +6,61 @@
 
 ---
 
+### 2025-10-15 14:10 - Ajout de la gestion des branches de développement au prompt développeur
+
+**Quoi :** Modification du prompt de l'agent développeur (`docs/.prompts/003_developper.md`) pour inclure la création obligatoire d'une branche de développement avec une nomenclature stricte avant tout développement.
+
+**Pourquoi :** Structurer le workflow Git en créant des branches de développement dédiées pour chaque spécification détaillée, permettant un meilleur suivi du développement et facilitant les pull requests et code reviews.
+
+**Comment :**
+
+**1. Ajout d'une nouvelle étape (Étape 2) :**
+- **Création de branche obligatoire** : Avant tout développement, créer une branche depuis la branche de phase
+- **Nomenclature stricte** : `XXX-[nom_phase]/YYY-[nom-specification]/ZZZ-dev-[nom-specification-détaillé]`
+  - XXX = Numéro de phase sur 3 chiffres (001, 002, 003...)
+  - YYY = Numéro de spécification sur 3 chiffres
+  - ZZZ = Numéro de spécification détaillée sur 3 chiffres
+  - Noms en kebab-case
+
+**2. Exemples de branches créés :**
+- `002-modules-base/001-authentication/001-dev-token-manager`
+- `002-modules-base/001-authentication/002-dev-github-validator`
+- `003-wrappers-cli/001-cursor-wrapper/001-dev-command-executor`
+- `004-fonctionnalites-metier/001-code-generation/001-dev-ai-prompter`
+
+**3. Procédure documentée :**
+- Vérifier que la branche de phase existe
+- Se positionner sur la branche de phase (`git checkout XXX-[nom_phase]`)
+- Créer la branche de développement (`git checkout -b XXX-[nom_phase]/YYY-[nom-spec]/ZZZ-dev-[nom-spec-détaillée]`)
+
+**4. Mises à jour du processus :**
+- Passage de 5 à **6 étapes** dans le processus de travail
+- Étape 1 : Analyse de la spécification
+- **Étape 2 : Création de la branche de développement** (nouveau)
+- Étape 3 : Vérification des contraintes
+- Étape 4 : Développement du code
+- Étape 5 : Logging des actions
+- Étape 6 : Validation finale
+
+**5. Modifications dans le format de réponse :**
+- Ajout d'une section "BRANCHE DE DÉVELOPPEMENT" dans le récapitulatif
+- Ajout d'une section "Création de branche" avec les commandes Git exécutées
+- Mise à jour de la checklist de validation (branche créée, sur la bonne branche)
+
+**Fichiers impactés :**
+- `docs/.prompts/003_developper.md` : Modifié - Ajout de la gestion des branches Git
+
+**Contraintes respectées :**
+- ✅ Nomenclature stricte et cohérente pour les branches
+- ✅ Workflow Git structuré avec branches dédiées
+- ✅ Pas de développement direct sur main ou les branches de phase
+- ✅ Documentation complète de la procédure
+- ✅ Intégration dans le processus de travail existant
+
+**Commit :** `8fd3abc` - feat(prompt): Ajout de la création de branche de dev dans le prompt développeur
+
+---
+
 ### 2025-10-15 14:10 - Découpage complet du projet en modules et phases
 
 **Quoi :** Analyse complète du cahier des charges et découpage du projet baobab-cursor-cli en 8 modules de développement et 6 phases de développement, avec génération des diagrammes de Gantt et fichiers JSON structurés.
